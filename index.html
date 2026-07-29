@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Divide & Conquer — Division Practice</title>
+    <meta
+      name="description"
+      content="Practice long division on digital notebook paper. Build quotient, subtraction, and remainder skills with streaks and scoring."
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Patrick+Hand&family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <a class="logo-link" href="/" aria-label="Divide & Conquer home">
+          <img class="logo" src="logo.svg" width="56" height="56" alt="" />
+        </a>
+        <div>
+          <h1>Divide & Conquer</h1>
+          <p class="tagline">Practice long division the way you write it on paper.</p>
+        </div>
+      </header>
+
+      <main class="main">
+        <aside class="panel setup" id="setup-panel">
+          <h2>Practice setup</h2>
+
+          <fieldset class="field-group">
+            <legend>Difficulty</legend>
+            <div class="radio-grid">
+              <label class="radio-card">
+                <input type="radio" name="difficulty" value="easy" checked />
+                <span class="radio-card-inner">
+                  <strong>Easy</strong>
+                  <small>Divisors 2–9, smaller dividends</small>
+                </span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="difficulty" value="medium" />
+                <span class="radio-card-inner">
+                  <strong>Medium</strong>
+                  <small>Divisors 2–12, bigger numbers</small>
+                </span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="difficulty" value="hard" />
+                <span class="radio-card-inner">
+                  <strong>Hard</strong>
+                  <small>Divisors up to 15, larger dividends</small>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field-group">
+            <legend>Session length</legend>
+            <select id="session-length" aria-label="Number of problems">
+              <option value="10">10 problems</option>
+              <option value="20" selected>20 problems</option>
+              <option value="30">30 problems</option>
+              <option value="endless">Endless</option>
+            </select>
+          </fieldset>
+
+          <div class="personal-bests hidden" id="setup-bests" aria-live="polite">
+            <p class="bests-heading">Your best on <span id="setup-bests-difficulty">Easy</span></p>
+            <div class="bests-grid">
+              <div class="best-item">
+                <span class="best-label">High score</span>
+                <span class="best-value" id="setup-best-score">—</span>
+              </div>
+              <div class="best-item">
+                <span class="best-label">Best streak</span>
+                <span class="best-value" id="setup-best-streak">—</span>
+              </div>
+              <div class="best-item">
+                <span class="best-label">Best accuracy</span>
+                <span class="best-value" id="setup-best-accuracy">—</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="start-btn">
+            Start practice
+          </button>
+        </aside>
+
+        <section class="panel game hidden" id="game-panel" aria-live="polite">
+          <div class="stats-bar">
+            <div class="stat">
+              <span class="stat-label">Score</span>
+              <span class="stat-value" id="score">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value" id="streak">0</span>
+            </div>
+          </div>
+
+          <div class="progress-wrap" id="progress-wrap">
+            <div class="progress-meta">
+              <span class="progress-question" id="progress-question">Question 1 of 20</span>
+            </div>
+            <div
+              class="progress-track"
+              id="progress-track"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              aria-label="Session progress"
+            >
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="problem-card">
+            <p class="problem-label">Write your work like on notebook paper</p>
+
+            <div class="paper-wrap">
+              <div class="paper-sheet" id="paper-sheet" aria-label="Long division workspace">
+                <div class="division-house" id="division-house">
+                  <div class="house-row quotient-row">
+                    <div class="house-side"></div>
+                    <div class="house-bracket"></div>
+                    <div class="house-work">
+                      <label class="house-label" for="quotient-input">Quotient</label>
+                      <input
+                        type="text"
+                        id="quotient-input"
+                        class="house-input house-input-quotient"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        maxlength="4"
+                        placeholder=""
+                        aria-label="Quotient"
+                      />
+                      <div class="house-line house-line-top"></div>
+                    </div>
+                  </div>
+
+                  <div class="house-row dividend-row">
+                    <div class="house-side">
+                      <span class="house-divisor" id="divisor-display">—</span>
+                    </div>
+                    <div class="house-bracket" aria-hidden="true">
+                      <svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none">
+                        <path d="M12 0 L12 48 L0 48" fill="none" stroke="currentColor" stroke-width="2.5" />
+                      </svg>
+                    </div>
+                    <div class="house-work">
+                      <span class="house-dividend" id="dividend-display">—</span>
+                    </div>
+                  </div>
+
+                  <div class="house-row subtraction-row">
+                    <div class="house-side"></div>
+                    <div class="house-bracket"></div>
+                    <div class="house-work">
+                      <label class="house-label" for="subtraction-input">Subtraction</label>
+                      <input
+                        type="text"
+                        id="subtraction-input"
+                        class="house-input house-input-subtraction"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        maxlength="5"
+                        placeholder=""
+                        aria-label="Subtraction"
+                      />
+                      <div class="house-line house-line-sub"></div>
+                    </div>
+                  </div>
+
+                  <div class="house-row remainder-row">
+                    <div class="house-side"></div>
+                    <div class="house-bracket"></div>
+                    <div class="house-work">
+                      <label class="house-label" for="remainder-input">Remainder</label>
+                      <input
+                        type="text"
+                        id="remainder-input"
+                        class="house-input house-input-remainder"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        maxlength="3"
+                        placeholder=""
+                        aria-label="Remainder"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ul class="paper-legend">
+                <li><strong>Quotient</strong> — on top, above the line</li>
+                <li><strong>Subtraction</strong> — write the number you subtract (divisor × quotient)</li>
+                <li><strong>Remainder</strong> — what is left below the line</li>
+              </ul>
+            </div>
+
+            <div class="action-row">
+              <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+              <button type="button" class="btn btn-primary" id="submit-btn">Submit answer</button>
+              <button type="button" class="btn btn-primary" id="next-btn" disabled>Next</button>
+            </div>
+
+            <p class="feedback hidden" id="feedback" role="status"></p>
+          </div>
+
+          <button type="button" class="btn btn-ghost" id="quit-btn">End session</button>
+        </section>
+
+        <section class="panel results hidden" id="results-panel">
+          <h2>Session complete!</h2>
+          <div class="results-grid" id="results-summary"></div>
+          <div class="results-actions">
+            <button type="button" class="btn btn-primary" id="again-btn">Practice again</button>
+            <button type="button" class="btn btn-ghost" id="setup-btn">Change settings</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
