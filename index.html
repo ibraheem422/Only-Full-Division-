@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Divide & Conquer — Division Practice with 2FA Security</title>
-    <meta name="description" content="Practice long division on digital notebook paper with full TOTP Two-Factor Authentication security, streaks, and scoring." />
+    <title>Divide & Conquer — Division Practice with Security</title>
+    <meta name="description" content="Practice long division on digital notebook paper with full Two-Factor Authentication security, streaks, and scoring." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23d46a32%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%239a4518%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M14%2010%20L14%2022%20L10%2022%22%20fill%3D%22none%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%20%20%3Cline%20x1%3D%2214%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2222%22%20cy%3D%228%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2222%22%20cy%3D%2224%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%0A%20%20%3Cline%20x1%3D%2219%22%20y1%3D%2216%22%20x2%3D%2225%22%20y2%3D%2216%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -186,19 +186,19 @@
       .paper-sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 2rem; width: 2px; background: var(--paper-margin); opacity: 0.55; }
       .division-house {
         --work-width: 10ch; --side-width: 2.5rem; --bracket-width: 1.2rem;
-        position: relative; z-index: 1; font-family: var(--font-hand);
-        font-size: 2.25rem; line-height: 1.15; color: var(--ink);
+        position: relative; z-index: 1; font-family: var(--font-body);
+        font-size: 1.85rem; line-height: 1.15; color: var(--ink);
       }
       .house-row { display: grid; grid-template-columns: var(--side-width) var(--bracket-width) var(--work-width); align-items: end; min-height: 2.5rem; }
       .house-side { display: flex; align-items: flex-end; justify-content: flex-end; padding-right: 0.35rem; padding-bottom: 0.1rem; }
       .house-bracket { position: relative; align-self: stretch; color: var(--ink); }
       .bracket-svg { width: 100%; height: 100%; min-height: 2.5rem; display: block; }
       .house-work { position: relative; width: var(--work-width); display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; }
-      .house-divisor, .house-dividend { font-variant-numeric: tabular-nums; letter-spacing: 0.05em; text-align: right; width: 100%; padding-right: 0.1rem; }
+      .house-divisor, .house-dividend { font-variant-numeric: tabular-nums; letter-spacing: 0.05em; text-align: right; width: 100%; padding-right: 0.1rem; font-weight: 600; font-family: var(--font-body); }
       .house-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
       .house-input {
         width: 100%; border: none; border-bottom: 2px dashed rgba(176,125,16,0.45); background: transparent;
-        font-family: var(--font-hand); font-size: 2.25rem; font-weight: 400; color: var(--accent-dark);
+        font-family: var(--font-body); font-size: 1.85rem; font-weight: 600; color: var(--accent-dark);
         text-align: right; padding: 0 0.1rem 0.05rem; font-variant-numeric: tabular-nums;
         letter-spacing: 0.05em; outline: none;
       }
@@ -210,8 +210,8 @@
       .house-line-top { margin-top: 0.1rem; }
       .house-line-sub { width: 80%; margin-left: auto; border-bottom: 1.5px solid var(--ink); margin-bottom: 0.2rem; }
       .quotient-row { margin-bottom: 0.1rem; }
-      .subtraction-row { font-size: 1.8rem; min-height: 2rem; color: var(--muted); }
-      .sub-input { font-size: 1.8rem; border-bottom-style: dotted; text-align: right; }
+      .subtraction-row { font-size: 1.5rem; min-height: 2rem; color: var(--muted); }
+      .sub-input { font-size: 1.5rem; border-bottom-style: dotted; text-align: right; font-weight: 600; }
       .action-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; max-width: 480px; margin: 0 auto 1rem; }
       .feedback {
         margin: 0; font-weight: 600; padding: 0.75rem 1rem; border-radius: 10px;
@@ -253,15 +253,6 @@
         display: flex; justify-content: center; margin: 1rem 0; padding: 1rem; background: #fff;
         border: 1px solid var(--border); border-radius: 12px;
       }
-      .backup-codes-box {
-        background: var(--bg); padding: 0.85rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem;
-        display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; text-align: center; margin: 1rem 0;
-      }
-      .security-badge {
-        display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.65rem;
-        border-radius: 999px; font-size: 0.78rem; font-weight: 700; background: rgba(45,106,79,0.12); color: var(--success);
-      }
-      .security-badge.disabled { background: rgba(155,34,38,0.1); color: var(--error); }
     </style>
   </head>
   <body>
@@ -305,7 +296,6 @@
       </header>
 
       <main class="main">
-        <!-- Auth Panel -->
         <section class="panel auth" id="auth-panel">
           <div class="auth-tabs" role="tablist" aria-label="Account">
             <button type="button" class="auth-tab active" id="login-tab" role="tab" aria-selected="true" aria-controls="login-form-panel">Log in</button>
@@ -332,7 +322,7 @@
 
           <div class="hidden" id="signup-form-panel" role="tabpanel" aria-labelledby="signup-tab">
             <h2>Create an account</h2>
-            <p class="auth-lead">Sign up with optional Authenticator App (TOTP) security.</p>
+            <p class="auth-lead">Sign up with optional security verification.</p>
             <form class="auth-form" id="signup-form" novalidate>
               <label class="field">
                 <span class="field-label">Email</span>
@@ -353,11 +343,10 @@
           </div>
         </section>
 
-        <!-- Setup Panel -->
         <aside class="panel setup hidden" id="setup-panel">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="m-0">Practice setup</h2>
-            <button type="button" class="btn btn-secondary btn-sm text-xs py-2 px-3" id="setup-security-btn" style="border-radius: 10px;">🛡️ 2FA Security</button>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="mb-0">Practice setup</h2>
+            <button type="button" class="btn btn-secondary btn-sm" id="open-settings-btn" style="border-radius: 10px; font-size: 0.85rem; padding: 0.5rem 0.85rem;">Settings</button>
           </div>
           <fieldset class="field-group">
             <legend>Difficulty</legend>
@@ -414,7 +403,6 @@
           <button type="button" class="btn btn-primary" id="start-btn">Start practice</button>
         </aside>
 
-        <!-- Game Panel -->
         <section class="panel game hidden" id="game-panel" aria-live="polite">
           <div class="stats-bar">
             <div class="stat">
@@ -484,7 +472,7 @@
             <div class="action-row">
               <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
               <button type="button" class="btn btn-primary" id="submit-btn">Submit answer</button>
-              <button type="button" class="btn btn-secondary" id="next-btn">Next</button>
+              <button type="button" class="btn btn-secondary" id="next-btn" disabled>Next</button>
             </div>
             <p class="feedback hidden" id="feedback" role="alert"></p>
             <div class="instructions-legend">
@@ -500,12 +488,29 @@
       </main>
     </div>
 
+    <div class="modal-overlay hidden" id="settings-menu-modal" role="dialog" aria-modal="true" aria-labelledby="settings-menu-title">
+      <div class="modal-box">
+        <h3 id="settings-menu-title" class="text-xl font-bold mb-4 text-center">Settings</h3>
+        <fieldset class="field-group mb-4">
+          <legend>Security &amp; Authentication</legend>
+          <div style="background: var(--bg); padding: 1rem; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <strong style="display: block; font-size: 0.95rem;">Two-Factor Authentication</strong>
+              <small style="color: var(--muted); font-size: 0.85rem;">Secure account login with app</small>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="setup-security-btn" style="border-radius: 10px; font-size: 0.85rem; padding: 0.5rem 0.85rem;">Setup App</button>
+          </div>
+        </fieldset>
+        <button type="button" class="btn btn-primary w-full" id="close-settings-menu-btn">Close Menu</button>
+      </div>
+    </div>
+
     <div class="modal-overlay hidden" id="totp-modal" role="dialog" aria-modal="true" aria-labelledby="totp-title">
       <div class="modal-box text-center">
-        <h3 id="totp-title" class="text-xl font-bold mb-2">🔐 Two-Factor Authentication</h3>
-        <p class="text-sm text-gray-600 mb-4" id="totp-modal-desc">Open your authenticator app and enter the 6-digit verification code.</p>
+        <h3 id="totp-title" class="text-xl font-bold mb-2">Two-Factor Authentication</h3>
+        <p class="text-sm text-gray-600 mb-4">Enter the 6-digit verification code.</p>
         <div class="totp-digits" id="totp-inputs">
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
@@ -522,8 +527,8 @@
 
     <div class="modal-overlay hidden" id="totp-setup-modal" role="dialog" aria-modal="true" aria-labelledby="totp-setup-title">
       <div class="modal-box">
-        <h3 id="totp-setup-title" class="text-xl font-bold mb-2 text-center">Setup Authenticator (TOTP)</h3>
-        <p class="text-sm text-gray-600 mb-3 text-center">Scan this QR code with Google Authenticator, Authy, or Duo Security, or enter the secret key manually.</p>
+        <h3 id="totp-setup-title" class="text-xl font-bold mb-2 text-center">Setup Authenticator</h3>
+        <p class="text-sm text-gray-600 mb-3 text-center">Scan this QR code with your authenticator app, or enter the secret key manually.</p>
         <div class="qr-container" id="qr-code-box"></div>
         <div class="text-xs text-center font-mono font-bold text-gray-700 mb-3" id="totp-secret-display">Secret: 3W6PVGFORLAYR3L3</div>
         <p class="text-xs text-gray-500 mb-4 text-center">Enter a code generated by your app to confirm setup:</p>
@@ -544,7 +549,6 @@
     </div>
 
     <script>
-      /* Simple Base32 decoder for TOTP verification */
       const Base32 = {
         alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",
         decode(input) {
@@ -563,7 +567,6 @@
         }
       };
 
-      /* HMAC-SHA1 Implementation for TOTP Code Validation */
       async function hmacSha1(keyBytes, messageBytes) {
         const cryptoKey = await window.crypto.subtle.importKey(
           "raw",
@@ -584,7 +587,7 @@
           
           const buffer = new ArrayBuffer(8);
           const view = new DataView(buffer);
-          view.setUint32(4, counter, false); // Big-endian
+          view.setUint32(4, counter, false);
           
           const hmacResult = await hmacSha1(keyBytes, buffer);
           const offset = hmacResult[hmacResult.length - 1] & 0x0f;
@@ -603,7 +606,6 @@
 
       async function verifyTotpCode(secret, code) {
         if (!code || code.length !== 6) return false;
-        // Check current time step and adjacent windows (-1, 0, +1) to account for slight clock skew
         for (let offset = -1; offset <= 1; offset++) {
           const validCode = await generateTotp(secret, 30, offset);
           if (validCode === code) return true;
@@ -611,7 +613,6 @@
         return false;
       }
 
-      /* Application State */
       const ADMIN_EMAIL = "ibraheem.muhammad.ai@gmail.com";
       const ADMIN_SECRET = "3W6PVGFORLAYR3L3";
 
@@ -628,7 +629,17 @@
         pendingAuthCallback: null
       };
 
-      /* DOM Elements */
+      function generateRandomBase32Secret(length = 16) {
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        let secret = "";
+        const randomValues = new Uint8Array(length);
+        window.crypto.getRandomValues(randomValues);
+        for (let i = 0; i < length; i++) {
+          secret += alphabet[randomValues[i] % alphabet.length];
+        }
+        return secret;
+      }
+
       const authPanel = document.getElementById("auth-panel");
       const setupPanel = document.getElementById("setup-panel");
       const gamePanel = document.getElementById("game-panel");
@@ -652,6 +663,9 @@
       const signupConfirm = document.getElementById("signup-confirm");
       const signupError = document.getElementById("signup-error");
 
+      const openSettingsBtn = document.getElementById("open-settings-btn");
+      const settingsMenuModal = document.getElementById("settings-menu-modal");
+      const closeSettingsMenuBtn = document.getElementById("close-settings-menu-btn");
       const setupSecurityBtn = document.getElementById("setup-security-btn");
       const startBtn = document.getElementById("start-btn");
       const sessionLengthSelect = document.getElementById("session-length");
@@ -672,6 +686,12 @@
       const resetBtn = document.getElementById("reset-btn");
       const feedbackEl = document.getElementById("feedback");
 
+      if (nextBtn) {
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = "0.5";
+        nextBtn.style.cursor = "not-allowed";
+      }
+
       const totpModal = document.getElementById("totp-modal");
       const totpInputs = document.querySelectorAll("#totp-inputs input");
       const totpVerifyBtn = document.getElementById("totp-verify-btn");
@@ -687,63 +707,72 @@
       const totpSecretDisplay = document.getElementById("totp-secret-display");
 
       function showPanel(panelName) {
-        authPanel.classList.add("hidden");
-        setupPanel.classList.add("hidden");
-        gamePanel.classList.add("hidden");
+        if (authPanel) authPanel.classList.add("hidden");
+        if (setupPanel) setupPanel.classList.add("hidden");
+        if (gamePanel) gamePanel.classList.add("hidden");
 
-        if (panelName === "auth") authPanel.classList.remove("hidden");
-        else if (panelName === "setup") setupPanel.classList.remove("hidden");
-        else if (panelName === "game") gamePanel.classList.remove("hidden");
+        if (panelName === "auth" && authPanel) authPanel.classList.remove("hidden");
+        else if (panelName === "setup" && setupPanel) setupPanel.classList.remove("hidden");
+        else if (panelName === "game" && gamePanel) gamePanel.classList.remove("hidden");
       }
 
       function updateHeaderAuth() {
-        if (state.currentUser || state.isGuest) {
-          headerAuth.classList.remove("hidden");
-          headerAuth.classList.add("visible");
-          userGreetingName.textContent = state.isGuest ? "Guest" : (state.currentUser?.email || ADMIN_EMAIL);
-          headerAuthBtn.textContent = "Log out";
-        } else {
-          headerAuth.classList.add("hidden");
+        if (headerAuth && userGreetingName && headerAuthBtn) {
+          if (state.currentUser || state.isGuest) {
+            headerAuth.classList.remove("hidden");
+            headerAuth.classList.add("visible");
+            userGreetingName.textContent = state.isGuest ? "Guest" : (state.currentUser?.email || ADMIN_EMAIL);
+            headerAuthBtn.textContent = "Log out";
+          } else {
+            headerAuth.classList.add("hidden");
+          }
         }
       }
 
       function promptTotp(callback) {
         state.pendingAuthCallback = callback;
-        totpError.classList.add("hidden");
+        if (totpError) totpError.classList.add("hidden");
         totpInputs.forEach(input => input.value = "");
-        totpModal.classList.remove("hidden");
-        totpInputs[0].focus();
+        if (totpModal) totpModal.classList.remove("hidden");
+        if (totpInputs.length > 0) totpInputs[0].focus();
       }
 
-      totpCancelBtn.addEventListener("click", () => {
-        totpModal.classList.add("hidden");
-        state.pendingAuthCallback = null;
-      });
+      if (totpCancelBtn) {
+        totpCancelBtn.addEventListener("click", () => {
+          if (totpModal) totpModal.classList.add("hidden");
+          state.pendingAuthCallback = null;
+        });
+      }
 
-      totpVerifyBtn.addEventListener("click", async () => {
-        const code = Array.from(totpInputs).map(i => i.value).join("");
-        if (code.length !== 6) {
-          totpError.textContent = "Please enter all 6 digits.";
-          totpError.classList.remove("hidden");
-          return;
-        }
-
-        const isValid = await verifyTotpCode(ADMIN_SECRET, code);
-        if (isValid) {
-          totpModal.classList.add("hidden");
-          if (state.pendingAuthCallback) {
-            state.pendingAuthCallback();
-            state.pendingAuthCallback = null;
+      if (totpVerifyBtn) {
+        totpVerifyBtn.addEventListener("click", async () => {
+          const code = Array.from(totpInputs).map(i => i.value).join("");
+          if (code.length !== 6) {
+            if (totpError) {
+              totpError.textContent = "Please enter all 6 digits.";
+              totpError.classList.remove("hidden");
+            }
+            return;
           }
-        } else {
-          totpError.textContent = "Invalid verification code. Try again.";
-          totpError.classList.remove("hidden");
-          totpInputs.forEach(i => i.value = "");
-          totpInputs[0].focus();
-        }
-      });
 
-      // Handle digit input jumping
+          const isValid = await verifyTotpCode(ADMIN_SECRET, code);
+          if (isValid) {
+            if (totpModal) totpModal.classList.add("hidden");
+            if (state.pendingAuthCallback) {
+              state.pendingAuthCallback();
+              state.pendingAuthCallback = null;
+            }
+          } else {
+            if (totpError) {
+              totpError.textContent = "Invalid verification code. Try again.";
+              totpError.classList.remove("hidden");
+            }
+            totpInputs.forEach(i => i.value = "");
+            if (totpInputs.length > 0) totpInputs[0].focus();
+          }
+        });
+      }
+
       totpInputs.forEach((input, idx) => {
         input.addEventListener("input", (e) => {
           const val = e.target.value.replace(/[^0-9]/g, "");
@@ -774,152 +803,188 @@
         });
       });
 
-      loginTab.addEventListener("click", () => {
-        loginTab.classList.add("active");
-        loginTab.setAttribute("aria-selected", "true");
-        signupTab.classList.remove("active");
-        signupTab.setAttribute("aria-selected", "false");
-        loginFormPanel.classList.remove("hidden");
-        signupFormPanel.classList.add("hidden");
-      });
+      if (loginTab && signupTab && loginFormPanel && signupFormPanel) {
+        loginTab.addEventListener("click", () => {
+          loginTab.classList.add("active");
+          loginTab.setAttribute("aria-selected", "true");
+          signupTab.classList.remove("active");
+          signupTab.setAttribute("aria-selected", "false");
+          loginFormPanel.classList.remove("hidden");
+          signupFormPanel.classList.add("hidden");
+        });
 
-      signupTab.addEventListener("click", () => {
-        signupTab.classList.add("active");
-        signupTab.setAttribute("aria-selected", "true");
-        loginTab.classList.remove("active");
-        loginTab.setAttribute("aria-selected", "false");
-        signupFormPanel.classList.remove("hidden");
-        loginFormPanel.classList.add("hidden");
-      });
+        signupTab.addEventListener("click", () => {
+          signupTab.classList.add("active");
+          signupTab.setAttribute("aria-selected", "true");
+          loginTab.classList.remove("active");
+          loginTab.setAttribute("aria-selected", "false");
+          signupFormPanel.classList.remove("hidden");
+          loginFormPanel.classList.add("hidden");
+        });
+      }
 
-      skipAuthBtn.addEventListener("click", () => {
-        state.isGuest = true;
-        state.currentUser = null;
-        updateHeaderAuth();
-        showPanel("setup");
-      });
+      if (skipAuthBtn) {
+        skipAuthBtn.addEventListener("click", () => {
+          state.isGuest = true;
+          state.currentUser = null;
+          updateHeaderAuth();
+          showPanel("setup");
+        });
+      }
 
-      loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = loginEmail.value.trim();
-        const password = loginPassword.value.trim();
+      if (loginForm) {
+        loginForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const email = loginEmail.value.trim();
+          const password = loginPassword.value.trim();
 
-        if (!email || !password) {
-          loginError.textContent = "Please fill in all fields.";
-          loginError.classList.remove("hidden");
-          return;
-        }
+          if (!email || !password) {
+            loginError.textContent = "Please fill in all fields.";
+            loginError.classList.remove("hidden");
+            return;
+          }
 
-        loginError.classList.add("hidden");
+          loginError.classList.add("hidden");
 
-        const proceedLogin = () => {
-          state.currentUser = { email, secret: ADMIN_SECRET };
+          const isAdm = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+          const userSecret = isAdm ? ADMIN_SECRET : generateRandomBase32Secret();
+
+          const proceedLogin = () => {
+            state.currentUser = { email, secret: userSecret };
+            state.isGuest = false;
+            updateHeaderAuth();
+            showPanel("setup");
+          };
+
+          if (isAdm) {
+            promptTotp(proceedLogin);
+          } else {
+            proceedLogin();
+          }
+        });
+      }
+
+      if (signupForm) {
+        signupForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const email = signupEmail.value.trim();
+          const password = signupPassword.value.trim();
+          const confirm = signupConfirm.value.trim();
+
+          if (!email || !password || !confirm) {
+            signupError.textContent = "Please fill in all fields.";
+            signupError.classList.remove("hidden");
+            return;
+          }
+          if (password.length < 6) {
+            signupError.textContent = "Password must be at least 6 characters.";
+            signupError.classList.remove("hidden");
+            return;
+          }
+          if (password !== confirm) {
+            signupError.textContent = "Passwords do not match.";
+            signupError.classList.remove("hidden");
+            return;
+          }
+
+          signupError.classList.add("hidden");
+          const isAdm = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+          const userSecret = isAdm ? ADMIN_SECRET : generateRandomBase32Secret();
+
+          state.currentUser = { email, secret: userSecret };
           state.isGuest = false;
           updateHeaderAuth();
           showPanel("setup");
-        };
+        });
+      }
 
-        // If logging in as admin with TOTP enabled
-        if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-          promptTotp(proceedLogin);
-        } else {
-          proceedLogin();
-        }
-      });
+      if (headerAuthBtn) {
+        headerAuthBtn.addEventListener("click", () => {
+          state.currentUser = null;
+          state.isGuest = false;
+          updateHeaderAuth();
+          showPanel("auth");
+        });
+      }
 
-      signupForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = signupEmail.value.trim();
-        const password = signupPassword.value.trim();
-        const confirm = signupConfirm.value.trim();
+      if (openSettingsBtn && settingsMenuModal) {
+        openSettingsBtn.addEventListener("click", () => {
+          settingsMenuModal.classList.remove("hidden");
+        });
+      }
 
-        if (!email || !password || !confirm) {
-          signupError.textContent = "Please fill in all fields.";
-          signupError.classList.remove("hidden");
-          return;
-        }
-        if (password.length < 6) {
-          signupError.textContent = "Password must be at least 6 characters.";
-          signupError.classList.remove("hidden");
-          return;
-        }
-        if (password !== confirm) {
-          signupError.textContent = "Passwords do not match.";
-          signupError.classList.remove("hidden");
-          return;
-        }
+      if (closeSettingsMenuBtn && settingsMenuModal) {
+        closeSettingsMenuBtn.addEventListener("click", () => {
+          settingsMenuModal.classList.add("hidden");
+        });
+      }
 
-        signupError.classList.add("hidden");
-        state.currentUser = { email };
-        state.isGuest = false;
-        updateHeaderAuth();
-        showPanel("setup");
-      });
+      if (setupSecurityBtn && totpSetupModal) {
+        setupSecurityBtn.addEventListener("click", () => {
+          totpSetupError.classList.add("hidden");
+          totpSetupInputs.forEach(i => i.value = "");
+          
+          const activeEmail = state.currentUser ? state.currentUser.email : (state.isGuest ? "guest@divideconquer.app" : ADMIN_EMAIL);
+          const activeSecret = state.currentUser ? state.currentUser.secret : ADMIN_SECRET;
 
-      headerAuthBtn.addEventListener("click", () => {
-        state.currentUser = null;
-        state.isGuest = false;
-        updateHeaderAuth();
-        showPanel("auth");
-      });
-
-      setupSecurityBtn.addEventListener("click", () => {
-        totpSetupError.classList.add("hidden");
-        totpSetupInputs.forEach(i => i.value = "");
-        totpSecretDisplay.textContent = `Secret: ${ADMIN_SECRET}`;
-        
-        // Generate QR code
-        qrCodeBox.innerHTML = "";
-        try {
-          const otpauth = `otpauth://totp/Divide%20%26%20Conquer:${ADMIN_EMAIL}?secret=${ADMIN_SECRET}&issuer=Divide%20%26%20Conquer`;
-          const qr = qrcode(0, 'M');
-          qr.addData(otpauth);
-          qr.make();
-          qrCodeBox.innerHTML = qr.createSvgTag({ scalable: true });
-          const svgEl = qrCodeBox.querySelector("svg");
-          if (svgEl) {
-            svgEl.style.width = "180px";
-            svgEl.style.height = "180px";
+          totpSecretDisplay.textContent = `Secret: ${activeSecret}`;
+          
+          qrCodeBox.innerHTML = "";
+          try {
+            const otpauth = `otpauth://totp/Divide%20%26%20Conquer:${encodeURIComponent(activeEmail)}?secret=${activeSecret}&issuer=Divide%20%26%20Conquer`;
+            const qr = qrcode(0, 'M');
+            qr.addData(otpauth);
+            qr.make();
+            qrCodeBox.innerHTML = qr.createSvgTag({ scalable: true });
+            const svgEl = qrCodeBox.querySelector("svg");
+            if (svgEl) {
+              svgEl.style.width = "180px";
+              svgEl.style.height = "180px";
+            }
+          } catch (err) {
+            qrCodeBox.textContent = "QR Code Generation Error";
           }
-        } catch (err) {
-          qrCodeBox.textContent = "QR Code Generation Error";
-        }
 
-        totpSetupModal.classList.remove("hidden");
-        totpSetupInputs[0].focus();
-      });
+          totpSetupModal.classList.remove("hidden");
+          totpSetupInputs[0].focus();
+        });
+      }
 
-      totpSetupCloseBtn.addEventListener("click", () => {
-        totpSetupModal.classList.add("hidden");
-      });
-
-      totpSetupConfirmBtn.addEventListener("click", async () => {
-        const code = Array.from(totpSetupInputs).map(i => i.value).join("");
-        const isValid = await verifyTotpCode(ADMIN_SECRET, code);
-        if (isValid) {
+      if (totpSetupCloseBtn && totpSetupModal) {
+        totpSetupCloseBtn.addEventListener("click", () => {
           totpSetupModal.classList.add("hidden");
-          alert("2FA Security successfully verified and enabled!");
-        } else {
-          totpSetupError.textContent = "Invalid code. Please check your app and try again.";
-          totpSetupError.classList.remove("hidden");
-        }
-      });
+        });
+      }
+
+      if (totpSetupConfirmBtn) {
+        totpSetupConfirmBtn.addEventListener("click", async () => {
+          const code = Array.from(totpSetupInputs).map(i => i.value).join("");
+          const activeSecret = state.currentUser ? state.currentUser.secret : ADMIN_SECRET;
+          const isValid = await verifyTotpCode(activeSecret, code);
+          if (isValid) {
+            totpSetupModal.classList.add("hidden");
+            alert("Security successfully verified and enabled!");
+          } else {
+            totpSetupError.textContent = "Invalid code. Please check your app and try again.";
+            totpSetupError.classList.remove("hidden");
+          }
+        });
+      }
 
       function generateProblem(diff) {
         let divisor, quotient, dividend, remainder;
         if (diff === "easy") {
-          divisor = Math.floor(Math.random() * 8) + 2; // 2-9
-          quotient = Math.floor(Math.random() * 89) + 11; // 11-99
+          divisor = Math.floor(Math.random() * 8) + 2;
+          quotient = Math.floor(Math.random() * 89) + 11;
           remainder = Math.floor(Math.random() * divisor);
           dividend = divisor * quotient + remainder;
         } else if (diff === "medium") {
-          divisor = Math.floor(Math.random() * 11) + 2; // 2-12
-          quotient = Math.floor(Math.random() * 400) + 50; // 50-449
+          divisor = Math.floor(Math.random() * 11) + 2;
+          quotient = Math.floor(Math.random() * 400) + 50;
           remainder = Math.floor(Math.random() * divisor);
           dividend = divisor * quotient + remainder;
         } else {
-          // Hard
-          divisor = Math.floor(Math.random() * 11) + 5; // 5-15
+          divisor = Math.floor(Math.random() * 11) + 5;
           quotient = Math.floor(Math.random() * 800) + 120;
           remainder = Math.floor(Math.random() * divisor);
           dividend = divisor * quotient + remainder;
@@ -935,26 +1000,29 @@
         };
       }
 
-      startBtn.addEventListener("click", () => {
-        const diffRadio = document.querySelector('input[name="difficulty"]:checked');
-        state.difficulty = diffRadio ? diffRadio.value : "easy";
-        state.sessionLength = sessionLengthSelect.value === "endless" ? Infinity : parseInt(sessionLengthSelect.value, 10);
-        state.currentProblemIndex = 0;
-        state.score = 0;
-        state.streak = 0;
+      if (startBtn) {
+        startBtn.addEventListener("click", () => {
+          const diffRadio = document.querySelector('input[name="difficulty"]:checked');
+          state.difficulty = diffRadio ? diffRadio.value : "easy";
+          state.sessionLength = sessionLengthSelect.value === "endless" ? Infinity : parseInt(sessionLengthSelect.value, 10);
+          state.currentProblemIndex = 0;
+          state.score = 0;
+          state.streak = 0;
 
-        scoreEl.textContent = "0";
-        streakEl.textContent = "0";
+          if (scoreEl) scoreEl.textContent = "0";
+          if (streakEl) streakEl.textContent = "0";
 
-        loadNextProblem();
-        showPanel("game");
-      });
+          loadNextProblem();
+          showPanel("game");
+        });
+      }
 
-      // End session takes user back to Home / Setup instead of logging out!
-      endSessionLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        showPanel("setup");
-      });
+      if (endSessionLink) {
+        endSessionLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          showPanel("setup");
+        });
+      }
 
       function loadNextProblem() {
         if (state.sessionLength !== Infinity && state.currentProblemIndex >= state.sessionLength) {
@@ -966,91 +1034,146 @@
         state.currentProblemIndex++;
         state.currentProblem = generateProblem(state.difficulty);
 
-        divisorDisplay.textContent = state.currentProblem.divisor;
-        dividendDisplay.textContent = state.currentProblem.dividend;
+        if (divisorDisplay) divisorDisplay.textContent = state.currentProblem.divisor;
+        if (dividendDisplay) dividendDisplay.textContent = state.currentProblem.dividend;
 
-        quotientInput.value = "";
-        subtractionInput.value = "";
-        remainderInput.value = "";
+        if (quotientInput) quotientInput.value = "";
+        if (subtractionInput) subtractionInput.value = "";
+        if (remainderInput) remainderInput.value = "";
 
-        quotientInput.classList.remove("locked", "answer-correct", "show-solution");
-        subtractionInput.classList.remove("locked", "answer-correct", "show-solution");
-        remainderInput.classList.remove("locked", "answer-correct", "show-solution");
+        if (quotientInput) {
+          quotientInput.classList.remove("locked", "answer-correct", "show-solution");
+          quotientInput.readOnly = false;
+        }
+        if (subtractionInput) {
+          subtractionInput.classList.remove("locked", "answer-correct", "show-solution");
+          subtractionInput.readOnly = false;
+        }
+        if (remainderInput) {
+          remainderInput.classList.remove("locked", "answer-correct", "show-solution");
+          remainderInput.readOnly = false;
+        }
 
-        quotientInput.readOnly = false;
-        subtractionInput.readOnly = false;
-        remainderInput.readOnly = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = "1";
+          submitBtn.style.cursor = "pointer";
+        }
 
-        feedbackEl.classList.add("hidden");
-        feedbackEl.textContent = "";
+        if (resetBtn) {
+          resetBtn.disabled = false;
+          resetBtn.style.opacity = "1";
+          resetBtn.style.cursor = "pointer";
+        }
+
+        if (nextBtn) {
+          nextBtn.disabled = true;
+          nextBtn.style.opacity = "0.5";
+          nextBtn.style.cursor = "not-allowed";
+        }
+
+        if (feedbackEl) {
+          feedbackEl.classList.add("hidden");
+          feedbackEl.textContent = "";
+        }
 
         if (state.sessionLength !== Infinity) {
-          progressQuestion.textContent = `Question ${state.currentProblemIndex} of ${state.sessionLength}`;
+          if (progressQuestion) progressQuestion.textContent = `Question ${state.currentProblemIndex} of ${state.sessionLength}`;
           const pct = ((state.currentProblemIndex - 1) / state.sessionLength) * 100;
-          progressFill.style.width = `${pct}%`;
+          if (progressFill) progressFill.style.width = `${pct}%`;
         } else {
-          progressQuestion.textContent = `Question ${state.currentProblemIndex} (Endless)`;
-          progressFill.style.width = "100%";
+          if (progressQuestion) progressQuestion.textContent = `Question ${state.currentProblemIndex} (Endless)`;
+          if (progressFill) progressFill.style.width = "100%";
         }
 
-        quotientInput.focus();
+        if (quotientInput) quotientInput.focus();
       }
 
-      resetBtn.addEventListener("click", () => {
-        quotientInput.value = "";
-        subtractionInput.value = "";
-        remainderInput.value = "";
-        feedbackEl.classList.add("hidden");
-        quotientInput.focus();
-      });
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          if (resetBtn.disabled) return;
+          if (quotientInput) quotientInput.value = "";
+          if (subtractionInput) subtractionInput.value = "";
+          if (remainderInput) remainderInput.value = "";
+          if (feedbackEl) feedbackEl.classList.add("hidden");
+          if (quotientInput) quotientInput.focus();
+        });
+      }
 
-      submitBtn.addEventListener("click", () => {
-        const qVal = parseInt(quotientInput.value.trim(), 10);
-        const sVal = parseInt(subtractionInput.value.trim(), 10);
-        const rVal = parseInt(remainderInput.value.trim() || "0", 10);
+      if (submitBtn) {
+        submitBtn.addEventListener("click", () => {
+          const qVal = parseInt(quotientInput ? quotientInput.value.trim() : "0", 10);
+          const sVal = parseInt(subtractionInput ? subtractionInput.value.trim() : "0", 10);
+          const rVal = parseInt(remainderInput ? (remainderInput.value.trim() || "0") : "0", 10);
 
-        const p = state.currentProblem;
-        const isCorrect = (qVal === p.quotient && sVal === p.subProduct && rVal === p.remainder);
+          const p = state.currentProblem;
+          const isCorrect = (qVal === p.quotient && sVal === p.subProduct && rVal === p.remainder);
 
-        if (isCorrect) {
-          state.score += 10;
-          state.streak++;
-          scoreEl.textContent = state.score;
-          streakEl.textContent = state.streak;
+          if (quotientInput) { quotientInput.classList.add("locked"); quotientInput.readOnly = true; }
+          if (subtractionInput) { subtractionInput.classList.add("locked"); subtractionInput.readOnly = true; }
+          if (remainderInput) { remainderInput.classList.add("locked"); remainderInput.readOnly = true; }
 
-          quotientInput.classList.add("locked", "answer-correct");
-          subtractionInput.classList.add("locked", "answer-correct");
-          remainderInput.classList.add("locked", "answer-correct");
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = "0.5";
+          submitBtn.style.cursor = "not-allowed";
 
-          quotientInput.readOnly = true;
-          subtractionInput.readOnly = true;
-          remainderInput.readOnly = true;
+          if (resetBtn) {
+            resetBtn.disabled = true;
+            resetBtn.style.opacity = "0.5";
+            resetBtn.style.cursor = "not-allowed";
+          }
 
-          feedbackEl.className = "feedback success";
-          feedbackEl.textContent = "🎉 Correct! Excellent division work.";
-          feedbackEl.classList.remove("hidden");
+          if (nextBtn) {
+            nextBtn.disabled = false;
+            nextBtn.style.opacity = "1";
+            nextBtn.style.cursor = "pointer";
+          }
 
-          triggerConfetti();
+          if (isCorrect) {
+            state.score += 10;
+            state.streak++;
+            if (scoreEl) scoreEl.textContent = state.score;
+            if (streakEl) streakEl.textContent = state.streak;
 
-          setTimeout(() => {
+            if (quotientInput) quotientInput.classList.add("answer-correct");
+            if (subtractionInput) subtractionInput.classList.add("answer-correct");
+            if (remainderInput) remainderInput.classList.add("answer-correct");
+
+            if (feedbackEl) {
+              feedbackEl.className = "feedback success";
+              feedbackEl.textContent = "Correct! Excellent division work.";
+              feedbackEl.classList.remove("hidden");
+            }
+
+            triggerConfetti();
+          } else {
+            state.streak = 0;
+            if (streakEl) streakEl.textContent = state.streak;
+
+            if (quotientInput) quotientInput.classList.add("show-solution");
+            if (subtractionInput) subtractionInput.classList.add("show-solution");
+            if (remainderInput) remainderInput.classList.add("show-solution");
+
+            if (feedbackEl) {
+              feedbackEl.className = "feedback error";
+              feedbackEl.innerHTML = `Not quite right. <span class="feedback-hint">The correct quotient was ${p.quotient}, subtraction was ${p.subProduct}, and remainder was ${p.remainder}. You can now proceed to the next question.</span>`;
+              feedbackEl.classList.remove("hidden");
+            }
+          }
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+          if (!nextBtn.disabled) {
             loadNextProblem();
-          }, 1500);
-        } else {
-          state.streak = 0;
-          streakEl.textContent = state.streak;
-
-          feedbackEl.className = "feedback error";
-          feedbackEl.innerHTML = `Not quite right. <span class="feedback-hint">Check your subtraction product (${p.divisor} &times; quotient = ${p.subProduct}) and remainder.</span>`;
-          feedbackEl.classList.remove("hidden");
-        }
-      });
-
-      nextBtn.addEventListener("click", () => {
-        loadNextProblem();
-      });
+          }
+        });
+      }
 
       function triggerConfetti() {
         const container = document.getElementById("confetti-container");
+        if (!container) return;
         const colors = ["#b07d10", "#2d6a4f", "#e8a0a0", "#8c600b", "#3182ce"];
         for (let i = 0; i < 25; i++) {
           const dot = document.createElement("div");
@@ -1075,7 +1198,6 @@
         }
       }
 
-      
       showPanel("auth");
     </script>
   </body>
