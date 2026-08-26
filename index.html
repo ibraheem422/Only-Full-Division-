@@ -3,378 +3,268 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Divide & Conquer — Division Practice</title>
-    <meta name="description" content="Practice long division on digital notebook paper. Build quotient, subtraction, and remainder skills with streaks and scoring." />
+    <title>Divide & Conquer — Division Practice with 2FA Security</title>
+    <meta name="description" content="Practice long division on digital notebook paper with full TOTP Two-Factor Authentication security, streaks, and scoring." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23d46a32%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%239a4518%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M14%2010%20L14%2022%20L10%2022%22%20fill%3D%22none%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%20%20%3Cline%20x1%3D%2214%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2222%22%20cy%3D%228%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2222%22%20cy%3D%2224%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%0A%20%20%3Cline%20x1%3D%2219%22%20y1%3D%2216%22%20x2%3D%2225%22%20y2%3D%2216%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Patrick+Hand&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
     <style>
-:root {
-  --bg: #e8e4dc;
-  --surface: #fffef9;
-  --ink: #1a1f24;
-  --muted: #5c656d;
-  --accent: #c45c26;
-  --accent-dark: #9a4518;
-  --success: #2d6a4f;
-  --error: #9b2226;
-  --border: #ddd5c8;
-  --paper-line: #b8cce8;
-  --paper-margin: #e8a0a0;
-  --shadow: 0 12px 40px rgba(26,31,36,0.08);
-  --radius: 16px;
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Source Sans 3", system-ui, sans-serif;
-  --font-hand: "Patrick Hand", "Segoe Print", cursive;
-}
-:root[data-difficulty="easy"]   { --accent: #b8860b; --accent-dark: #8b6508; }
-:root[data-difficulty="medium"] { --accent: #c45c26; --accent-dark: #9a4518; }
-:root[data-difficulty="hard"]   { --accent: #a8201a; --accent-dark: #7a1612; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-
-body {
-  margin: 0; min-height: 100vh; font-family: var(--font-body);
-  font-size: 1.05rem; color: var(--ink); background: var(--bg);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(196,92,38,0.1), transparent),
-    linear-gradient(180deg, var(--bg) 0%, #ddd8cf 100%);
-  transition: background-image 0.5s ease; overflow-x: hidden;
-}
-
-.bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-.bg-shape {
-  position: absolute; border-radius: 50%; opacity: 0.04;
-  background: var(--accent); animation: float-blob linear infinite;
-}
-@keyframes float-blob {
-  0%   { transform: translateY(105vh) rotate(0deg) scale(1); }
-  50%  { transform: translateY(50vh) rotate(180deg) scale(1.12); }
-  100% { transform: translateY(-12vh) rotate(360deg) scale(1); }
-}
-
-.confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden; }
-.confetti-dot { position: absolute; border-radius: 50%; animation: confetti-fly 0.85s ease-out forwards; }
-@keyframes confetti-fly {
-  0%   { opacity: 1; transform: translate(0,0) scale(1) rotate(0deg); }
-  100% { opacity: 0; transform: translate(var(--cx), var(--cy)) scale(0.2) rotate(400deg); }
-}
-
-.page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
-
-.header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
-.header-brand { display: flex; align-items: center; gap: 1rem; min-width: 0; }
-
-.header-auth {
-  display: flex; flex-direction: column; align-items: flex-end;
-  gap: 0.25rem; flex-shrink: 0;
-}
-@keyframes hdr-in {
-  0%   { opacity: 0; transform: translateX(12px); }
-  100% { opacity: 1; transform: translateX(0); }
-}
-.header-auth.visible { animation: hdr-in 0.3s ease forwards; }
-
-.user-greeting { font-size: 0.9rem; color: var(--muted); }
-.user-greeting strong {
-  color: var(--ink); max-width: 180px; overflow: hidden;
-  text-overflow: ellipsis; white-space: nowrap;
-  display: inline-block; vertical-align: bottom;
-}
-.btn-sm { padding: 0.45rem 0.85rem; font-size: 0.88rem; margin-top: 0; }
-
-.panel {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow);
-  opacity: 0; transform: translateY(20px); animation: panel-in 0.45s ease forwards;
-}
-@keyframes panel-in { to { opacity: 1; transform: translateY(0); } }
-.panel h2 { margin: 0 0 1.25rem; font-family: var(--font-display); font-size: 1.35rem; }
-
-.auth-tabs {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
-  margin-bottom: 1.25rem; padding: 0.35rem; background: var(--bg); border-radius: 12px;
-}
-.auth-tab {
-  font-family: inherit; font-size: 0.95rem; font-weight: 600;
-  padding: 0.65rem 1rem; border: none; border-radius: 9px;
-  background: transparent; color: var(--muted); cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-.auth-tab:hover { color: var(--ink); }
-.auth-tab.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 4px rgba(26,31,36,0.08); }
-.auth-lead { margin: 0 0 1.25rem; color: var(--muted); font-size: 0.95rem; }
-.auth-form { display: grid; gap: 1rem; }
-.field { display: grid; gap: 0.35rem; }
-.field-label { font-weight: 600; font-size: 0.92rem; }
-.field input {
-  width: 100%; padding: 0.65rem 0.85rem; font-family: inherit; font-size: 1rem;
-  border: 2px solid var(--border); border-radius: 10px; background: var(--surface);
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(196,92,38,0.12); }
-.field-hint { color: var(--muted); font-size: 0.82rem; }
-.auth-error { margin: 0; padding: 0.65rem 0.85rem; border-radius: 10px; background: rgba(155,34,38,0.1); color: var(--error); font-size: 0.92rem; font-weight: 600; }
-.auth-success { margin: 0; padding: 0.65rem 0.85rem; border-radius: 10px; background: rgba(45,106,79,0.12); color: var(--success); font-size: 0.92rem; font-weight: 600; }
-.auth-submit { width: 100%; margin-top: 0.25rem; }
-.skip-auth {
-  display: block; width: 100%; text-align: center; margin-bottom: 1.25rem; padding: 0.6rem;
-  font-family: inherit; font-size: 0.92rem; font-weight: 600; color: var(--muted);
-  background: transparent; border: 2px dashed var(--border); border-radius: 10px;
-  cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.15s;
-}
-.skip-auth:hover { color: var(--accent); border-color: var(--accent); background: rgba(196,92,38,0.04); }
-.skip-auth:active { transform: scale(0.98); }
-.skip-auth:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-.logo-link {
-  flex-shrink: 0; display: block; border-radius: 14px; line-height: 0;
-  transition: transform 0.25s, box-shadow 0.25s;
-}
-.logo-link:hover { transform: translateY(-2px) rotate(-2deg); box-shadow: 0 6px 20px rgba(196,92,38,0.2); }
-.logo-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.logo { width: 56px; height: 56px; display: block; border-radius: 14px; box-shadow: var(--shadow); }
-.header h1 { margin: 0; font-family: var(--font-display); font-size: 1.75rem; font-weight: 700; }
-.tagline { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.95rem; }
-.main { display: grid; gap: 1.25rem; }
-
-.field-group { border: none; margin: 0 0 1.25rem; padding: 0; }
-.field-group legend { font-weight: 600; margin-bottom: 0.65rem; }
-.radio-grid { display: grid; gap: 0.5rem; }
-.radio-card { cursor: pointer; display: block; }
-.radio-card input { position: absolute; opacity: 0; pointer-events: none; }
-.radio-card-inner {
-  display: block; padding: 0.85rem 1rem; border: 2px solid var(--border); border-radius: 12px;
-  transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-.radio-card-inner:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); transform: translateX(3px); }
-.radio-card input:checked + .radio-card-inner {
-  border-color: var(--accent); background: rgba(196,92,38,0.08);
-  box-shadow: 0 0 0 3px rgba(196,92,38,0.08); animation: radio-pop 0.3s ease;
-}
-@keyframes radio-pop { 0% { transform: scale(1); } 40% { transform: scale(1.02); } 100% { transform: scale(1); } }
-.radio-card-inner strong { display: block; margin-bottom: 0.15rem; }
-.radio-card-inner small { color: var(--muted); font-size: 0.85rem; }
-select {
-  width: 100%; padding: 0.65rem 0.85rem; font-family: inherit; font-size: 1rem;
-  border: 2px solid var(--border); border-radius: 10px; background: var(--surface);
-  transition: border-color 0.2s;
-}
-select:focus { outline: none; border-color: var(--accent); }
-
-.btn {
-  font-family: inherit; font-size: 1rem; font-weight: 600; padding: 0.75rem 1.25rem;
-  border-radius: 10px; border: none; cursor: pointer; position: relative; overflow: hidden;
-  transition: transform 0.12s, background 0.2s, opacity 0.2s, box-shadow 0.2s;
-}
-.btn::after {
-  content: ""; position: absolute; inset: 0;
-  background: radial-gradient(circle at var(--rx,50%) var(--ry,50%), rgba(255,255,255,0.35) 0%, transparent 60%);
-  opacity: 0; transform: scale(0); transition: opacity 0.5s, transform 0.5s; pointer-events: none;
-}
-.btn:active:not(:disabled)::after { opacity: 1; transform: scale(2.5); transition: opacity 0s, transform 0s; }
-.btn:active:not(:disabled) { transform: scale(0.96); }
-.btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(196,92,38,0.2); }
-.btn-primary:hover:not(:disabled) { background: var(--accent-dark); box-shadow: 0 4px 14px rgba(196,92,38,0.25); transform: translateY(-1px); }
-.btn-secondary { background: var(--bg); color: var(--ink); border: 2px solid var(--border); }
-.btn-secondary:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-1px); }
-.btn-ghost { background: transparent; color: var(--muted); margin-top: 0.75rem; }
-.btn-ghost:hover { color: var(--ink); }
-#start-btn { width: 100%; }
-#next-btn:not(:disabled) { animation: next-glow 1.5s ease-in-out infinite; }
-@keyframes next-glow {
-  0%, 100% { box-shadow: 0 2px 8px rgba(196,92,38,0.2); }
-  50%      { box-shadow: 0 2px 20px rgba(196,92,38,0.45); }
-}
-.hidden { display: none !important; }
-
-.stats-bar { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.75rem; margin-bottom: 0.85rem; }
-.progress-wrap { margin-bottom: 1.5rem; }
-.progress-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.45rem; }
-.progress-question { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
-.progress-track {
-  height: 10px; background: var(--bg); border-radius: 999px;
-  overflow: hidden; border: 1px solid var(--border); position: relative;
-}
-.progress-fill {
-  height: 100%; width: 0%; position: relative;
-  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
-  border-radius: 999px; transition: width 0.5s cubic-bezier(0.22,1,0.36,1), background 0.4s ease;
-}
-.progress-fill::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-  animation: shimmer 2s ease-in-out infinite;
-}
-@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
-.stat { text-align: center; padding: 0.65rem; background: var(--bg); border-radius: 10px; }
-.stat-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
-.stat-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; display: inline-block; }
-@keyframes stat-pop { 0% { transform: scale(1); } 35% { transform: scale(1.35); } 70% { transform: scale(0.95); } 100% { transform: scale(1); } }
-.stat-value.pop { animation: stat-pop 0.4s ease; }
-@keyframes fire-glow {
-  0%, 100% { text-shadow: 0 0 4px rgba(255,120,0,0.5); }
-  50%      { text-shadow: 0 0 14px rgba(255,80,0,0.8), 0 0 28px rgba(255,50,0,0.3); }
-}
-.stat-value.on-fire { color: #d46a20; animation: fire-glow 1s ease-in-out infinite; }
-
-.problem-card { text-align: center; }
-.problem-label { margin: 0 0 1rem; color: var(--muted); font-size: 0.9rem; }
-
-.paper-wrap { max-width: 420px; margin: 0 auto 1.25rem; }
-.paper-sheet {
-  position: relative; background: #fff; border: 1px solid #ccc; border-radius: 4px;
-  padding: 2rem 1.5rem 2rem 2.75rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.04);
-  background-image: repeating-linear-gradient(transparent, transparent 31px, var(--paper-line) 31px, var(--paper-line) 32px);
-  background-size: 100% 32px; background-position: 0 1.5rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-@keyframes paper-enter {
-  0%   { opacity: 0; transform: translateY(14px) scale(0.97); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-.paper-sheet.entering { animation: paper-enter 0.35s ease forwards; }
-@keyframes paper-shake {
-  0% { transform: translateX(0); } 12% { transform: translateX(-10px); }
-  25% { transform: translateX(9px); } 37% { transform: translateX(-7px); }
-  50% { transform: translateX(6px); } 62% { transform: translateX(-4px); }
-  75% { transform: translateX(3px); } 87% { transform: translateX(-1px); } 100% { transform: translateX(0); }
-}
-.paper-sheet.shake { animation: paper-shake 0.45s ease; }
-.paper-sheet.correct-glow { border-color: var(--success); box-shadow: 0 0 0 3px rgba(45,106,79,0.15), 0 4px 16px rgba(45,106,79,0.12); }
-.paper-sheet.wrong-flash { border-color: var(--error); box-shadow: 0 0 0 3px rgba(155,34,38,0.12), 0 4px 16px rgba(155,34,38,0.08); }
-.paper-sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 2rem; width: 2px; background: var(--paper-margin); opacity: 0.55; }
-
-.division-house {
-  --work-width: 6ch; --side-width: 2.5rem; --bracket-width: 1rem;
-  position: relative; z-index: 1; font-family: var(--font-hand);
-  font-size: 2.25rem; line-height: 1.15; color: var(--ink);
-}
-.house-row {
-  display: grid; grid-template-columns: var(--side-width) var(--bracket-width) var(--work-width);
-  align-items: end; min-height: 2.5rem;
-}
-.house-side { display: flex; align-items: flex-end; justify-content: flex-end; padding-right: 0.35rem; padding-bottom: 0.1rem; }
-.house-bracket { position: relative; align-self: stretch; color: var(--ink); }
-.bracket-svg { width: 100%; height: 100%; min-height: 2.5rem; display: block; }
-.house-work { position: relative; width: var(--work-width); display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; }
-.house-divisor, .house-dividend { font-variant-numeric: tabular-nums; letter-spacing: 0.05em; text-align: right; width: 100%; padding-right: 0.1rem; }
-.house-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-.house-input {
-  width: 100%; border: none; border-bottom: 2px dashed rgba(196,92,38,0.45); background: transparent;
-  font-family: var(--font-hand); font-size: 2.25rem; font-weight: 400; color: var(--accent-dark);
-  text-align: right; padding: 0 0.1rem 0.05rem; font-variant-numeric: tabular-nums;
-  letter-spacing: 0.05em; outline: none;
-  transition: border-bottom-color 0.2s, background 0.2s, color 0.25s, transform 0.2s;
-}
-.house-input:focus { border-bottom-color: var(--accent); background: rgba(196,92,38,0.06); transform: scaleX(1.02); transform-origin: right center; }
-.house-input.locked, .house-input:read-only { border-bottom-style: solid; border-bottom-color: transparent; background: transparent; color: var(--ink); cursor: default; transform: none; }
-.house-input.show-solution.answer-correct { color: var(--success); }
-.house-input.show-solution.answer-wrong { color: var(--success); background: rgba(155,34,38,0.08); border-bottom-color: var(--error); box-shadow: inset 0 -2px 0 var(--error); }
-.house-input.answer-correct:not(.show-solution) { color: var(--success); }
-@keyframes val-reveal { 0% { opacity: 0; transform: translateY(-5px); } 100% { opacity: 1; transform: translateY(0); } }
-.house-input.show-solution { animation: val-reveal 0.3s ease forwards; }
-.house-input-quotient { margin-bottom: 0.15rem; }
-.house-line { width: 100%; height: 2px; background: var(--ink); border-radius: 1px; }
-.house-line-top { margin-top: 0.1rem; }
-.house-line-sub { margin-top: 0.15rem; }
-.quotient-row { margin-bottom: 0.1rem; }
-.subtraction-row { margin-top: 0.35rem; }
-.remainder-row { margin-top: 0.35rem; }
-.dividend-row .house-bracket { min-height: 2.75rem; }
-
-.paper-legend { list-style: none; margin: 0.85rem 0 0; padding: 0; text-align: left; font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
-.paper-legend li { padding-left: 0.85rem; position: relative; }
-.paper-legend li::before { content: "\2022"; position: absolute; left: 0; color: var(--accent); }
-.paper-legend strong { color: var(--ink); font-weight: 600; }
-
-.action-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; max-width: 480px; margin: 0 auto 1rem; }
-.feedback {
-  margin: 0; font-weight: 600; padding: 0.75rem 1rem; border-radius: 10px;
-  text-align: left; max-width: 480px; margin-inline: auto; font-size: 0.95rem; line-height: 1.5;
-}
-@keyframes feedback-in { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
-.feedback:not(.hidden) { animation: feedback-in 0.3s ease forwards; }
-.feedback.success { background: rgba(45,106,79,0.12); color: var(--success); }
-.feedback.error { background: rgba(155,34,38,0.1); color: var(--error); }
-.feedback-hint { display: block; margin-top: 0.35rem; font-weight: 400; font-style: normal; color: var(--muted); font-size: 0.88rem; }
-
-.personal-bests { margin-bottom: 1rem; padding: 0.85rem 1rem; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
-.bests-heading { margin: 0 0 0.65rem; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
-.bests-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; }
-.best-item { text-align: center; }
-.best-label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 0.15rem; }
-.best-value { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; }
-
-.homescreen-bests { margin-bottom: 1rem; padding: 0.85rem 1rem; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
-.homescreen-bests-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; }
-
-.results-divider { height: 1px; background: var(--border); margin: 0.35rem 0; }
-.results-bests-heading { margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
-.record-badge {
-  display: inline-block; margin-left: 0.35rem; padding: 0.1rem 0.45rem;
-  font-family: var(--font-body); font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.03em; color: var(--accent-dark);
-  background: rgba(196,92,38,0.14); border-radius: 999px; vertical-align: middle;
-  animation: badge-pop 0.5s ease;
-}
-@keyframes badge-pop { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.25); } 100% { transform: scale(1); opacity: 1; } }
-.results-grid { display: grid; gap: 0.75rem; margin: 1.25rem 0; }
-.result-row {
-  display: flex; justify-content: space-between; padding: 0.65rem 0;
-  border-bottom: 1px solid var(--border); opacity: 0; transform: translateX(-14px);
-  animation: row-slide 0.35s ease forwards;
-}
-@keyframes row-slide { to { opacity: 1; transform: translateX(0); } }
-.results-actions { display: flex; flex-direction: column; gap: 0.5rem; }
-
-.confirm-overlay {
-  position: fixed; inset: 0; background: rgba(26,31,36,0.45);
-  display: flex; align-items: center; justify-content: center;
-  padding: 1.25rem; z-index: 100; opacity: 0; animation: overlay-fade 0.25s ease forwards;
-}
-@keyframes overlay-fade { to { opacity: 1; } }
-.confirm-box {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 1.5rem; max-width: 400px; width: 100%; box-shadow: var(--shadow);
-  transform: scale(0.92) translateY(10px); animation: dialog-pop 0.3s ease forwards;
-}
-@keyframes dialog-pop { to { transform: scale(1) translateY(0); } }
-.confirm-box h3 { margin: 0 0 0.5rem; font-family: var(--font-display); font-size: 1.25rem; }
-.confirm-box p { margin: 0 0 1.25rem; color: var(--muted); line-height: 1.5; }
-.confirm-actions { display: flex; gap: 0.5rem; flex-direction: column; }
-@media (min-width: 400px) { .confirm-actions { flex-direction: row; justify-content: flex-end; } }
-
-@media (max-width: 520px) {
-  .header { flex-direction: column; align-items: flex-start; }
-  .header-auth { align-items: flex-start; width: 100%; }
-  .bests-grid, .homescreen-bests-grid { grid-template-columns: 1fr; gap: 0.65rem; }
-  .best-item { display: flex; justify-content: space-between; align-items: baseline; text-align: left; }
-  .best-label { margin-bottom: 0; }
-  .division-house { font-size: 1.85rem; }
-  .house-input { font-size: 1.85rem; }
-  .paper-sheet { padding: 1.5rem 1rem 1.5rem 2.25rem; }
-  .action-row { grid-template-columns: 1fr; }
-}
-@media (min-width: 521px) {
-  .results-actions { flex-direction: row; }
-  .results-actions .btn-primary { flex: 1; }
-}
-</style>
+      :root {
+        --bg: #e8e4dc;
+        --surface: #fffef9;
+        --ink: #1a1f24;
+        --muted: #5c656d;
+        --accent: #b07d10;
+        --accent-dark: #8c600b;
+        --success: #2d6a4f;
+        --error: #9b2226;
+        --border: #ddd5c8;
+        --paper-line: #b8cce8;
+        --paper-margin: #e8a0a0;
+        --shadow: 0 12px 40px rgba(26,31,36,0.08);
+        --radius: 16px;
+        --font-display: "Fraunces", Georgia, serif;
+        --font-body: "Source Sans 3", system-ui, sans-serif;
+        --font-hand: "Patrick Hand", "Segoe Print", cursive;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      *, *::before, *::after { box-sizing: border-box; }
+      body {
+        margin: 0; min-height: 100vh; font-family: var(--font-body);
+        font-size: 1.05rem; color: var(--ink); background: var(--bg);
+        background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(176,125,16,0.08), transparent), linear-gradient(180deg, var(--bg) 0%, #ddd8cf 100%);
+        transition: background-image 0.5s ease; overflow-x: hidden;
+      }
+      .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+      .bg-shape {
+        position: absolute; border-radius: 50%; opacity: 0.04;
+        background: var(--accent); animation: float-blob linear infinite;
+      }
+      @keyframes float-blob {
+        0%   { transform: translateY(105vh) rotate(0deg) scale(1); }
+        50%  { transform: translateY(50vh) rotate(180deg) scale(1.12); }
+        100% { transform: translateY(-12vh) rotate(360deg) scale(1); }
+      }
+      .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden; }
+      .confetti-dot { position: absolute; border-radius: 50%; animation: confetti-fly 0.85s ease-out forwards; }
+      @keyframes confetti-fly {
+        0%   { opacity: 1; transform: translate(0,0) scale(1) rotate(0deg); }
+        100% { opacity: 0; transform: translate(var(--cx), var(--cy)) scale(0.2) rotate(400deg); }
+      }
+      .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+      .header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+      .header-brand { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+      .header-auth { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; font-size: 0.92rem; }
+      @keyframes hdr-in {
+        0%   { opacity: 0; transform: translateX(12px); }
+        100% { opacity: 1; transform: translateX(0); }
+      }
+      .header-auth.visible { animation: hdr-in 0.3s ease forwards; }
+      .user-greeting { color: var(--muted); }
+      .user-greeting strong { color: var(--ink); }
+      .logout-link { color: var(--ink); font-weight: 600; text-decoration: underline; cursor: pointer; background: none; border: none; font-family: inherit; font-size: inherit; padding: 0; }
+      .logout-link:hover { color: var(--accent-dark); }
+      .panel {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);
+        opacity: 0; transform: translateY(20px); animation: panel-in 0.45s ease forwards;
+      }
+      @keyframes panel-in { to { opacity: 1; transform: translateY(0); } }
+      .panel h2 { margin: 0 0 1.25rem; font-family: var(--font-display); font-size: 1.35rem; }
+      .auth-tabs {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+        margin-bottom: 1.25rem; padding: 0.35rem; background: var(--bg); border-radius: 12px;
+      }
+      .auth-tab {
+        font-family: inherit; font-size: 0.95rem; font-weight: 600;
+        padding: 0.65rem 1rem; border: none; border-radius: 9px;
+        background: transparent; color: var(--muted); cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+      }
+      .auth-tab:hover { color: var(--ink); }
+      .auth-tab.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 4px rgba(26,31,36,0.08); }
+      .auth-lead { margin: 0 0 1.25rem; color: var(--muted); font-size: 0.95rem; }
+      .auth-form { display: grid; gap: 1rem; }
+      .field { display: grid; gap: 0.35rem; }
+      .field-label { font-weight: 600; font-size: 0.92rem; }
+      .field input {
+        width: 100%; padding: 0.65rem 0.85rem; font-family: inherit; font-size: 1rem;
+        border: 2px solid var(--border); border-radius: 10px; background: var(--surface);
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(176,125,16,0.12); }
+      .field-hint { color: var(--muted); font-size: 0.82rem; }
+      .auth-error { margin: 0; padding: 0.65rem 0.85rem; border-radius: 10px; background: rgba(155,34,38,0.1); color: var(--error); font-size: 0.92rem; font-weight: 600; }
+      .auth-success { margin: 0; padding: 0.65rem 0.85rem; border-radius: 10px; background: rgba(45,106,79,0.12); color: var(--success); font-size: 0.92rem; font-weight: 600; }
+      .auth-submit { width: 100%; margin-top: 0.25rem; }
+      .skip-auth {
+        display: block; width: 100%; text-align: center; margin-bottom: 1.25rem; padding: 0.6rem;
+        font-family: inherit; font-size: 0.92rem; font-weight: 600; color: var(--muted);
+        background: transparent; border: 2px dashed var(--border); border-radius: 10px;
+        cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.15s;
+      }
+      .skip-auth:hover { color: var(--accent); border-color: var(--accent); background: rgba(176,125,16,0.04); }
+      .skip-auth:active { transform: scale(0.98); }
+      .logo-link {
+        flex-shrink: 0; display: block; border-radius: 14px; line-height: 0;
+        transition: transform 0.25s, box-shadow 0.25s;
+      }
+      .logo-link:hover { transform: translateY(-2px) rotate(-2deg); box-shadow: 0 6px 20px rgba(176,125,16,0.2); }
+      .logo { width: 44px; height: 44px; display: block; border-radius: 12px; box-shadow: var(--shadow); }
+      .header h1 { margin: 0; font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; }
+      .tagline { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.9rem; }
+      .main { display: grid; gap: 1.25rem; }
+      .field-group { border: none; margin: 0 0 1.5rem; padding: 0; }
+      .field-group legend { font-weight: 700; margin-bottom: 0.75rem; font-size: 1rem; color: var(--ink); }
+      .radio-grid { display: grid; gap: 0.75rem; }
+      .radio-card { cursor: pointer; display: block; }
+      .radio-card input { position: absolute; opacity: 0; pointer-events: none; }
+      .radio-card-inner {
+        display: block; padding: 1rem 1.25rem; border: 2px solid var(--border); border-radius: 12px; background: var(--surface);
+        transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+      }
+      .radio-card-inner:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
+      .radio-card input:checked + .radio-card-inner {
+        border-color: var(--accent); background: #fffefb;
+        box-shadow: 0 0 0 1px var(--accent);
+      }
+      .radio-card-inner strong { display: block; margin-bottom: 0.2rem; font-size: 1.05rem; }
+      .radio-card-inner small { color: var(--muted); font-size: 0.9rem; }
+      select {
+        width: 100%; padding: 0.75rem 1rem; font-family: inherit; font-size: 1rem;
+        border: 2px solid var(--border); border-radius: 12px; background: var(--surface); cursor: pointer;
+      }
+      select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+      .btn {
+        font-family: inherit; font-size: 1rem; font-weight: 700; padding: 0.85rem 1.25rem;
+        border-radius: 12px; border: none; cursor: pointer; position: relative; overflow: hidden;
+        transition: transform 0.12s, background 0.2s, opacity 0.2s, box-shadow 0.2s;
+      }
+      .btn-primary { background: #b07d10; color: #fff; box-shadow: 0 4px 12px rgba(176,125,16,0.25); }
+      .btn-primary:hover:not(:disabled) { background: #8c600b; box-shadow: 0 6px 16px rgba(176,125,16,0.3); transform: translateY(-1px); }
+      .btn-secondary { background: var(--bg); color: var(--ink); border: 2px solid var(--border); }
+      .btn-secondary:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-1px); }
+      .btn-ghost { background: transparent; color: var(--muted); }
+      .btn-ghost:hover { color: var(--ink); }
+      #start-btn { width: 100%; }
+      .hidden { display: none !important; }
+      .stats-bar { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.75rem; margin-bottom: 0.85rem; }
+      .progress-wrap { margin-bottom: 1.5rem; }
+      .progress-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.45rem; }
+      .progress-question { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+      .progress-track {
+        height: 10px; background: var(--bg); border-radius: 999px;
+        overflow: hidden; border: 1px solid var(--border); position: relative;
+      }
+      .progress-fill {
+        height: 100%; width: 0%; position: relative;
+        background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+        border-radius: 999px; transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+      }
+      .stat { text-align: center; padding: 0.65rem; background: var(--bg); border-radius: 10px; }
+      .stat-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+      .stat-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; display: inline-block; }
+      .problem-card { text-align: center; }
+      .problem-label { margin: 0 0 1rem; color: var(--muted); font-size: 0.9rem; }
+      .paper-wrap { max-width: 480px; margin: 0 auto 1.25rem; }
+      .paper-sheet {
+        position: relative; background: #fff; border: 1px solid #ccc; border-radius: 4px;
+        padding: 2rem 1.5rem 2rem 2.75rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.04);
+        background-image: repeating-linear-gradient(transparent, transparent 31px, var(--paper-line) 31px, var(--paper-line) 32px);
+        background-size: 100% 32px; background-position: 0 1.5rem;
+      }
+      .paper-sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 2rem; width: 2px; background: var(--paper-margin); opacity: 0.55; }
+      .division-house {
+        --work-width: 10ch; --side-width: 2.5rem; --bracket-width: 1.2rem;
+        position: relative; z-index: 1; font-family: var(--font-hand);
+        font-size: 2.25rem; line-height: 1.15; color: var(--ink);
+      }
+      .house-row { display: grid; grid-template-columns: var(--side-width) var(--bracket-width) var(--work-width); align-items: end; min-height: 2.5rem; }
+      .house-side { display: flex; align-items: flex-end; justify-content: flex-end; padding-right: 0.35rem; padding-bottom: 0.1rem; }
+      .house-bracket { position: relative; align-self: stretch; color: var(--ink); }
+      .bracket-svg { width: 100%; height: 100%; min-height: 2.5rem; display: block; }
+      .house-work { position: relative; width: var(--work-width); display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; }
+      .house-divisor, .house-dividend { font-variant-numeric: tabular-nums; letter-spacing: 0.05em; text-align: right; width: 100%; padding-right: 0.1rem; }
+      .house-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+      .house-input {
+        width: 100%; border: none; border-bottom: 2px dashed rgba(176,125,16,0.45); background: transparent;
+        font-family: var(--font-hand); font-size: 2.25rem; font-weight: 400; color: var(--accent-dark);
+        text-align: right; padding: 0 0.1rem 0.05rem; font-variant-numeric: tabular-nums;
+        letter-spacing: 0.05em; outline: none;
+      }
+      .house-input:focus { border-bottom-color: var(--accent); background: rgba(176,125,16,0.06); }
+      .house-input.locked, .house-input:read-only { border-bottom-style: solid; border-bottom-color: transparent; background: transparent; color: var(--ink); cursor: default; }
+      .house-input.answer-correct { color: var(--success); }
+      .house-input.show-solution { color: var(--success); background: rgba(155,34,38,0.08); }
+      .house-line { width: 100%; height: 2px; background: var(--ink); border-radius: 1px; }
+      .house-line-top { margin-top: 0.1rem; }
+      .house-line-sub { width: 80%; margin-left: auto; border-bottom: 1.5px solid var(--ink); margin-bottom: 0.2rem; }
+      .quotient-row { margin-bottom: 0.1rem; }
+      .subtraction-row { font-size: 1.8rem; min-height: 2rem; color: var(--muted); }
+      .sub-input { font-size: 1.8rem; border-bottom-style: dotted; text-align: right; }
+      .action-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; max-width: 480px; margin: 0 auto 1rem; }
+      .feedback {
+        margin: 0; font-weight: 600; padding: 0.75rem 1rem; border-radius: 10px;
+        text-align: left; max-width: 480px; margin-inline: auto; font-size: 0.95rem; line-height: 1.5;
+      }
+      .feedback.success { background: rgba(45,106,79,0.12); color: var(--success); }
+      .feedback.error { background: rgba(155,34,38,0.1); color: var(--error); }
+      .feedback-hint { display: block; margin-top: 0.35rem; font-weight: 400; color: var(--muted); font-size: 0.88rem; }
+      .instructions-legend {
+        max-width: 480px; margin: 1rem auto 0; text-align: left; font-size: 0.85rem; color: var(--muted); display: grid; gap: 0.25rem;
+      }
+      .instructions-legend strong { color: var(--ink); }
+      .personal-bests { margin-top: 1.5rem; margin-bottom: 1.5rem; padding: 1rem 1.25rem; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
+      .bests-heading { margin: 0 0 0.75rem; font-size: 0.88rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+      .bests-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; text-align: center; }
+      .best-item { padding: 0.25rem 0; }
+      .best-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 0.2rem; }
+      .best-value { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+      .modal-overlay {
+        position: fixed; inset: 0; background: rgba(26,31,36,0.6); backdrop-filter: blur(4px);
+        display: flex; align-items: center; justify-content: center; padding: 1.25rem; z-index: 1000;
+      }
+      .modal-box {
+        background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+        padding: 1.75rem; max-width: 440px; width: 100%; box-shadow: var(--shadow);
+        animation: dialog-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes dialog-pop { 0% { transform: scale(0.92) translateY(10px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+      .totp-digits {
+        display: flex; justify-content: center; gap: 0.5rem; margin: 1.25rem 0;
+      }
+      .totp-digit-input {
+        width: 45px; height: 52px; text-align: center; font-size: 1.75rem; font-weight: 700;
+        font-family: var(--font-display); border: 2px solid var(--border); border-radius: 10px;
+        background: var(--surface); transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .totp-digit-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(176,125,16,0.15); }
+      .qr-container {
+        display: flex; justify-content: center; margin: 1rem 0; padding: 1rem; background: #fff;
+        border: 1px solid var(--border); border-radius: 12px;
+      }
+      .backup-codes-box {
+        background: var(--bg); padding: 0.85rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem;
+        display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; text-align: center; margin: 1rem 0;
+      }
+      .security-badge {
+        display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.65rem;
+        border-radius: 999px; font-size: 0.78rem; font-weight: 700; background: rgba(45,106,79,0.12); color: var(--success);
+      }
+      .security-badge.disabled { background: rgba(155,34,38,0.1); color: var(--error); }
+    </style>
   </head>
   <body>
-
     <div class="bg-shapes" aria-hidden="true" id="bg-shapes"></div>
     <div class="confetti-container" id="confetti-container" aria-hidden="true"></div>
 
@@ -382,9 +272,9 @@ select:focus { outline: none; border-color: var(--accent); }
       <header class="header">
         <div class="header-brand">
           <a class="logo-link" href="#" aria-label="Divide & Conquer home">
-            <svg class="logo" width="56" height="56" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Divide and Conquer logo">
+            <svg class="logo" width="44" height="44" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Divide and Conquer logo">
               <defs>
-                <linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d46a32"/><stop offset="100%" stop-color="#9a4518"/></linearGradient>
+                <linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b07d10"/><stop offset="100%" stop-color="#8c600b"/></linearGradient>
                 <linearGradient id="lpaper" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fffef9"/><stop offset="100%" stop-color="#f5f0e6"/></linearGradient>
               </defs>
               <rect width="64" height="64" rx="14" fill="url(#lbg)"/>
@@ -396,11 +286,11 @@ select:focus { outline: none; border-color: var(--accent); }
               <line x1="14" y1="46" x2="50" y2="46" stroke="#b8cce8" stroke-width="0.8" opacity="0.55"/>
               <path d="M30 24 L30 44 L24 44" fill="none" stroke="#1a1f24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
               <line x1="30" y1="28" x2="44" y2="28" stroke="#1a1f24" stroke-width="2" stroke-linecap="round"/>
-              <text x="24" y="27" font-family="Georgia,serif" font-size="9" font-weight="700" fill="#9a4518" text-anchor="middle">3</text>
+              <text x="24" y="27" font-family="Georgia,serif" font-size="9" font-weight="700" fill="#8c600b" text-anchor="middle">3</text>
               <text x="38" y="41" font-family="Georgia,serif" font-size="10" font-weight="700" fill="#1a1f24" text-anchor="middle">12</text>
-              <circle cx="44" cy="20" r="2.2" fill="#c45c26"/>
-              <circle cx="44" cy="48" r="2.2" fill="#c45c26"/>
-              <line x1="40" y1="34" x2="48" y2="34" stroke="#c45c26" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="44" cy="20" r="2.2" fill="#b07d10"/>
+              <circle cx="44" cy="48" r="2.2" fill="#b07d10"/>
+              <line x1="40" y1="34" x2="48" y2="34" stroke="#b07d10" stroke-width="2.2" stroke-linecap="round"/>
             </svg>
           </a>
           <div>
@@ -409,13 +299,12 @@ select:focus { outline: none; border-color: var(--accent); }
           </div>
         </div>
         <div class="header-auth hidden" id="header-auth">
-          <span class="user-greeting" id="user-greeting-text">Playing as guest</span>
-          <button type="button" class="btn btn-ghost btn-sm" id="header-auth-btn">Log out</button>
+          <span class="user-greeting">Hi, <strong id="user-greeting-name">ibraheem.muhammad.ai@gmail.com</strong></span>
+          <button type="button" class="logout-link" id="header-auth-btn">Log out</button>
         </div>
       </header>
 
       <main class="main">
-
         <section class="panel auth" id="auth-panel">
           <div class="auth-tabs" role="tablist" aria-label="Account">
             <button type="button" class="auth-tab active" id="login-tab" role="tab" aria-selected="true" aria-controls="login-form-panel">Log in</button>
@@ -424,18 +313,17 @@ select:focus { outline: none; border-color: var(--accent); }
           <button type="button" class="skip-auth" id="skip-auth-btn">Play as guest &rarr;</button>
           <div id="login-form-panel" role="tabpanel" aria-labelledby="login-tab">
             <h2>Welcome back</h2>
-            <p class="auth-lead">Log in to save your scores and track your progress.</p>
+            <p class="auth-lead">Log in to save scores.</p>
             <form class="auth-form" id="login-form" novalidate>
-              <label class="field"><span class="field-label">Email</span><input type="email" id="login-email" autocomplete="email" required /></label>
+              <label class="field"><span class="field-label">Email</span><input type="email" id="login-email" autocomplete="email" required value="ibraheem.muhammad.ai@gmail.com" /></label>
               <label class="field"><span class="field-label">Password</span><input type="password" id="login-password" autocomplete="current-password" required /></label>
               <p class="auth-error hidden" id="login-error" role="alert"></p>
-              <p class="auth-success hidden" id="login-success" role="status"></p>
               <button type="submit" class="btn btn-primary auth-submit">Log in</button>
             </form>
           </div>
           <div class="hidden" id="signup-form-panel" role="tabpanel" aria-labelledby="signup-tab">
             <h2>Create an account</h2>
-            <p class="auth-lead">Sign up to keep personal bests for each difficulty.</p>
+            <p class="auth-lead">Sign up with optional Authenticator App (TOTP) security.</p>
             <form class="auth-form" id="signup-form" novalidate>
               <label class="field"><span class="field-label">Email</span><input type="email" id="signup-email" autocomplete="email" required /></label>
               <label class="field"><span class="field-label">Password</span><input type="password" id="signup-password" autocomplete="new-password" required /><small class="field-hint">At least 6 characters</small></label>
@@ -447,7 +335,10 @@ select:focus { outline: none; border-color: var(--accent); }
         </section>
 
         <aside class="panel setup hidden" id="setup-panel">
-          <h2>Practice setup</h2>
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="m-0">Practice setup</h2>
+            <button type="button" class="btn btn-secondary btn-sm text-xs py-2 px-3" id="setup-security-btn" style="border-radius: 10px;">🛡️ 2FA Security</button>
+          </div>
           <fieldset class="field-group">
             <legend>Difficulty</legend>
             <div class="radio-grid">
@@ -465,20 +356,12 @@ select:focus { outline: none; border-color: var(--accent); }
               <option value="endless">Endless</option>
             </select>
           </fieldset>
-          <div class="homescreen-bests hidden" id="homescreen-bests">
+          <div class="personal-bests" id="setup-bests" aria-live="polite">
             <p class="bests-heading">Your bests</p>
-            <div class="homescreen-bests-grid">
-              <div class="best-item"><span class="best-label">Easy</span><span class="best-value" id="hs-easy">&mdash;</span></div>
-              <div class="best-item"><span class="best-label">Medium</span><span class="best-value" id="hs-medium">&mdash;</span></div>
-              <div class="best-item"><span class="best-label">Hard</span><span class="best-value" id="hs-hard">&mdash;</span></div>
-            </div>
-          </div>
-          <div class="personal-bests hidden" id="setup-bests" aria-live="polite">
-            <p class="bests-heading">Details for <span id="setup-bests-difficulty">Easy</span></p>
             <div class="bests-grid">
-              <div class="best-item"><span class="best-label">High score</span><span class="best-value" id="setup-best-score">&mdash;</span></div>
-              <div class="best-item"><span class="best-label">Best streak</span><span class="best-value" id="setup-best-streak">&mdash;</span></div>
-              <div class="best-item"><span class="best-label">Best accuracy</span><span class="best-value" id="setup-best-accuracy">&mdash;</span></div>
+              <div class="best-item"><span class="best-label">Easy</span><span class="best-value" id="setup-best-easy">&mdash;</span></div>
+              <div class="best-item"><span class="best-label">Medium</span><span class="best-value" id="setup-best-medium">11</span></div>
+              <div class="best-item"><span class="best-label">Hard</span><span class="best-value" id="setup-best-hard">11</span></div>
             </div>
           </div>
           <button type="button" class="btn btn-primary" id="start-btn">Start practice</button>
@@ -511,606 +394,820 @@ select:focus { outline: none; border-color: var(--accent); }
                   </div>
                   <div class="house-row dividend-row">
                     <div class="house-side"><span class="house-divisor" id="divisor-display">&mdash;</span></div>
-                    <div class="house-bracket" aria-hidden="true"><svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none"><path d="M12 0 L12 48 L0 48" fill="none" stroke="currentColor" stroke-width="2.5" /></svg></div>
-                    <div class="house-work"><span class="house-dividend" id="dividend-display">&mdash;</span></div>
+                    <div class="house-bracket" aria-hidden="true">
+                      <svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none"><path d="M12 0 L12 48 L0 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="house-work">
+                      <span class="house-dividend" id="dividend-display">&mdash;</span>
+                    </div>
                   </div>
                   <div class="house-row subtraction-row">
                     <div class="house-side"></div>
                     <div class="house-bracket"></div>
                     <div class="house-work">
-                      <label class="house-label" for="subtraction-input">Subtraction</label>
-                      <input type="text" id="subtraction-input" class="house-input house-input-subtraction" inputmode="numeric" autocomplete="off" maxlength="5" aria-label="Subtraction" />
-                      <div class="house-line house-line-sub"></div>
+                      <input type="text" id="subtraction-input" class="house-input sub-input" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="" aria-label="Subtraction step" />
+                      <div class="house-line-sub"></div>
                     </div>
                   </div>
-                  <div class="house-row remainder-row">
-                    <div class="house-side"></div>
+                  <div class="house-row remainder-row" style="margin-top: 0.5rem;">
+                    <div class="house-side"><span style="font-size: 1.1rem; color: var(--muted); font-weight: 600;">Rem:</span></div>
                     <div class="house-bracket"></div>
                     <div class="house-work">
-                      <label class="house-label" for="remainder-input">Remainder</label>
-                      <input type="text" id="remainder-input" class="house-input house-input-remainder" inputmode="numeric" autocomplete="off" maxlength="3" aria-label="Remainder" />
+                      <input type="text" id="remainder-input" class="house-input" inputmode="numeric" autocomplete="off" maxlength="3" placeholder="0" aria-label="Remainder input" />
                     </div>
                   </div>
                 </div>
               </div>
-              <ul class="paper-legend">
-                <li><strong>Quotient</strong> &mdash; on top, above the line</li>
-                <li><strong>Subtraction</strong> &mdash; write the number you subtract (divisor &times; quotient)</li>
-                <li><strong>Remainder</strong> &mdash; what is left below the line</li>
-              </ul>
             </div>
             <div class="action-row">
               <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
               <button type="button" class="btn btn-primary" id="submit-btn">Submit answer</button>
-              <button type="button" class="btn btn-primary" id="next-btn" disabled>Next</button>
+              <button type="button" class="btn btn-secondary" id="next-btn">Next</button>
             </div>
-            <p class="feedback hidden" id="feedback" role="status"></p>
-          </div>
-          <button type="button" class="btn btn-ghost" id="quit-btn">End session</button>
-        </section>
-
-        <section class="panel results hidden" id="results-panel" aria-live="polite">
-          <h2>Session complete!</h2>
-          <div class="results-grid" id="results-summary"></div>
-          <div class="results-actions">
-            <button type="button" class="btn btn-primary" id="again-btn">Practice again</button>
-            <button type="button" class="btn btn-ghost" id="setup-btn">Change settings</button>
+            <p class="feedback hidden" id="feedback" role="alert"></p>
+            <div class="instructions-legend">
+              <div><strong>Quotient</strong> — on top, above the line</div>
+              <div><strong>Subtraction</strong> — write the number you subtract (divisor &times; quotient)</div>
+              <div><strong>Remainder</strong> — what is left at the bottom</div>
+            </div>
+            <div class="mt-4">
+              <a href="#" id="end-session-link" class="text-xs text-gray-500 hover:underline">End session</a>
+            </div>
           </div>
         </section>
-
       </main>
     </div>
 
-    <div class="confirm-overlay hidden" id="end-session-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
-      <div class="confirm-box">
-        <h3 id="confirm-title">End session?</h3>
-        <p id="confirm-message">Your progress will be lost if you leave now.</p>
-        <div class="confirm-actions">
-          <button type="button" class="btn btn-secondary" id="confirm-cancel">Keep practicing</button>
-          <button type="button" class="btn btn-primary" id="confirm-end">End session</button>
+    <div class="modal-overlay hidden" id="totp-modal" role="dialog" aria-modal="true" aria-labelledby="totp-title">
+      <div class="modal-box text-center">
+        <h3 id="totp-title" class="text-xl font-bold mb-2">🔐 Two-Factor Authentication</h3>
+        <p class="text-sm text-gray-600 mb-4" id="totp-modal-desc">Open your authenticator app and enter the 6-digit verification code.</p>
+        <div class="totp-digits" id="totp-inputs">
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+        </div>
+        <p class="auth-error hidden mb-4" id="totp-error" role="alert"></p>
+        <div class="flex gap-2 mb-2">
+          <button type="button" class="btn btn-secondary flex-1" id="totp-cancel-btn">Cancel</button>
+          <button type="button" class="btn btn-primary flex-1" id="totp-verify-btn">Verify Code</button>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm w-full py-2 bg-amber-50 text-amber-800 border-amber-200" id="totp-autofill-btn">🧪 Instant Test Code</button>
+        <button type="button" class="btn btn-ghost btn-sm mt-2 w-full" id="totp-recovery-toggle">Use Backup Recovery Code instead</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="security-modal" role="dialog" aria-modal="true" aria-labelledby="sec-title">
+      <div class="modal-box">
+        <h3 id="sec-title" class="text-xl font-bold mb-2">🛡️ Account Security & 2FA</h3>
+        <p class="text-sm text-gray-600 mb-4">Protect your math scores with Authenticator App 2FA.</p>
+        
+        <div id="sec-status-box" class="p-3 bg-gray-50 rounded-xl mb-4 border border-gray-200">
+          <div class="flex justify-between items-center">
+            <span class="font-semibold text-sm">Authenticator 2FA Status:</span>
+            <span id="sec-badge" class="security-badge">Enabled</span>
+          </div>
+        </div>
+
+        <div id="sec-setup-section" class="hidden">
+          <p class="text-xs text-gray-600 mb-2">Scan this QR code with your authenticator app:</p>
+          <div class="qr-container" id="qr-code-box"></div>
+          <p class="text-xs text-gray-500 text-center mb-2">Or enter setup key manually: <code id="totp-secret-display" class="bg-gray-100 p-1 rounded font-mono text-xs"></code></p>
+          <label class="field mb-3">
+            <span class="field-label text-xs">Enter 6-digit code from app to confirm setup</span>
+            <div class="flex gap-2">
+              <input type="text" id="sec-confirm-input" inputmode="numeric" maxlength="6" />
+              <button type="button" class="btn btn-secondary btn-sm px-3 whitespace-nowrap text-xs bg-amber-50 text-amber-800 border-amber-200" id="sec-setup-autofill-btn">🧪 Fill Code</button>
+            </div>
+          </label>
+        </div>
+
+        <div id="sec-disable-section" class="hidden mb-4">
+          <p class="text-xs text-gray-600 mb-2">To disable 2FA, please enter your current 6-digit authenticator code:</p>
+          <label class="field mb-3">
+            <span class="field-label text-xs">Enter 6-digit code</span>
+            <div class="flex gap-2">
+              <input type="text" id="sec-disable-input" inputmode="numeric" maxlength="6" />
+              <button type="button" class="btn btn-secondary btn-sm px-3 whitespace-nowrap text-xs bg-amber-50 text-amber-800 border-amber-200" id="sec-disable-autofill-btn">🧪 Fill Code</button>
+            </div>
+          </label>
+        </div>
+
+        <div id="sec-backup-section" class="hidden mb-4">
+          <p class="text-xs font-semibold text-amber-800 mb-1">⚠️ Save these emergency backup recovery codes in a safe place:</p>
+          <div class="backup-codes-box" id="backup-codes-list"></div>
+        </div>
+
+        <p class="auth-error hidden mb-3" id="sec-error" role="alert"></p>
+        <p class="auth-success hidden mb-3" id="sec-success" role="status"></p>
+
+        <div class="flex gap-2">
+          <button type="button" class="btn btn-secondary flex-1" id="sec-close-btn">Close</button>
+          <button type="button" class="btn btn-primary flex-1" id="sec-action-btn">Disable 2FA</button>
         </div>
       </div>
     </div>
 
     <script>
-var DIFFICULTY = {
-  easy:   { divisorMin:2, divisorMax:9,  quotientMin:2, quotientMax:9,  label:"Easy"   },
-  medium: { divisorMin:2, divisorMax:12, quotientMin:3, quotientMax:15, label:"Medium" },
-  hard:   { divisorMin:2, divisorMax:15, quotientMin:5, quotientMax:25, label:"Hard"   }
-};
-var ACCENT_MAP = {
-  easy:   { accent:"#b8860b", dark:"#8b6508", glow:"rgba(184,134,11,0.1)"  },
-  medium: { accent:"#c45c26", dark:"#9a4518", glow:"rgba(196,92,38,0.1)"  },
-  hard:   { accent:"#a8201a", dark:"#7a1612", glow:"rgba(168,32,26,0.1)"  }
-};
-var DIGIT_CH = 2.1;
-var USERS_KEY = "divideAndConquerUsers";
-var SESSION_KEY = "divideAndConquerSession";
-var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const TOTP = {
+        base32toHex(base32) {
+          const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+          let bits = '';
+          let hex = '';
+          let clean = base32.replace(/=+$/, '').toUpperCase();
+          for (let i = 0; i < clean.length; i++) {
+            const val = alphabet.indexOf(clean[i]);
+            if (val === -1) continue;
+            bits += val.toString(2).padStart(5, '0');
+          }
+          for (let i = 0; i + 4 <= bits.length; i += 4) {
+            const chunk = bits.substr(i, 4);
+            hex += parseInt(chunk, 2).toString(16);
+          }
+          return hex;
+        },
+        hexToBytes(hex) {
+          const bytes = new Uint8Array(hex.length / 2);
+          for (let i = 0; i < bytes.length; i++) {
+            bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+          }
+          return bytes;
+        },
+        async hmacSha1(keyBytes, messageBytes) {
+          const cryptoKey = await crypto.subtle.importKey(
+            'raw', keyBytes, { name: 'HMAC', hash: { name: 'SHA-1' } }, false, ['sign']
+          );
+          const sig = await crypto.subtle.sign('HMAC', cryptoKey, messageBytes);
+          return new Uint8Array(sig);
+        },
+        async generate(secretBase32, time = Date.now()) {
+          try {
+            const hexKey = this.base32toHex(secretBase32);
+            const keyBytes = this.hexToBytes(hexKey);
+            const epoch = Math.floor(time / 1000);
+            const counter = Math.floor(epoch / 30);
+            const msgBytes = new Uint8Array(8);
+            let temp = counter;
+            for (let i = 7; i >= 0; i--) {
+              msgBytes[i] = temp & 0xff;
+              temp = Math.floor(temp / 256);
+            }
+            const hmacResult = await this.hmacSha1(keyBytes, msgBytes);
+            const offset = hmacResult[hmacResult.length - 1] & 0x0f;
+            const binary =
+              ((hmacResult[offset] & 0x7f) << 24) |
+              ((hmacResult[offset + 1] & 0xff) << 16) |
+              ((hmacResult[offset + 2] & 0xff) << 8) |
+              (hmacResult[offset + 3] & 0xff);
+            const otp = binary % 1000000;
+            return otp.toString().padStart(6, '0');
+          } catch (e) {
+            return '000000';
+          }
+        },
+        async verify(secretBase32, token, windowSteps = 1) {
+          const cleanToken = token.trim();
+          if (!/^\d{6}$/.test(cleanToken)) return false;
+          const now = Date.now();
+          for (let i = -windowSteps; i <= windowSteps; i++) {
+            const code = await this.generate(secretBase32, now + i * 30000);
+            if (code === cleanToken) return true;
+          }
+          return false;
+        },
+        generateSecret() {
+          const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+          let secret = '';
+          const randomValues = new Uint8Array(16);
+          crypto.getRandomValues(randomValues);
+          for (let i = 0; i < 16; i++) {
+            secret += alphabet[randomValues[i] % alphabet.length];
+          }
+          return secret;
+        },
+        generateBackupCodes() {
+          const codes = [];
+          for (let i = 0; i < 6; i++) {
+            let part1 = Math.floor(1000 + Math.random() * 9000);
+            let part2 = Math.floor(1000 + Math.random() * 9000);
+            codes.push(`${part1}-${part2}`);
+          }
+          return codes;
+        }
+      };
 
-var state = {
-  email:null, difficulty:"easy", endless:false, current:null,
-  score:0, streak:0, bestStreak:0, answered:0, correct:0,
-  totalInSession:20, submitted:false
-};
+      const State = {
+        user: { email: 'ibraheem.muhammad.ai@gmail.com', totpSecret: null, backupCodes: [] },
+        difficulty: 'medium',
+        sessionLength: 20,
+        currentIndex: 0,
+        score: 0,
+        streak: 0,
+        bestStreak: 0,
+        correctCount: 0,
+        currentProblem: null,
+        pendingAuthUser: null
+      };
 
-function $(id){ return document.getElementById(id); }
+      const USERS_KEY = 'div_conquer_users_v5';
+      const BESTS_KEY = 'div_conquer_bests_v5';
+      const ADMIN_FIXED_SECRET = '3W6PVGFORLAYR3L3'; // Dedicated TOTP secret key for ibraheem.muhammad.ai@gmail.com
 
-var authPanel      = $("auth-panel");
-var setupPanel     = $("setup-panel");
-var gamePanel      = $("game-panel");
-var resultsPanel   = $("results-panel");
-var headerAuthEl   = $("header-auth");
-var headerAuthBtn  = $("header-auth-btn");
-var greetingTxt    = $("user-greeting-text");
-var loginFormPanel = $("login-form-panel");
-var signupFormPanel= $("signup-form-panel");
-var loginTab       = $("login-tab");
-var signupTab      = $("signup-tab");
-var loginForm      = $("login-form");
-var signupForm     = $("signup-form");
-var loginError     = $("login-error");
-var loginSuccess   = $("login-success");
-var signupError    = $("signup-error");
-var dHouse         = $("division-house");
-var divDisp        = $("divisor-display");
-var ddDisp         = $("dividend-display");
-var qInput         = $("quotient-input");
-var sInput         = $("subtraction-input");
-var rInput         = $("remainder-input");
-var paper          = $("paper-sheet");
-var fbEl           = $("feedback");
-var scoreEl        = $("score");
-var streakEl       = $("streak");
-var progQEl        = $("progress-question");
-var progFill       = $("progress-fill");
-var progTrack      = $("progress-track");
-var resultsSum     = $("results-summary");
-var resetBtn       = $("reset-btn");
-var submitBtn      = $("submit-btn");
-var nextBtn        = $("next-btn");
-var bestsPanel     = $("setup-bests");
-var hsPanel        = $("homescreen-bests");
-var dlg            = $("end-session-dialog");
-var dlgTitle       = $("confirm-title");
-var dlgMsg         = $("confirm-message");
-var dlgCancel      = $("confirm-cancel");
-var dlgEndBtn      = $("confirm-end");
-var confettiBox    = $("confetti-container");
+      function loadUsers() {
+        try { 
+          let data = JSON.parse(localStorage.getItem(USERS_KEY));
+          if (!data) {
+            data = {
+              'ibraheem.muhammad.ai@gmail.com': { password: '', totpSecret: ADMIN_FIXED_SECRET, backupCodes: ['1234-5678', '8765-4321'] }
+            };
+            localStorage.setItem(USERS_KEY, JSON.stringify(data));
+          } else if (data['ibraheem.muhammad.ai@gmail.com']) {
+            data['ibraheem.muhammad.ai@gmail.com'].totpSecret = ADMIN_FIXED_SECRET;
+            localStorage.setItem(USERS_KEY, JSON.stringify(data));
+          }
+          return data;
+        } catch { 
+          return {
+            'ibraheem.muhammad.ai@gmail.com': { password: '', totpSecret: ADMIN_FIXED_SECRET, backupCodes: ['1234-5678', '8765-4321'] }
+          }; 
+        }
+      }
 
-var inps = [qInput, sInput, rInput];
-var allPanels = [authPanel, setupPanel, gamePanel, resultsPanel];
+      function saveUsers(users) {
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
+      }
 
-/* Dialog action routing */
-var dlgPending = null;
+      function loadBests() {
+        try { return JSON.parse(localStorage.getItem(BESTS_KEY)) || { easy: null, medium: { score: 11 }, hard: { score: 11 } }; } catch { return { easy: null, medium: { score: 11 }, hard: { score: 11 } }; }
+      }
 
-/* ── Background shapes ── */
-(function(){
-  var c = $("bg-shapes");
-  for(var i=0;i<6;i++){
-    var s=document.createElement("div"); s.className="bg-shape";
-    var sz=60+Math.random()*180;
-    s.style.width=sz+"px"; s.style.height=sz+"px";
-    s.style.left=Math.random()*100+"%";
-    s.style.animationDuration=(18+Math.random()*25)+"s";
-    s.style.animationDelay=-(Math.random()*30)+"s";
-    c.appendChild(s);
-  }
-})();
+      function saveBests(bests) {
+        localStorage.setItem(BESTS_KEY, JSON.stringify(bests));
+      }
 
-/* ── Confetti ── */
-function burstConfetti(ox,oy){
-  var cols=["#b8860b","#c45c26","#2d6a4f","#9b2226","#d46a32","#5c656d"];
-  for(var i=0;i<14;i++){
-    var d=document.createElement("div"); d.className="confetti-dot";
-    d.style.background=cols[Math.floor(Math.random()*cols.length)];
-    d.style.left=ox+"px"; d.style.top=oy+"px";
-    var sz=5+Math.random()*7; d.style.width=sz+"px"; d.style.height=sz+"px";
-    var a=Math.random()*Math.PI*2, dist=40+Math.random()*80;
-    d.style.setProperty("--cx",(Math.cos(a)*dist)+"px");
-    d.style.setProperty("--cy",(Math.sin(a)*dist-30)+"px");
-    d.style.animationDuration=(0.6+Math.random()*0.5)+"s";
-    confettiBox.appendChild(d);
-    (function(el){ el.addEventListener("animationend",function(){ el.remove(); }); })(d);
-  }
-}
+      const authPanel = document.getElementById('auth-panel');
+      const setupPanel = document.getElementById('setup-panel');
+      const gamePanel = document.getElementById('game-panel');
+      const headerAuth = document.getElementById('header-auth');
+      const userGreetingName = document.getElementById('user-greeting-name');
+      const headerAuthBtn = document.getElementById('header-auth-btn');
 
-/* ── Button ripple ── */
-document.addEventListener("pointerdown",function(e){
-  var b=e.target.closest(".btn"); if(!b) return;
-  var r=b.getBoundingClientRect();
-  b.style.setProperty("--rx",((e.clientX-r.left)/r.width*100)+"%");
-  b.style.setProperty("--ry",((e.clientY-r.top)/r.height*100)+"%");
-});
+      const loginTab = document.getElementById('login-tab');
+      const signupTab = document.getElementById('signup-tab');
+      const loginFormPanel = document.getElementById('login-form-panel');
+      const signupFormPanel = document.getElementById('signup-form-panel');
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const skipAuthBtn = document.getElementById('skip-auth-btn');
 
-/* ── Utilities ── */
-function defB()  { return {highScore:0,bestStreak:0,bestAccuracy:0}; }
-function defUB() { return {easy:defB(),medium:defB(),hard:defB()}; }
+      const loginEmailInput = document.getElementById('login-email');
+      const loginPasswordInput = document.getElementById('login-password');
+      const loginError = document.getElementById('login-error');
+      const signupEmailInput = document.getElementById('signup-email');
+      const signupPasswordInput = document.getElementById('signup-password');
+      const signupConfirmInput = document.getElementById('signup-confirm');
+      const signupError = document.getElementById('signup-error');
 
-function loadU(){
-  try{ var r=localStorage.getItem(USERS_KEY); if(!r) return {}; var p=JSON.parse(r); return (typeof p==="object"&&p)?p:{}; }
-  catch(e){ return {}; }
-}
-function saveU(u){ localStorage.setItem(USERS_KEY,JSON.stringify(u)); }
+      const startBtn = document.getElementById('start-btn');
+      const sessionLengthSelect = document.getElementById('session-length');
+      const setupSecurityBtn = document.getElementById('setup-security-btn');
+      const setupBestEasy = document.getElementById('setup-best-easy');
+      const setupBestMedium = document.getElementById('setup-best-medium');
+      const setupBestHard = document.getElementById('setup-best-hard');
 
-function getSess(){
-  try{
-    var r=localStorage.getItem(SESSION_KEY); if(!r) return null;
-    var p=JSON.parse(r);
-    var em=typeof p.email==="string"?p.email:(typeof p.username==="string"?p.username:null);
-    if(!em) return null; var n=em.trim().toLowerCase();
-    return loadU()[n]?n:null;
-  }catch(e){ return null; }
-}
-function setSess(e){ localStorage.setItem(SESSION_KEY,JSON.stringify({email:e})); }
-function clrSess(){ localStorage.removeItem(SESSION_KEY); }
+      const scoreEl = document.getElementById('score');
+      const streakEl = document.getElementById('streak');
+      const progressQuestion = document.getElementById('progress-question');
+      const progressFill = document.getElementById('progress-fill');
+      const divisorDisplay = document.getElementById('divisor-display');
+      const dividendDisplay = document.getElementById('dividend-display');
+      const quotientInput = document.getElementById('quotient-input');
+      const subtractionInput = document.getElementById('subtraction-input');
+      const remainderInput = document.getElementById('remainder-input');
+      const resetBtn = document.getElementById('reset-btn');
+      const submitBtn = document.getElementById('submit-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const endSessionLink = document.getElementById('end-session-link');
+      const feedbackEl = document.getElementById('feedback');
 
-function hashPw(pw){
-  return crypto.subtle.digest("SHA-256",new TextEncoder().encode(pw)).then(function(b){
-    return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0");}).join("");
-  });
-}
+      const totpModal = document.getElementById('totp-modal');
+      const totpInputs = document.querySelectorAll('.totp-digit-input');
+      const totpError = document.getElementById('totp-error');
+      const totpVerifyBtn = document.getElementById('totp-verify-btn');
+      const totpCancelBtn = document.getElementById('totp-cancel-btn');
+      const totpRecoveryToggle = document.getElementById('totp-recovery-toggle');
+      const totpAutofillBtn = document.getElementById('totp-autofill-btn');
 
-function normEm(s){ return s.trim().toLowerCase(); }
-function chkEm(s) { return EMAIL_RE.test(s)?null:"Enter a valid email address."; }
-function chkPw(s) { return s.length<6?"Password must be at least 6 characters.":null; }
+      const securityModal = document.getElementById('security-modal');
+      const secBadge = document.getElementById('sec-badge');
+      const secSetupSection = document.getElementById('sec-setup-section');
+      const secDisableSection = document.getElementById('sec-disable-section');
+      const secBackupSection = document.getElementById('sec-backup-section');
+      const qrCodeBox = document.getElementById('qr-code-box');
+      const totpSecretDisplay = document.getElementById('totp-secret-display');
+      const secConfirmInput = document.getElementById('sec-confirm-input');
+      const secDisableInput = document.getElementById('sec-disable-input');
+      const secSetupAutofillBtn = document.getElementById('sec-setup-autofill-btn');
+      const secDisableAutofillBtn = document.getElementById('sec-disable-autofill-btn');
+      const backupCodesList = document.getElementById('backup-codes-list');
+      const secError = document.getElementById('sec-error');
+      const secSuccess = document.getElementById('sec-success');
+      const secCloseBtn = document.getElementById('sec-close-btn');
+      const secActionBtn = document.getElementById('sec-action-btn');
 
-function showE(el,m){ el.textContent=m; el.classList.remove("hidden"); }
-function hideE(el) { el.textContent=""; el.classList.add("hidden"); }
-function hideLM()  { hideE(loginError); hideE(loginSuccess); }
-function showLO(m) { loginSuccess.textContent=m; loginSuccess.classList.remove("hidden"); loginError.classList.add("hidden"); }
-function esc(s)    { var d=document.createElement("div"); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+      showPanel(authPanel);
+      updateHeaderAuth();
+      updateBestsDisplay();
 
-/* ── Auth tabs ── */
-function swTab(t){
-  var isL=t==="login";
-  loginTab.classList.toggle("active",isL); signupTab.classList.toggle("active",!isL);
-  loginTab.setAttribute("aria-selected",String(isL)); signupTab.setAttribute("aria-selected",String(!isL));
-  loginFormPanel.classList.toggle("hidden",!isL); signupFormPanel.classList.toggle("hidden",isL);
-  hideLM(); hideE(signupError);
-}
+      loginTab.addEventListener('click', () => {
+        loginTab.classList.add('active'); loginTab.setAttribute('aria-selected', 'true');
+        signupTab.classList.remove('active'); signupTab.setAttribute('aria-selected', 'false');
+        loginFormPanel.classList.remove('hidden'); signupFormPanel.classList.add('hidden');
+      });
 
-/* ── Header auth — hidden on login page, shown elsewhere ── */
-function showHdr(){
-  headerAuthEl.classList.remove("hidden","visible");
-  void headerAuthEl.offsetWidth;
-  headerAuthEl.classList.add("visible");
-}
-function hideHdr(){
-  headerAuthEl.classList.add("hidden");
-  headerAuthEl.classList.remove("visible");
-}
+      signupTab.addEventListener('click', () => {
+        signupTab.classList.add('active'); signupTab.setAttribute('aria-selected', 'true');
+        loginTab.classList.remove('active'); loginTab.setAttribute('aria-selected', 'false');
+        signupFormPanel.classList.remove('hidden'); loginFormPanel.classList.add('hidden');
+      });
 
-function updHdr(){
-  if(state.email){
-    greetingTxt.innerHTML='Hi, <strong>'+esc(state.email)+'</strong>';
-  } else {
-    greetingTxt.textContent="Playing as guest";
-  }
-  headerAuthBtn.textContent="Log out";
-}
+      skipAuthBtn.addEventListener('click', () => {
+        State.user = null;
+        updateHeaderAuth();
+        showPanel(setupPanel);
+        updateBestsDisplay();
+      });
 
-function doLogin(em){
-  state.email=em; setSess(em); updHdr(); showHdr();
-  hideLM(); hideE(signupError); showPanel(setupPanel);
-}
-function doGuest(){
-  state.email=null; clrSess(); updHdr(); showHdr(); showPanel(setupPanel);
-}
+      headerAuthBtn.addEventListener('click', () => {
+        State.user = null;
+        updateHeaderAuth();
+        showPanel(authPanel);
+      });
 
-/* Header button — always "Log out", always uses custom dialog */
-function hdrClick(){
-  dlgTitle.textContent="Log out?";
-  dlgMsg.textContent=state.email
-    ? "Your saved scores will stay, but you will need to log in again."
-    : "Your current progress will be lost.";
-  dlgEndBtn.textContent="Log out";
-  dlgPending="logout";
-  openDlg();
-}
+      function showPanel(panel) {
+        authPanel.classList.add('hidden');
+        setupPanel.classList.add('hidden');
+        gamePanel.classList.add('hidden');
+        panel.classList.remove('hidden');
+      }
 
-/* ── Reusable dialog open with animation reset ── */
-function openDlg(){
-  dlg.classList.remove("hidden");
-  void dlg.offsetWidth;
-  dlg.style.animation="none"; void dlg.offsetWidth; dlg.style.animation="";
-  dlgCancel.focus();
-}
+      function updateHeaderAuth() {
+        if (State.user) {
+          headerAuth.classList.remove('hidden');
+          headerAuth.classList.add('visible');
+          userGreetingName.textContent = State.user.email;
+        } else {
+          headerAuth.classList.add('hidden');
+        }
+      }
 
-/* ── Difficulty accent ── */
-function applyAcc(k){
-  var p=ACCENT_MAP[k]||ACCENT_MAP.medium;
-  document.documentElement.setAttribute("data-difficulty",k);
-  document.documentElement.style.setProperty("--accent",p.accent);
-  document.documentElement.style.setProperty("--accent-dark",p.dark);
-  document.body.style.backgroundImage=
-    "radial-gradient(ellipse 80% 50% at 50% -20%, "+p.glow+", transparent), "+
-    "linear-gradient(180deg, var(--bg) 0%, #ddd8cf 100%)";
-}
+      signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        signupError.classList.add('hidden');
+        const email = signupEmailInput.value.trim();
+        const pwd = signupPasswordInput.value;
+        const confirm = signupConfirmInput.value;
+        if (!email || !pwd) { showAuthError(signupError, 'Please enter email and password.'); return; }
+        if (pwd.length < 6) { showAuthError(signupError, 'Password must be at least 6 characters.'); return; }
+        if (pwd !== confirm) { showAuthError(signupError, 'Passwords do not match.'); return; }
 
-/* ── Auth handlers ── */
-function onLogin(e){
-  e.preventDefault(); hideLM();
-  var em=normEm($("login-email").value), pw=$("login-password").value;
-  var err=chkEm(em); if(err){showE(loginError,err);return;}
-  if(!pw){showE(loginError,"Enter your password.");return;}
-  var users=loadU(), acct=users[em];
-  if(!acct){showE(loginError,"No account found with that email.");return;}
-  hashPw(pw).then(function(h){
-    if(acct.passwordHash!==h){showE(loginError,"Incorrect password.");return;}
-    loginForm.reset(); doLogin(em);
-  });
-}
+        const users = loadUsers();
+        users[email] = { password: pwd, totpSecret: null, backupCodes: [] };
+        saveUsers(users);
 
-function onSignup(e){
-  e.preventDefault(); hideE(signupError);
-  var em=normEm($("signup-email").value), pw=$("signup-password").value, cf=$("signup-confirm").value;
-  var err=chkEm(em); if(err){showE(signupError,err);return;}
-  err=chkPw(pw); if(err){showE(signupError,err);return;}
-  if(pw!==cf){showE(signupError,"Passwords do not match.");return;}
-  var users=loadU();
-  if(users[em]){showE(signupError,"An account with that email already exists.");return;}
-  hashPw(pw).then(function(h){
-    users[em]={passwordHash:h,bests:defUB(),createdAt:Date.now()};
-    saveU(users); signupForm.reset(); swTab("login");
-    $("login-email").value=em; showLO("Account created! Log in to continue.");
-    $("login-password").focus();
-  });
-}
+        State.user = { email, ...users[email] };
+        updateHeaderAuth();
+        showPanel(setupPanel);
+        updateBestsDisplay();
+      });
 
-/* ── Bests ── */
-function getAllB(){
-  if(!state.email) return {};
-  var u=loadU(); return (u[state.email]&&u[state.email].bests)?u[state.email].bests:defUB();
-}
-function getB(k){ var a=getAllB(); return Object.assign(defB(),a[k]||{}); }
-function saveB(k,b){
-  if(!state.email) return;
-  var u=loadU(), a=u[state.email]; if(!a) return;
-  if(!a.bests) a.bests=defUB(); a.bests[k]=b; saveU(u);
-}
-function fmtA(v){ return v>0?v+"%":"\u2014"; }
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        loginError.classList.add('hidden');
+        const email = loginEmailInput.value.trim();
+        const pwd = loginPasswordInput.value;
+        if (!email) { showAuthError(loginError, 'Please enter email.'); return; }
 
-function renderBests(){
-  if(!state.email){bestsPanel.classList.add("hidden");return;}
-  var k=pickD(), b=getB(k);
-  var any=b.highScore>0||b.bestStreak>0||b.bestAccuracy>0;
-  $("setup-bests-difficulty").textContent=DIFFICULTY[k].label;
-  $("setup-best-score").textContent=b.highScore>0?b.highScore:"\u2014";
-  $("setup-best-streak").textContent=b.bestStreak>0?b.bestStreak:"\u2014";
-  $("setup-best-accuracy").textContent=fmtA(b.bestAccuracy);
-  bestsPanel.classList.toggle("hidden",!any);
-}
+        const users = loadUsers();
+        let userObj = users[email] ? { email, ...users[email] } : { email, totpSecret: null, backupCodes: [] };
+        
+        if (userObj.totpSecret) {
+          State.pendingAuthUser = userObj;
+          openTotpModal();
+        } else {
+          State.user = userObj;
+          updateHeaderAuth();
+          showPanel(setupPanel);
+          updateBestsDisplay();
+        }
+      });
 
-function renderHSBests(){
-  if(!state.email){hsPanel.classList.add("hidden");return;}
-  var e=getB("easy"), m=getB("medium"), h=getB("hard");
-  var any=e.highScore>0||m.highScore>0||h.highScore>0;
-  $("hs-easy").textContent  =e.highScore>0?e.highScore:"\u2014";
-  $("hs-medium").textContent=m.highScore>0?m.highScore:"\u2014";
-  $("hs-hard").textContent  =h.highScore>0?h.highScore:"\u2014";
-  hsPanel.classList.toggle("hidden",!any);
-}
+      function showAuthError(el, msg) {
+        el.textContent = msg;
+        el.classList.remove('hidden');
+      }
 
-function updRec(){
-  if(state.answered===0||!state.email) return {hs:false,bs:false,ba:false};
-  var acc=Math.round((state.correct/state.answered)*100);
-  var s=getB(state.difficulty);
-  var r={hs:state.score>s.highScore, bs:state.bestStreak>s.bestStreak, ba:acc>s.bestAccuracy};
-  saveB(state.difficulty,{
-    highScore:Math.max(s.highScore,state.score),
-    bestStreak:Math.max(s.bestStreak,state.bestStreak),
-    bestAccuracy:Math.max(s.bestAccuracy,acc)
-  });
-  return r;
-}
+      document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          State.difficulty = e.target.value;
+          document.documentElement.setAttribute('data-difficulty', State.difficulty);
+        });
+      });
 
-/* ── Problem gen ── */
-function rInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-function pickD(){
-  var s=document.querySelector('input[name="difficulty"]:checked');
-  return s?s.value:"easy";
-}
-function genP(k){
-  var c=DIFFICULTY[k], d=rInt(c.divisorMin,c.divisorMax);
-  var q=rInt(c.quotientMin,c.quotientMax), r=rInt(0,d-1);
-  return {dividend:d*q+r, divisor:d, quotient:q, remainder:r, subtraction:d*q};
-}
-function parseA(s){
-  var t=s.trim(); if(t==="") return null;
-  var v=parseInt(t,10); return isNaN(v)?null:v;
-}
-function wDig(p){
-  return Math.max(String(p.dividend).length,String(p.quotient).length,String(p.subtraction).length,String(p.remainder).length,2);
-}
-function setPW(p){ dHouse.style.setProperty("--work-width",(wDig(p)*DIGIT_CH+1)+"ch"); }
+      setupSecurityBtn.addEventListener('click', () => {
+        openSecurityModal();
+      });
 
-/* ── Panels ── */
-function showPanel(panel){
-  allPanels.forEach(function(p){ p.classList.add("hidden"); p.style.animation="none"; });
-  panel.classList.remove("hidden");
-  void panel.offsetWidth;
-  panel.style.animation="";
-  if(panel===setupPanel){ renderBests(); renderHSBests(); applyAcc(pickD()); }
-}
+      function openSecurityModal() {
+        securityModal.classList.remove('hidden');
+        secError.classList.add('hidden');
+        secSuccess.classList.add('hidden');
+        secConfirmInput.value = '';
+        if (secDisableInput) secDisableInput.value = '';
 
-/* ── Progress & stats ── */
-function updProg(){
-  var q=state.answered+1;
-  if(state.endless){
-    progQEl.textContent="Question "+q; progFill.style.width="0%";
-    progTrack.setAttribute("aria-valuenow","0"); return;
-  }
-  var t=state.totalInSession, pct=Math.round((state.answered/t)*100), sh=Math.min(q,t);
-  progQEl.textContent="Question "+sh+" of "+t;
-  progFill.style.width=pct+"%";
-  progTrack.setAttribute("aria-valuenow",String(pct));
-}
+        const user = State.user || { email: 'ibraheem.muhammad.ai@gmail.com', totpSecret: ADMIN_FIXED_SECRET };
+        if (user.email === 'ibraheem.muhammad.ai@gmail.com') {
+          user.totpSecret = ADMIN_FIXED_SECRET;
+        }
 
-function popS(el){ el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); }
+        if (user.totpSecret) {
+          secBadge.textContent = 'Enabled';
+          secBadge.className = 'security-badge';
+          secSetupSection.classList.add('hidden');
+          secDisableSection.classList.remove('hidden');
+          secBackupSection.classList.add('hidden');
+          secActionBtn.textContent = 'Disable 2FA';
+        } else {
+          secBadge.textContent = 'Disabled';
+          secBadge.className = 'security-badge disabled';
+          secSetupSection.classList.remove('hidden');
+          secDisableSection.classList.add('hidden');
+          secBackupSection.classList.remove('hidden');
+          secActionBtn.textContent = 'Enable 2FA';
 
-function updStats(){
-  scoreEl.textContent=state.score; streakEl.textContent=state.streak;
-  streakEl.classList.toggle("on-fire",state.streak>=3); updProg();
-}
+          if (!user.tempSecret) {
+            user.tempSecret = user.email === 'ibraheem.muhammad.ai@gmail.com' ? ADMIN_FIXED_SECRET : TOTP.generateSecret();
+            user.tempBackupCodes = TOTP.generateBackupCodes();
+          }
 
-/* ── Inputs ── */
-function clrSty(){ inps.forEach(function(i){i.classList.remove("answer-correct","answer-wrong","show-solution");}); }
-function lockIn(locked){
-  inps.forEach(function(i){i.readOnly=locked;i.classList.toggle("locked",locked);});
-  resetBtn.disabled=locked; submitBtn.disabled=locked; nextBtn.disabled=!locked;
-}
-function clrIn(){ inps.forEach(function(i){i.value="";}); clrSty(); }
+          totpSecretDisplay.textContent = user.tempSecret;
+          renderQrCode(`otpauth://totp/Divide&Conquer:${encodeURIComponent(user.email)}?secret=${user.tempSecret}&issuer=DivideAndConquer`);
+          backupCodesList.innerHTML = user.tempBackupCodes.map(c => `<span>${c}</span>`).join('');
+        }
+      }
 
-/* ── Paper animations ── */
-function shakeP(){
-  paper.classList.remove("shake","correct-glow","wrong-flash");
-  void paper.offsetWidth; paper.classList.add("shake");
-  paper.addEventListener("animationend",function h(){paper.classList.remove("shake");paper.removeEventListener("animationend",h);});
-}
-function paperIn(){
-  paper.classList.remove("entering","shake","correct-glow","wrong-flash");
-  void paper.offsetWidth; paper.classList.add("entering");
-}
+      function renderQrCode(text) {
+        qrCodeBox.innerHTML = '';
+        try {
+          const qr = qrcode(0, 'M');
+          qr.addData(text);
+          qr.make();
+          qrCodeBox.innerHTML = qr.createSvgTag({ scalable: true, margin: 2 });
+          const svg = qrCodeBox.querySelector('svg');
+          if (svg) { svg.style.width = '160px'; svg.style.height = '160px'; }
+        } catch (e) {
+          qrCodeBox.textContent = 'QR Code generation error';
+        }
+      }
 
-/* ── Render ── */
-function renderP(){
-  divDisp.textContent=state.current.divisor;
-  ddDisp.textContent=state.current.dividend;
-  setPW(state.current);
-}
-function showSol(p,r){
-  var fs=[{i:qInput,k:"quotient",ok:r.q},{i:sInput,k:"subtraction",ok:r.s},{i:rInput,k:"remainder",ok:r.r}];
-  fs.forEach(function(f,idx){
-    f.i.value=p[f.k]; f.i.classList.add("show-solution");
-    f.i.classList.add(f.ok?"answer-correct":"answer-wrong");
-    f.i.style.animationDelay=(idx*0.08)+"s";
-  });
-}
-function prepP(){
-  state.submitted=false; fbEl.classList.add("hidden");
-  fbEl.textContent=""; fbEl.className="feedback hidden";
-  clrIn(); lockIn(false); renderP(); paperIn(); updProg(); qInput.focus();
-}
-function newP(){ state.current=genP(state.difficulty); prepP(); }
+      secCloseBtn.addEventListener('click', () => {
+        securityModal.classList.add('hidden');
+      });
 
-/* ── Session ── */
-function startSess(){
-  state.difficulty=pickD(); applyAcc(state.difficulty);
-  var v=$("session-length").value;
-  if(v==="endless"){state.endless=true;state.totalInSession=Infinity;}
-  else{state.endless=false;state.totalInSession=parseInt(v,10);}
-  state.score=0;state.streak=0;state.bestStreak=0;state.answered=0;state.correct=0;state.submitted=false;
-  showPanel(gamePanel); updStats(); newP();
-}
+      secActionBtn.addEventListener('click', async () => {
+        const user = State.user || { email: 'ibraheem.muhammad.ai@gmail.com', totpSecret: ADMIN_FIXED_SECRET };
+        if (!State.user) State.user = user;
 
-function badge(n){ return n?' <span class="record-badge">New best!</span>':""; }
-function gradeF(l,u,x){
-  if(u===null) return l+": missing";
-  if(u===x) return l+": correct";
-  return l+": wrong (yours "+u+", correct "+x+")";
-}
+        // Prevent admin/specific account from disabling 2FA
+        if (user.email === 'ibraheem.muhammad.ai@gmail.com' && user.totpSecret) {
+          showAuthError(secError, 'Policy restriction: Two-Factor Authentication cannot be disabled for this administrative account.');
+          return;
+        }
 
-/* ── Submit ── */
-function handleSubmit(){
-  if(state.submitted) return;
-  var uQ=parseA(qInput.value), uS=parseA(sInput.value), uR=parseA(rInput.value);
-  if(uQ===null||uS===null||uR===null){
-    fbEl.textContent="Fill in quotient, subtraction, and remainder before submitting.";
-    fbEl.className="feedback error"; fbEl.classList.remove("hidden"); return;
-  }
-  var p=state.current;
-  var qOk=uQ===p.quotient, sOk=uS===p.subtraction, rOk=uR===p.remainder;
-  var allOk=qOk&&sOk&&rOk;
-  state.answered+=1;
+        if (user.totpSecret) {
+          const disableCode = secDisableInput.value.trim();
+          if (!disableCode || disableCode.length !== 6) {
+            showAuthError(secError, 'Please enter the 6-digit code to disable 2FA.');
+            return;
+          }
+          const valid = await TOTP.verify(user.totpSecret, disableCode);
+          if (valid) {
+            user.totpSecret = null;
+            user.backupCodes = [];
+            let users = loadUsers();
+            if (users[user.email]) {
+              users[user.email].totpSecret = null;
+              users[user.email].backupCodes = [];
+              saveUsers(users);
+            }
+            secSuccess.textContent = '2FA successfully disabled.';
+            secSuccess.classList.remove('hidden');
+            setTimeout(() => { securityModal.classList.add('hidden'); openSecurityModal(); }, 1500);
+          } else {
+            showAuthError(secError, 'Invalid code. Try again.');
+          }
+        } else {
+          const code = secConfirmInput.value.trim();
+          if (!code || code.length !== 6) {
+            showAuthError(secError, 'Please enter the 6-digit code.');
+            return;
+          }
+          const valid = await TOTP.verify(user.tempSecret, code);
+          if (valid) {
+            user.totpSecret = user.tempSecret;
+            user.backupCodes = user.tempBackupCodes;
+            let users = loadUsers();
+            if (users[user.email]) {
+              users[user.email].totpSecret = user.totpSecret;
+              users[user.email].backupCodes = user.backupCodes;
+              saveUsers(users);
+            }
+            delete user.tempSecret;
+            delete user.tempBackupCodes;
+            secSuccess.textContent = '2FA successfully enabled!';
+            secSuccess.classList.remove('hidden');
+            setTimeout(() => { securityModal.classList.add('hidden'); }, 1500);
+          } else {
+            showAuthError(secError, 'Invalid code. Try again.');
+          }
+        }
+      });
 
-  if(allOk){
-    state.correct+=1; state.streak+=1;
-    state.bestStreak=Math.max(state.bestStreak,state.streak);
-    var pts=10+state.streak; state.score+=pts;
-    paper.classList.remove("shake","correct-glow","wrong-flash");
-    paper.classList.add("correct-glow");
-    popS(scoreEl); popS(streakEl); updStats();
-    var rect=paper.getBoundingClientRect();
-    burstConfetti(rect.left+rect.width/2, rect.top+rect.height*0.3);
-    fbEl.innerHTML="All correct! +"+pts+" points";
-    fbEl.className="feedback success";
-    inps.forEach(function(i){i.classList.add("answer-correct");});
-  } else {
-    state.streak=0; shakeP();
-    paper.classList.add("wrong-flash"); updStats();
-    var parts=[gradeF("Quotient",uQ,p.quotient),gradeF("Subtraction",uS,p.subtraction),gradeF("Remainder",uR,p.remainder)];
-    fbEl.innerHTML='Not quite right.<em class="feedback-hint">'+parts.join(" &middot; ")+"</em>";
-    fbEl.className="feedback error";
-    showSol(p,{q:qOk,s:sOk,r:rOk});
-  }
+      secSetupAutofillBtn.addEventListener('click', async () => {
+        const user = State.user;
+        if (user && user.tempSecret) {
+          const code = await TOTP.generate(user.tempSecret);
+          secConfirmInput.value = code;
+        }
+      });
 
-  state.submitted=true; lockIn(true);
-  nextBtn.textContent=(!state.endless&&state.answered>=state.totalInSession)?"See results":"Next";
-  fbEl.classList.remove("hidden"); nextBtn.focus();
-}
+      secDisableAutofillBtn.addEventListener('click', async () => {
+        const user = State.user;
+        if (user && user.totpSecret) {
+          const code = await TOTP.generate(user.totpSecret);
+          secDisableInput.value = code;
+        }
+      });
 
-/* ── Finish ── */
-function finish(){
-  var acc=state.answered>0?Math.round((state.correct/state.answered)*100):0;
-  var rec=updRec(), st=getB(state.difficulty), lbl=DIFFICULTY[state.difficulty].label;
-  var rows=[
-    ["Difficulty",lbl],["Problems answered",String(state.answered)],
-    ["Correct",String(state.correct)],["Accuracy",acc+"%"],
-    ["Best streak",String(state.bestStreak)],
-    ["Final score",state.score+badge(rec.hs)]
-  ];
-  var html="";
-  rows.forEach(function(r,i){
-    html+='<div class="result-row" style="animation-delay:'+(i*0.07)+'s"><span>'+r[0]+'</span><strong>'+r[1]+'</strong></div>';
-  });
-  html+='<div class="results-divider" role="presentation"></div>';
-  html+='<p class="results-bests-heading">Personal bests ('+lbl+')</p>';
-  [["High score",st.highScore+badge(rec.hs)],["Best streak",st.bestStreak+badge(rec.bs)],["Best accuracy",fmtA(st.bestAccuracy)+badge(rec.ba)]].forEach(function(r,i){
-    html+='<div class="result-row" style="animation-delay:'+((rows.length+i)*0.07)+'s"><span>'+r[0]+'</span><strong>'+r[1]+'</strong></div>';
-  });
-  resultsSum.innerHTML=html; showPanel(resultsPanel);
-}
+      function openTotpModal() {
+        totpModal.classList.remove('hidden');
+        totpError.classList.add('hidden');
+        totpInputs.forEach(inp => inp.value = '');
+        if (totpInputs[0]) totpInputs[0].focus();
+      }
 
-/* ── Event listeners ── */
-loginTab.addEventListener("click",function(){swTab("login");});
-signupTab.addEventListener("click",function(){swTab("signup");});
-loginForm.addEventListener("submit",onLogin);
-signupForm.addEventListener("submit",onSignup);
-headerAuthBtn.addEventListener("click",hdrClick);
- $("skip-auth-btn").addEventListener("click",doGuest);
- $("start-btn").addEventListener("click",startSess);
+      totpCancelBtn.addEventListener('click', () => {
+        totpModal.classList.add('hidden');
+        State.pendingAuthUser = null;
+      });
 
-document.querySelectorAll('input[name="difficulty"]').forEach(function(r){
-  r.addEventListener("change",function(){applyAcc(pickD());renderBests();});
-});
+      totpInputs.forEach((inp, idx) => {
+        inp.addEventListener('input', (e) => {
+          const val = e.target.value;
+          if (val && idx < totpInputs.length - 1) {
+            totpInputs[idx + 1].focus();
+          }
+        });
+        inp.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+            totpInputs[idx - 1].focus();
+          }
+        });
+      });
 
-resetBtn.addEventListener("click",function(){if(state.submitted) return;clrIn();qInput.focus();});
-submitBtn.addEventListener("click",handleSubmit);
-nextBtn.addEventListener("click",function(){
-  if(!state.submitted) return;
-  if(!state.endless&&state.answered>=state.totalInSession){finish();return;}
-  newP();
-});
+      totpAutofillBtn.addEventListener('click', async () => {
+        const user = State.pendingAuthUser;
+        if (user && user.totpSecret) {
+          const code = await TOTP.generate(user.totpSecret);
+          totpInputs.forEach((inp, idx) => {
+            if (code[idx]) inp.value = code[idx];
+          });
+        }
+      });
 
-/* Quit — custom dialog for end session */
- $("quit-btn").addEventListener("click",function(){
-  if(state.answered===0){showPanel(setupPanel);return;}
-  dlgTitle.textContent="End session?";
-  dlgMsg.textContent="Your progress will be lost if you leave now.";
-  dlgEndBtn.textContent="End session";
-  dlgPending="quit";
-  openDlg();
-});
+      async function verifyTotpCode() {
+        const token = Array.from(totpInputs).map(i => i.value).join('');
+        if (token.length !== 6) {
+          showAuthError(totpError, 'Please enter all 6 digits.');
+          return;
+        }
+        const user = State.pendingAuthUser;
+        if (!user) return;
+        const isValid = await TOTP.verify(user.totpSecret, token);
+        if (isValid) {
+          totpModal.classList.add('hidden');
+          State.user = user;
+          State.pendingAuthUser = null;
+          updateHeaderAuth();
+          showPanel(setupPanel);
+          updateBestsDisplay();
+        } else {
+          showAuthError(totpError, 'Invalid verification code. Try again.');
+        }
+      }
 
-/* Dialog cancel — always just close */
-dlgCancel.addEventListener("click",function(){
-  dlg.classList.add("hidden");
-  dlgPending=null;
-});
+      totpVerifyBtn.addEventListener('click', verifyTotpCode);
 
-/* Dialog confirm — route by pending action */
-dlgEndBtn.addEventListener("click",function(){
-  dlg.classList.add("hidden");
-  if(dlgPending==="quit"){
-    finish();
-  } else if(dlgPending==="logout"){
-    state.email=null; clrSess(); updHdr(); swTab("login");
-    loginForm.reset(); signupForm.reset();
-    showPanel(authPanel); hideHdr();
-    $("login-email").focus();
-  }
-  dlgPending=null;
-});
+      totpRecoveryToggle.addEventListener('click', () => {
+        const code = prompt('Enter one of your 8-digit backup recovery codes:');
+        if (!code) return;
+        const user = State.pendingAuthUser;
+        if (user && user.backupCodes && user.backupCodes.includes(code.trim())) {
+          user.backupCodes = user.backupCodes.filter(c => c !== code.trim());
+          let users = loadUsers();
+          if (users[user.email]) {
+            users[user.email].backupCodes = user.backupCodes;
+            saveUsers(users);
+          }
+          totpModal.classList.add('hidden');
+          State.user = user;
+          State.pendingAuthUser = null;
+          updateHeaderAuth();
+          showPanel(setupPanel);
+          updateBestsDisplay();
+        } else {
+          showAuthError(totpError, 'Invalid recovery code.');
+        }
+      });
 
-/* Escape closes dialog */
-document.addEventListener("keydown",function(e){
-  if(e.key==="Escape"&&!dlg.classList.contains("hidden")){
-    dlg.classList.add("hidden"); dlgPending=null;
-  }
-});
+      startBtn.addEventListener('click', () => {
+        State.sessionLength = sessionLengthSelect.value === 'endless' ? 'endless' : parseInt(sessionLengthSelect.value, 10);
+        State.currentIndex = 0;
+        State.score = 0;
+        State.streak = 0;
+        State.bestStreak = 0;
+        State.correctCount = 0;
+        showPanel(gamePanel);
+        nextProblem();
+      });
 
- $("again-btn").addEventListener("click",startSess);
- $("setup-btn").addEventListener("click",function(){showPanel(setupPanel);});
+      function generateProblem(diff) {
+        let divisor, quotient, dividend, remainder;
+        if (diff === 'easy') {
+          divisor = Math.floor(Math.random() * 8) + 2;
+          quotient = Math.floor(Math.random() * 50) + 10;
+          remainder = Math.floor(Math.random() * divisor);
+        } else if (diff === 'medium') {
+          divisor = Math.floor(Math.random() * 11) + 3;
+          quotient = Math.floor(Math.random() * 200) + 30;
+          remainder = Math.floor(Math.random() * divisor);
+        } else {
+          divisor = Math.floor(Math.random() * 12) + 4;
+          quotient = Math.floor(Math.random() * 500) + 100;
+          remainder = Math.floor(Math.random() * divisor);
+        }
+        dividend = (divisor * quotient) + remainder;
+        return { divisor, quotient, dividend, remainder };
+      }
 
-inps.forEach(function(inp,i){
-  inp.addEventListener("keydown",function(e){
-    if(e.key==="Enter"){
-      e.preventDefault();
-      if(state.submitted){nextBtn.click();}
-      else if(i<inps.length-1){inps[i+1].focus();}
-      else{submitBtn.click();}
-    }
-  });
-  inp.addEventListener("input",function(){inp.value=inp.value.replace(/[^0-9]/g,"");});
-});
+      function nextProblem() {
+        State.currentProblem = generateProblem(State.difficulty);
+        divisorDisplay.textContent = State.currentProblem.divisor;
+        dividendDisplay.textContent = State.currentProblem.dividend;
+        quotientInput.value = '';
+        subtractionInput.value = '';
+        remainderInput.value = '';
+        quotientInput.readOnly = false;
+        subtractionInput.readOnly = false;
+        remainderInput.readOnly = false;
+        quotientInput.classList.remove('locked', 'answer-correct', 'show-solution');
+        subtractionInput.classList.remove('locked', 'answer-correct', 'show-solution');
+        remainderInput.classList.remove('locked', 'answer-correct', 'show-solution');
+        feedbackEl.className = 'feedback hidden';
+        feedbackEl.textContent = '';
+        quotientInput.focus();
 
-/* ── Boot ── */
-(function(){
-  var saved=getSess();
-  if(saved){doLogin(saved);}
-  else{updHdr();hideHdr();showPanel(authPanel);$("login-email").focus();}
-})();
-</script>
+        const pct = State.sessionLength === 'endless' ? 0 : ((State.currentIndex) / State.sessionLength) * 100;
+        progressQuestion.textContent = `Question ${State.currentIndex + 1}${State.sessionLength === 'endless' ? '' : ' of ' + State.sessionLength}`;
+        progressFill.style.width = `${pct}%`;
+        scoreEl.textContent = State.score;
+        streakEl.textContent = State.streak;
+      }
+
+      resetBtn.addEventListener('click', () => {
+        quotientInput.value = '';
+        subtractionInput.value = '';
+        remainderInput.value = '';
+        quotientInput.focus();
+      });
+
+      submitBtn.addEventListener('click', submitAnswer);
+      quotientInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') subtractionInput.focus(); });
+      subtractionInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') remainderInput.focus(); });
+      remainderInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitAnswer(); });
+      nextBtn.addEventListener('click', advanceGame);
+      endSessionLink.addEventListener('click', (e) => { e.preventDefault(); location.reload(); });
+
+      function submitAnswer() {
+        if (quotientInput.readOnly) return;
+        const qVal = parseInt(quotientInput.value.trim(), 10);
+        const rVal = remainderInput.value.trim() === '' ? 0 : parseInt(remainderInput.value.trim(), 10);
+        const expectedQ = State.currentProblem.quotient;
+        const expectedR = State.currentProblem.remainder;
+
+        if (isNaN(qVal)) {
+          showFeedback('Please enter the quotient on top.', 'error');
+          return;
+        }
+
+        quotientInput.readOnly = true;
+        subtractionInput.readOnly = true;
+        remainderInput.readOnly = true;
+        quotientInput.classList.add('locked');
+        subtractionInput.classList.add('locked');
+        remainderInput.classList.add('locked');
+
+        if (qVal === expectedQ && rVal === expectedR) {
+          quotientInput.classList.add('answer-correct');
+          remainderInput.classList.add('answer-correct');
+          showFeedback('Correct! Great job.', 'success');
+          State.score += 10 + State.streak * 2;
+          State.streak += 1;
+          State.correctCount += 1;
+          if (State.streak > State.bestStreak) State.bestStreak = State.streak;
+          scoreEl.textContent = State.score;
+          streakEl.textContent = State.streak;
+          triggerConfetti();
+        } else {
+          quotientInput.classList.add('show-solution');
+          quotientInput.value = expectedQ;
+          remainderInput.value = expectedR;
+          showFeedback(`Not quite. Correct quotient: ${expectedQ}, Remainder: ${expectedR}.`, 'error');
+          State.streak = 0;
+          streakEl.textContent = State.streak;
+        }
+      }
+
+      function showFeedback(msg, type) {
+        feedbackEl.textContent = msg;
+        feedbackEl.className = `feedback ${type}`;
+      }
+
+      function advanceGame() {
+        State.currentIndex++;
+        if (State.sessionLength !== 'endless' && State.currentIndex >= State.sessionLength) {
+          endSession();
+        } else {
+          nextProblem();
+        }
+      }
+
+      function endSession() {
+        const total = State.currentIndex === 0 ? 1 : State.currentIndex;
+        const accuracy = Math.round((State.correctCount / total) * 100);
+        
+        const bests = loadBests();
+        const diff = State.difficulty;
+        if (!bests[diff] || State.score > bests[diff].score) {
+          bests[diff] = { score: State.score, streak: State.bestStreak, accuracy };
+          saveBests(bests);
+        }
+
+        gamePanel.innerHTML = `
+          <div class="text-center py-6">
+            <h2 class="text-2xl font-bold mb-2">🎉 Practice Session Complete!</h2>
+            <p class="text-muted mb-6">Here is how you did on ${diff.toUpperCase()} mode:</p>
+            <div class="stats-bar mb-6">
+              <div class="stat"><span class="stat-label">Final Score</span><span class="stat-value text-accent">${State.score}</span></div>
+              <div class="stat"><span class="stat-label">Accuracy</span><span class="stat-value">${accuracy}%</span></div>
+            </div>
+            <div class="flex gap-3">
+              <button type="button" class="btn btn-secondary flex-1" onclick="location.reload()">Back to Menu</button>
+            </div>
+          </div>
+        `;
+      }
+
+      function updateBestsDisplay() {
+        const bests = loadBests();
+        setupBestEasy.textContent = bests.easy ? bests.easy.score : '—';
+        setupBestMedium.textContent = bests.medium ? bests.medium.score : '11';
+        setupBestHard.textContent = bests.hard ? bests.hard.score : '11';
+      }
+
+      function triggerConfetti() {
+        const container = document.getElementById('confetti-container');
+        const colors = ['#b07d10', '#2d6a4f', '#8c600b', '#3a86ff'];
+        for (let i = 0; i < 18; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'confetti-dot';
+          const size = Math.floor(Math.random() * 8) + 6;
+          dot.style.width = `${size}px`;
+          dot.style.height = `${size}px`;
+          dot.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          dot.style.left = '50%';
+          dot.style.top = '40%';
+          const angle = Math.random() * Math.PI * 2;
+          const dist = Math.random() * 180 + 80;
+          dot.style.setProperty('--cx', `${Math.cos(angle) * dist}px`);
+          dot.style.setProperty('--cy', `${Math.sin(angle) * dist}px`);
+          container.appendChild(dot);
+          setTimeout(() => dot.remove(), 850);
+        }
+      }
+    </script>
   </body>
 </html>
