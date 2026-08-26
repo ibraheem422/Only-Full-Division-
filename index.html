@@ -305,35 +305,55 @@
       </header>
 
       <main class="main">
+        <!-- Auth Panel -->
         <section class="panel auth" id="auth-panel">
           <div class="auth-tabs" role="tablist" aria-label="Account">
             <button type="button" class="auth-tab active" id="login-tab" role="tab" aria-selected="true" aria-controls="login-form-panel">Log in</button>
             <button type="button" class="auth-tab" id="signup-tab" role="tab" aria-selected="false" aria-controls="signup-form-panel">Sign up</button>
           </div>
           <button type="button" class="skip-auth" id="skip-auth-btn">Play as guest &rarr;</button>
+          
           <div id="login-form-panel" role="tabpanel" aria-labelledby="login-tab">
             <h2>Welcome back</h2>
             <p class="auth-lead">Log in to save scores.</p>
             <form class="auth-form" id="login-form" novalidate>
-              <label class="field"><span class="field-label">Email</span><input type="email" id="login-email" autocomplete="email" required value="ibraheem.muhammad.ai@gmail.com" /></label>
-              <label class="field"><span class="field-label">Password</span><input type="password" id="login-password" autocomplete="current-password" required /></label>
+              <label class="field">
+                <span class="field-label">Email</span>
+                <input type="email" id="login-email" autocomplete="email" required value="ibraheem.muhammad.ai@gmail.com" />
+              </label>
+              <label class="field">
+                <span class="field-label">Password</span>
+                <input type="password" id="login-password" autocomplete="current-password" required value="password123" />
+              </label>
               <p class="auth-error hidden" id="login-error" role="alert"></p>
               <button type="submit" class="btn btn-primary auth-submit">Log in</button>
             </form>
           </div>
+
           <div class="hidden" id="signup-form-panel" role="tabpanel" aria-labelledby="signup-tab">
             <h2>Create an account</h2>
             <p class="auth-lead">Sign up with optional Authenticator App (TOTP) security.</p>
             <form class="auth-form" id="signup-form" novalidate>
-              <label class="field"><span class="field-label">Email</span><input type="email" id="signup-email" autocomplete="email" required /></label>
-              <label class="field"><span class="field-label">Password</span><input type="password" id="signup-password" autocomplete="new-password" required /><small class="field-hint">At least 6 characters</small></label>
-              <label class="field"><span class="field-label">Confirm password</span><input type="password" id="signup-confirm" autocomplete="new-password" required /></label>
+              <label class="field">
+                <span class="field-label">Email</span>
+                <input type="email" id="signup-email" autocomplete="email" required />
+              </label>
+              <label class="field">
+                <span class="field-label">Password</span>
+                <input type="password" id="signup-password" autocomplete="new-password" required />
+                <small class="field-hint">At least 6 characters</small>
+              </label>
+              <label class="field">
+                <span class="field-label">Confirm password</span>
+                <input type="password" id="signup-confirm" autocomplete="new-password" required />
+              </label>
               <p class="auth-error hidden" id="signup-error" role="alert"></p>
               <button type="submit" class="btn btn-primary auth-submit">Create account</button>
             </form>
           </div>
         </section>
 
+        <!-- Setup Panel -->
         <aside class="panel setup hidden" id="setup-panel">
           <div class="flex justify-between items-center mb-6">
             <h2 class="m-0">Practice setup</h2>
@@ -342,9 +362,27 @@
           <fieldset class="field-group">
             <legend>Difficulty</legend>
             <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="difficulty" value="easy" checked /><span class="radio-card-inner"><strong>Easy</strong><small>Divisors 2&ndash;9, smaller dividends</small></span></label>
-              <label class="radio-card"><input type="radio" name="difficulty" value="medium" /><span class="radio-card-inner"><strong>Medium</strong><small>Divisors 2&ndash;12, bigger numbers</small></span></label>
-              <label class="radio-card"><input type="radio" name="difficulty" value="hard" /><span class="radio-card-inner"><strong>Hard</strong><small>Divisors up to 15, larger dividends</small></span></label>
+              <label class="radio-card">
+                <input type="radio" name="difficulty" value="easy" checked />
+                <span class="radio-card-inner">
+                  <strong>Easy</strong>
+                  <small>Divisors 2&ndash;9, smaller dividends</small>
+                </span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="difficulty" value="medium" />
+                <span class="radio-card-inner">
+                  <strong>Medium</strong>
+                  <small>Divisors 2&ndash;12, bigger numbers</small>
+                </span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="difficulty" value="hard" />
+                <span class="radio-card-inner">
+                  <strong>Hard</strong>
+                  <small>Divisors up to 15, larger dividends</small>
+                </span>
+              </label>
             </div>
           </fieldset>
           <fieldset class="field-group">
@@ -359,21 +397,39 @@
           <div class="personal-bests" id="setup-bests" aria-live="polite">
             <p class="bests-heading">Your bests</p>
             <div class="bests-grid">
-              <div class="best-item"><span class="best-label">Easy</span><span class="best-value" id="setup-best-easy">&mdash;</span></div>
-              <div class="best-item"><span class="best-label">Medium</span><span class="best-value" id="setup-best-medium">11</span></div>
-              <div class="best-item"><span class="best-label">Hard</span><span class="best-value" id="setup-best-hard">11</span></div>
+              <div class="best-item">
+                <span class="best-label">Easy</span>
+                <span class="best-value" id="setup-best-easy">&mdash;</span>
+              </div>
+              <div class="best-item">
+                <span class="best-label">Medium</span>
+                <span class="best-value" id="setup-best-medium">&mdash;</span>
+              </div>
+              <div class="best-item">
+                <span class="best-label">Hard</span>
+                <span class="best-value" id="setup-best-hard">&mdash;</span>
+              </div>
             </div>
           </div>
           <button type="button" class="btn btn-primary" id="start-btn">Start practice</button>
         </aside>
 
+        <!-- Game Panel -->
         <section class="panel game hidden" id="game-panel" aria-live="polite">
           <div class="stats-bar">
-            <div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="score">0</span></div>
-            <div class="stat"><span class="stat-label">Streak</span><span class="stat-value" id="streak">0</span></div>
+            <div class="stat">
+              <span class="stat-label">Score</span>
+              <span class="stat-value" id="score">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value" id="streak">0</span>
+            </div>
           </div>
           <div class="progress-wrap">
-            <div class="progress-meta"><span class="progress-question" id="progress-question">Question 1 of 20</span></div>
+            <div class="progress-meta">
+              <span class="progress-question" id="progress-question">Question 1 of 20</span>
+            </div>
             <div class="progress-track" id="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Session progress">
               <div class="progress-fill" id="progress-fill"></div>
             </div>
@@ -393,9 +449,13 @@
                     </div>
                   </div>
                   <div class="house-row dividend-row">
-                    <div class="house-side"><span class="house-divisor" id="divisor-display">&mdash;</span></div>
+                    <div class="house-side">
+                      <span class="house-divisor" id="divisor-display">&mdash;</span>
+                    </div>
                     <div class="house-bracket" aria-hidden="true">
-                      <svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none"><path d="M12 0 L12 48 L0 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      <svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none">
+                        <path d="M12 0 L12 48 L0 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
                     </div>
                     <div class="house-work">
                       <span class="house-dividend" id="dividend-display">&mdash;</span>
@@ -410,7 +470,9 @@
                     </div>
                   </div>
                   <div class="house-row remainder-row" style="margin-top: 0.5rem;">
-                    <div class="house-side"><span style="font-size: 1.1rem; color: var(--muted); font-weight: 600;">Rem:</span></div>
+                    <div class="house-side">
+                      <span style="font-size: 1.1rem; color: var(--muted); font-weight: 600;">Rem:</span>
+                    </div>
                     <div class="house-bracket"></div>
                     <div class="house-work">
                       <input type="text" id="remainder-input" class="house-input" inputmode="numeric" autocomplete="off" maxlength="3" placeholder="0" aria-label="Remainder input" />
@@ -450,764 +512,571 @@
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
         </div>
-        <p class="auth-error hidden mb-4" id="totp-error" role="alert"></p>
-        <div class="flex gap-2 mb-2">
+        <p class="auth-error hidden mb-3" id="totp-error" role="alert"></p>
+        <div class="flex gap-2">
           <button type="button" class="btn btn-secondary flex-1" id="totp-cancel-btn">Cancel</button>
-          <button type="button" class="btn btn-primary flex-1" id="totp-verify-btn">Verify Code</button>
+          <button type="button" class="btn btn-primary flex-1" id="totp-verify-btn">Verify</button>
         </div>
-        <button type="button" class="btn btn-secondary btn-sm w-full py-2 bg-amber-50 text-amber-800 border-amber-200" id="totp-autofill-btn">🧪 Instant Test Code</button>
-        <button type="button" class="btn btn-ghost btn-sm mt-2 w-full" id="totp-recovery-toggle">Use Backup Recovery Code instead</button>
       </div>
     </div>
 
-    <div class="modal-overlay hidden" id="security-modal" role="dialog" aria-modal="true" aria-labelledby="sec-title">
+    <div class="modal-overlay hidden" id="totp-setup-modal" role="dialog" aria-modal="true" aria-labelledby="totp-setup-title">
       <div class="modal-box">
-        <h3 id="sec-title" class="text-xl font-bold mb-2">🛡️ Account Security & 2FA</h3>
-        <p class="text-sm text-gray-600 mb-4">Protect your math scores with Authenticator App 2FA.</p>
-        
-        <div id="sec-status-box" class="p-3 bg-gray-50 rounded-xl mb-4 border border-gray-200">
-          <div class="flex justify-between items-center">
-            <span class="font-semibold text-sm">Authenticator 2FA Status:</span>
-            <span id="sec-badge" class="security-badge">Enabled</span>
-          </div>
+        <h3 id="totp-setup-title" class="text-xl font-bold mb-2 text-center">Setup Authenticator (TOTP)</h3>
+        <p class="text-sm text-gray-600 mb-3 text-center">Scan this QR code with Google Authenticator, Authy, or Duo Security, or enter the secret key manually.</p>
+        <div class="qr-container" id="qr-code-box"></div>
+        <div class="text-xs text-center font-mono font-bold text-gray-700 mb-3" id="totp-secret-display">Secret: 3W6PVGFORLAYR3L3</div>
+        <p class="text-xs text-gray-500 mb-4 text-center">Enter a code generated by your app to confirm setup:</p>
+        <div class="totp-digits" id="totp-setup-inputs">
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
         </div>
-
-        <div id="sec-setup-section" class="hidden">
-          <p class="text-xs text-gray-600 mb-2">Scan this QR code with your authenticator app:</p>
-          <div class="qr-container" id="qr-code-box"></div>
-          <p class="text-xs text-gray-500 text-center mb-2">Or enter setup key manually: <code id="totp-secret-display" class="bg-gray-100 p-1 rounded font-mono text-xs"></code></p>
-          <label class="field mb-3">
-            <span class="field-label text-xs">Enter 6-digit code from app to confirm setup</span>
-            <div class="flex gap-2">
-              <input type="text" id="sec-confirm-input" inputmode="numeric" maxlength="6" />
-              <button type="button" class="btn btn-secondary btn-sm px-3 whitespace-nowrap text-xs bg-amber-50 text-amber-800 border-amber-200" id="sec-setup-autofill-btn">🧪 Fill Code</button>
-            </div>
-          </label>
-        </div>
-
-        <div id="sec-disable-section" class="hidden mb-4">
-          <p class="text-xs text-gray-600 mb-2">To disable 2FA, please enter your current 6-digit authenticator code:</p>
-          <label class="field mb-3">
-            <span class="field-label text-xs">Enter 6-digit code</span>
-            <div class="flex gap-2">
-              <input type="text" id="sec-disable-input" inputmode="numeric" maxlength="6" />
-              <button type="button" class="btn btn-secondary btn-sm px-3 whitespace-nowrap text-xs bg-amber-50 text-amber-800 border-amber-200" id="sec-disable-autofill-btn">🧪 Fill Code</button>
-            </div>
-          </label>
-        </div>
-
-        <div id="sec-backup-section" class="hidden mb-4">
-          <p class="text-xs font-semibold text-amber-800 mb-1">⚠️ Save these emergency backup recovery codes in a safe place:</p>
-          <div class="backup-codes-box" id="backup-codes-list"></div>
-        </div>
-
-        <p class="auth-error hidden mb-3" id="sec-error" role="alert"></p>
-        <p class="auth-success hidden mb-3" id="sec-success" role="status"></p>
-
+        <p class="auth-error hidden mb-3" id="totp-setup-error" role="alert"></p>
         <div class="flex gap-2">
-          <button type="button" class="btn btn-secondary flex-1" id="sec-close-btn">Close</button>
-          <button type="button" class="btn btn-primary flex-1" id="sec-action-btn">Disable 2FA</button>
+          <button type="button" class="btn btn-secondary flex-1" id="totp-setup-close-btn">Close</button>
+          <button type="button" class="btn btn-primary flex-1" id="totp-setup-confirm-btn">Enable 2FA</button>
         </div>
       </div>
     </div>
 
     <script>
-      const TOTP = {
-        base32toHex(base32) {
-          const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-          let bits = '';
-          let hex = '';
-          let clean = base32.replace(/=+$/, '').toUpperCase();
-          for (let i = 0; i < clean.length; i++) {
-            const val = alphabet.indexOf(clean[i]);
+      /* Simple Base32 decoder for TOTP verification */
+      const Base32 = {
+        alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",
+        decode(input) {
+          let cleaned = input.replace(/=+$/, "").toUpperCase();
+          let bits = "";
+          let bytes = [];
+          for (let i = 0; i < cleaned.length; i++) {
+            let val = this.alphabet.indexOf(cleaned[i]);
             if (val === -1) continue;
-            bits += val.toString(2).padStart(5, '0');
+            bits += val.toString(2).padStart(5, "0");
           }
-          for (let i = 0; i + 4 <= bits.length; i += 4) {
-            const chunk = bits.substr(i, 4);
-            hex += parseInt(chunk, 2).toString(16);
+          for (let i = 0; i + 8 <= bits.length; i += 8) {
+            bytes.push(parseInt(bits.substr(i, 8), 2));
           }
-          return hex;
-        },
-        hexToBytes(hex) {
-          const bytes = new Uint8Array(hex.length / 2);
-          for (let i = 0; i < bytes.length; i++) {
-            bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
-          }
-          return bytes;
-        },
-        async hmacSha1(keyBytes, messageBytes) {
-          const cryptoKey = await crypto.subtle.importKey(
-            'raw', keyBytes, { name: 'HMAC', hash: { name: 'SHA-1' } }, false, ['sign']
-          );
-          const sig = await crypto.subtle.sign('HMAC', cryptoKey, messageBytes);
-          return new Uint8Array(sig);
-        },
-        async generate(secretBase32, time = Date.now()) {
-          try {
-            const hexKey = this.base32toHex(secretBase32);
-            const keyBytes = this.hexToBytes(hexKey);
-            const epoch = Math.floor(time / 1000);
-            const counter = Math.floor(epoch / 30);
-            const msgBytes = new Uint8Array(8);
-            let temp = counter;
-            for (let i = 7; i >= 0; i--) {
-              msgBytes[i] = temp & 0xff;
-              temp = Math.floor(temp / 256);
-            }
-            const hmacResult = await this.hmacSha1(keyBytes, msgBytes);
-            const offset = hmacResult[hmacResult.length - 1] & 0x0f;
-            const binary =
-              ((hmacResult[offset] & 0x7f) << 24) |
-              ((hmacResult[offset + 1] & 0xff) << 16) |
-              ((hmacResult[offset + 2] & 0xff) << 8) |
-              (hmacResult[offset + 3] & 0xff);
-            const otp = binary % 1000000;
-            return otp.toString().padStart(6, '0');
-          } catch (e) {
-            return '000000';
-          }
-        },
-        async verify(secretBase32, token, windowSteps = 1) {
-          const cleanToken = token.trim();
-          if (!/^\d{6}$/.test(cleanToken)) return false;
-          const now = Date.now();
-          for (let i = -windowSteps; i <= windowSteps; i++) {
-            const code = await this.generate(secretBase32, now + i * 30000);
-            if (code === cleanToken) return true;
-          }
-          return false;
-        },
-        generateSecret() {
-          const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-          let secret = '';
-          const randomValues = new Uint8Array(16);
-          crypto.getRandomValues(randomValues);
-          for (let i = 0; i < 16; i++) {
-            secret += alphabet[randomValues[i] % alphabet.length];
-          }
-          return secret;
-        },
-        generateBackupCodes() {
-          const codes = [];
-          for (let i = 0; i < 6; i++) {
-            let part1 = Math.floor(1000 + Math.random() * 9000);
-            let part2 = Math.floor(1000 + Math.random() * 9000);
-            codes.push(`${part1}-${part2}`);
-          }
-          return codes;
+          return new Uint8Array(bytes);
         }
       };
 
-      const State = {
-        user: { email: 'ibraheem.muhammad.ai@gmail.com', totpSecret: null, backupCodes: [] },
-        difficulty: 'medium',
+      /* HMAC-SHA1 Implementation for TOTP Code Validation */
+      async function hmacSha1(keyBytes, messageBytes) {
+        const cryptoKey = await window.crypto.subtle.importKey(
+          "raw",
+          keyBytes,
+          { name: "HMAC", hash: { name: "SHA-1" } },
+          false,
+          ["sign"]
+        );
+        const signature = await window.crypto.subtle.sign("HMAC", cryptoKey, messageBytes);
+        return new Uint8Array(signature);
+      }
+
+      async function generateTotp(secret, timeStep = 30, windowOffset = 0) {
+        try {
+          const keyBytes = Base32.decode(secret);
+          const epoch = Math.floor(Date.now() / 1000);
+          const counter = Math.floor(epoch / timeStep) + windowOffset;
+          
+          const buffer = new ArrayBuffer(8);
+          const view = new DataView(buffer);
+          view.setUint32(4, counter, false); // Big-endian
+          
+          const hmacResult = await hmacSha1(keyBytes, buffer);
+          const offset = hmacResult[hmacResult.length - 1] & 0x0f;
+          const binary =
+            ((hmacResult[offset] & 0x7f) << 24) |
+            ((hmacResult[offset + 1] & 0xff) << 16) |
+            ((hmacResult[offset + 2] & 0xff) << 8) |
+            (hmacResult[offset + 3] & 0xff);
+          const otp = binary % 1000000;
+          return otp.toString().padStart(6, "0");
+        } catch (e) {
+          console.error("TOTP generation error:", e);
+          return null;
+        }
+      }
+
+      async function verifyTotpCode(secret, code) {
+        if (!code || code.length !== 6) return false;
+        // Check current time step and adjacent windows (-1, 0, +1) to account for slight clock skew
+        for (let offset = -1; offset <= 1; offset++) {
+          const validCode = await generateTotp(secret, 30, offset);
+          if (validCode === code) return true;
+        }
+        return false;
+      }
+
+      /* Application State */
+      const ADMIN_EMAIL = "ibraheem.muhammad.ai@gmail.com";
+      const ADMIN_SECRET = "3W6PVGFORLAYR3L3";
+
+      const state = {
+        currentUser: null,
+        isGuest: false,
+        difficulty: "easy",
         sessionLength: 20,
-        currentIndex: 0,
+        currentProblemIndex: 0,
         score: 0,
         streak: 0,
-        bestStreak: 0,
-        correctCount: 0,
         currentProblem: null,
-        pendingAuthUser: null
+        bests: { easy: null, medium: 11, hard: 11 },
+        pendingAuthCallback: null
       };
 
-      const USERS_KEY = 'div_conquer_users_v5';
-      const BESTS_KEY = 'div_conquer_bests_v5';
-      const ADMIN_FIXED_SECRET = '3W6PVGFORLAYR3L3'; // Dedicated TOTP secret key for ibraheem.muhammad.ai@gmail.com
+      /* DOM Elements */
+      const authPanel = document.getElementById("auth-panel");
+      const setupPanel = document.getElementById("setup-panel");
+      const gamePanel = document.getElementById("game-panel");
+      const headerAuth = document.getElementById("header-auth");
+      const userGreetingName = document.getElementById("user-greeting-name");
+      const headerAuthBtn = document.getElementById("header-auth-btn");
 
-      function loadUsers() {
-        try { 
-          let data = JSON.parse(localStorage.getItem(USERS_KEY));
-          if (!data) {
-            data = {
-              'ibraheem.muhammad.ai@gmail.com': { password: '', totpSecret: ADMIN_FIXED_SECRET, backupCodes: ['1234-5678', '8765-4321'] }
-            };
-            localStorage.setItem(USERS_KEY, JSON.stringify(data));
-          } else if (data['ibraheem.muhammad.ai@gmail.com']) {
-            data['ibraheem.muhammad.ai@gmail.com'].totpSecret = ADMIN_FIXED_SECRET;
-            localStorage.setItem(USERS_KEY, JSON.stringify(data));
-          }
-          return data;
-        } catch { 
-          return {
-            'ibraheem.muhammad.ai@gmail.com': { password: '', totpSecret: ADMIN_FIXED_SECRET, backupCodes: ['1234-5678', '8765-4321'] }
-          }; 
-        }
-      }
+      const loginTab = document.getElementById("login-tab");
+      const signupTab = document.getElementById("signup-tab");
+      const loginFormPanel = document.getElementById("login-form-panel");
+      const signupFormPanel = document.getElementById("signup-form-panel");
+      const loginForm = document.getElementById("login-form");
+      const loginEmail = document.getElementById("login-email");
+      const loginPassword = document.getElementById("login-password");
+      const loginError = document.getElementById("login-error");
+      const skipAuthBtn = document.getElementById("skip-auth-btn");
 
-      function saveUsers(users) {
-        localStorage.setItem(USERS_KEY, JSON.stringify(users));
-      }
+      const signupForm = document.getElementById("signup-form");
+      const signupEmail = document.getElementById("signup-email");
+      const signupPassword = document.getElementById("signup-password");
+      const signupConfirm = document.getElementById("signup-confirm");
+      const signupError = document.getElementById("signup-error");
 
-      function loadBests() {
-        try { return JSON.parse(localStorage.getItem(BESTS_KEY)) || { easy: null, medium: { score: 11 }, hard: { score: 11 } }; } catch { return { easy: null, medium: { score: 11 }, hard: { score: 11 } }; }
-      }
+      const setupSecurityBtn = document.getElementById("setup-security-btn");
+      const startBtn = document.getElementById("start-btn");
+      const sessionLengthSelect = document.getElementById("session-length");
+      const endSessionLink = document.getElementById("end-session-link");
 
-      function saveBests(bests) {
-        localStorage.setItem(BESTS_KEY, JSON.stringify(bests));
-      }
+      const scoreEl = document.getElementById("score");
+      const streakEl = document.getElementById("streak");
+      const progressQuestion = document.getElementById("progress-question");
+      const progressFill = document.getElementById("progress-fill");
 
-      const authPanel = document.getElementById('auth-panel');
-      const setupPanel = document.getElementById('setup-panel');
-      const gamePanel = document.getElementById('game-panel');
-      const headerAuth = document.getElementById('header-auth');
-      const userGreetingName = document.getElementById('user-greeting-name');
-      const headerAuthBtn = document.getElementById('header-auth-btn');
+      const divisorDisplay = document.getElementById("divisor-display");
+      const dividendDisplay = document.getElementById("dividend-display");
+      const quotientInput = document.getElementById("quotient-input");
+      const subtractionInput = document.getElementById("subtraction-input");
+      const remainderInput = document.getElementById("remainder-input");
+      const submitBtn = document.getElementById("submit-btn");
+      const nextBtn = document.getElementById("next-btn");
+      const resetBtn = document.getElementById("reset-btn");
+      const feedbackEl = document.getElementById("feedback");
 
-      const loginTab = document.getElementById('login-tab');
-      const signupTab = document.getElementById('signup-tab');
-      const loginFormPanel = document.getElementById('login-form-panel');
-      const signupFormPanel = document.getElementById('signup-form-panel');
-      const loginForm = document.getElementById('login-form');
-      const signupForm = document.getElementById('signup-form');
-      const skipAuthBtn = document.getElementById('skip-auth-btn');
+      const totpModal = document.getElementById("totp-modal");
+      const totpInputs = document.querySelectorAll("#totp-inputs input");
+      const totpVerifyBtn = document.getElementById("totp-verify-btn");
+      const totpCancelBtn = document.getElementById("totp-cancel-btn");
+      const totpError = document.getElementById("totp-error");
 
-      const loginEmailInput = document.getElementById('login-email');
-      const loginPasswordInput = document.getElementById('login-password');
-      const loginError = document.getElementById('login-error');
-      const signupEmailInput = document.getElementById('signup-email');
-      const signupPasswordInput = document.getElementById('signup-password');
-      const signupConfirmInput = document.getElementById('signup-confirm');
-      const signupError = document.getElementById('signup-error');
+      const totpSetupModal = document.getElementById("totp-setup-modal");
+      const totpSetupInputs = document.querySelectorAll("#totp-setup-inputs input");
+      const totpSetupConfirmBtn = document.getElementById("totp-setup-confirm-btn");
+      const totpSetupCloseBtn = document.getElementById("totp-setup-close-btn");
+      const totpSetupError = document.getElementById("totp-setup-error");
+      const qrCodeBox = document.getElementById("qr-code-box");
+      const totpSecretDisplay = document.getElementById("totp-secret-display");
 
-      const startBtn = document.getElementById('start-btn');
-      const sessionLengthSelect = document.getElementById('session-length');
-      const setupSecurityBtn = document.getElementById('setup-security-btn');
-      const setupBestEasy = document.getElementById('setup-best-easy');
-      const setupBestMedium = document.getElementById('setup-best-medium');
-      const setupBestHard = document.getElementById('setup-best-hard');
+      function showPanel(panelName) {
+        authPanel.classList.add("hidden");
+        setupPanel.classList.add("hidden");
+        gamePanel.classList.add("hidden");
 
-      const scoreEl = document.getElementById('score');
-      const streakEl = document.getElementById('streak');
-      const progressQuestion = document.getElementById('progress-question');
-      const progressFill = document.getElementById('progress-fill');
-      const divisorDisplay = document.getElementById('divisor-display');
-      const dividendDisplay = document.getElementById('dividend-display');
-      const quotientInput = document.getElementById('quotient-input');
-      const subtractionInput = document.getElementById('subtraction-input');
-      const remainderInput = document.getElementById('remainder-input');
-      const resetBtn = document.getElementById('reset-btn');
-      const submitBtn = document.getElementById('submit-btn');
-      const nextBtn = document.getElementById('next-btn');
-      const endSessionLink = document.getElementById('end-session-link');
-      const feedbackEl = document.getElementById('feedback');
-
-      const totpModal = document.getElementById('totp-modal');
-      const totpInputs = document.querySelectorAll('.totp-digit-input');
-      const totpError = document.getElementById('totp-error');
-      const totpVerifyBtn = document.getElementById('totp-verify-btn');
-      const totpCancelBtn = document.getElementById('totp-cancel-btn');
-      const totpRecoveryToggle = document.getElementById('totp-recovery-toggle');
-      const totpAutofillBtn = document.getElementById('totp-autofill-btn');
-
-      const securityModal = document.getElementById('security-modal');
-      const secBadge = document.getElementById('sec-badge');
-      const secSetupSection = document.getElementById('sec-setup-section');
-      const secDisableSection = document.getElementById('sec-disable-section');
-      const secBackupSection = document.getElementById('sec-backup-section');
-      const qrCodeBox = document.getElementById('qr-code-box');
-      const totpSecretDisplay = document.getElementById('totp-secret-display');
-      const secConfirmInput = document.getElementById('sec-confirm-input');
-      const secDisableInput = document.getElementById('sec-disable-input');
-      const secSetupAutofillBtn = document.getElementById('sec-setup-autofill-btn');
-      const secDisableAutofillBtn = document.getElementById('sec-disable-autofill-btn');
-      const backupCodesList = document.getElementById('backup-codes-list');
-      const secError = document.getElementById('sec-error');
-      const secSuccess = document.getElementById('sec-success');
-      const secCloseBtn = document.getElementById('sec-close-btn');
-      const secActionBtn = document.getElementById('sec-action-btn');
-
-      showPanel(authPanel);
-      updateHeaderAuth();
-      updateBestsDisplay();
-
-      loginTab.addEventListener('click', () => {
-        loginTab.classList.add('active'); loginTab.setAttribute('aria-selected', 'true');
-        signupTab.classList.remove('active'); signupTab.setAttribute('aria-selected', 'false');
-        loginFormPanel.classList.remove('hidden'); signupFormPanel.classList.add('hidden');
-      });
-
-      signupTab.addEventListener('click', () => {
-        signupTab.classList.add('active'); signupTab.setAttribute('aria-selected', 'true');
-        loginTab.classList.remove('active'); loginTab.setAttribute('aria-selected', 'false');
-        signupFormPanel.classList.remove('hidden'); loginFormPanel.classList.add('hidden');
-      });
-
-      skipAuthBtn.addEventListener('click', () => {
-        State.user = null;
-        updateHeaderAuth();
-        showPanel(setupPanel);
-        updateBestsDisplay();
-      });
-
-      headerAuthBtn.addEventListener('click', () => {
-        State.user = null;
-        updateHeaderAuth();
-        showPanel(authPanel);
-      });
-
-      function showPanel(panel) {
-        authPanel.classList.add('hidden');
-        setupPanel.classList.add('hidden');
-        gamePanel.classList.add('hidden');
-        panel.classList.remove('hidden');
+        if (panelName === "auth") authPanel.classList.remove("hidden");
+        else if (panelName === "setup") setupPanel.classList.remove("hidden");
+        else if (panelName === "game") gamePanel.classList.remove("hidden");
       }
 
       function updateHeaderAuth() {
-        if (State.user) {
-          headerAuth.classList.remove('hidden');
-          headerAuth.classList.add('visible');
-          userGreetingName.textContent = State.user.email;
+        if (state.currentUser || state.isGuest) {
+          headerAuth.classList.remove("hidden");
+          headerAuth.classList.add("visible");
+          userGreetingName.textContent = state.isGuest ? "Guest" : (state.currentUser?.email || ADMIN_EMAIL);
+          headerAuthBtn.textContent = "Log out";
         } else {
-          headerAuth.classList.add('hidden');
+          headerAuth.classList.add("hidden");
         }
       }
 
-      signupForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        signupError.classList.add('hidden');
-        const email = signupEmailInput.value.trim();
-        const pwd = signupPasswordInput.value;
-        const confirm = signupConfirmInput.value;
-        if (!email || !pwd) { showAuthError(signupError, 'Please enter email and password.'); return; }
-        if (pwd.length < 6) { showAuthError(signupError, 'Password must be at least 6 characters.'); return; }
-        if (pwd !== confirm) { showAuthError(signupError, 'Passwords do not match.'); return; }
-
-        const users = loadUsers();
-        users[email] = { password: pwd, totpSecret: null, backupCodes: [] };
-        saveUsers(users);
-
-        State.user = { email, ...users[email] };
-        updateHeaderAuth();
-        showPanel(setupPanel);
-        updateBestsDisplay();
-      });
-
-      loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        loginError.classList.add('hidden');
-        const email = loginEmailInput.value.trim();
-        const pwd = loginPasswordInput.value;
-        if (!email) { showAuthError(loginError, 'Please enter email.'); return; }
-
-        const users = loadUsers();
-        let userObj = users[email] ? { email, ...users[email] } : { email, totpSecret: null, backupCodes: [] };
-        
-        if (userObj.totpSecret) {
-          State.pendingAuthUser = userObj;
-          openTotpModal();
-        } else {
-          State.user = userObj;
-          updateHeaderAuth();
-          showPanel(setupPanel);
-          updateBestsDisplay();
-        }
-      });
-
-      function showAuthError(el, msg) {
-        el.textContent = msg;
-        el.classList.remove('hidden');
+      function promptTotp(callback) {
+        state.pendingAuthCallback = callback;
+        totpError.classList.add("hidden");
+        totpInputs.forEach(input => input.value = "");
+        totpModal.classList.remove("hidden");
+        totpInputs[0].focus();
       }
 
-      document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-          State.difficulty = e.target.value;
-          document.documentElement.setAttribute('data-difficulty', State.difficulty);
-        });
+      totpCancelBtn.addEventListener("click", () => {
+        totpModal.classList.add("hidden");
+        state.pendingAuthCallback = null;
       });
 
-      setupSecurityBtn.addEventListener('click', () => {
-        openSecurityModal();
-      });
-
-      function openSecurityModal() {
-        securityModal.classList.remove('hidden');
-        secError.classList.add('hidden');
-        secSuccess.classList.add('hidden');
-        secConfirmInput.value = '';
-        if (secDisableInput) secDisableInput.value = '';
-
-        const user = State.user || { email: 'ibraheem.muhammad.ai@gmail.com', totpSecret: ADMIN_FIXED_SECRET };
-        if (user.email === 'ibraheem.muhammad.ai@gmail.com') {
-          user.totpSecret = ADMIN_FIXED_SECRET;
-        }
-
-        if (user.totpSecret) {
-          secBadge.textContent = 'Enabled';
-          secBadge.className = 'security-badge';
-          secSetupSection.classList.add('hidden');
-          secDisableSection.classList.remove('hidden');
-          secBackupSection.classList.add('hidden');
-          secActionBtn.textContent = 'Disable 2FA';
-        } else {
-          secBadge.textContent = 'Disabled';
-          secBadge.className = 'security-badge disabled';
-          secSetupSection.classList.remove('hidden');
-          secDisableSection.classList.add('hidden');
-          secBackupSection.classList.remove('hidden');
-          secActionBtn.textContent = 'Enable 2FA';
-
-          if (!user.tempSecret) {
-            user.tempSecret = user.email === 'ibraheem.muhammad.ai@gmail.com' ? ADMIN_FIXED_SECRET : TOTP.generateSecret();
-            user.tempBackupCodes = TOTP.generateBackupCodes();
-          }
-
-          totpSecretDisplay.textContent = user.tempSecret;
-          renderQrCode(`otpauth://totp/Divide&Conquer:${encodeURIComponent(user.email)}?secret=${user.tempSecret}&issuer=DivideAndConquer`);
-          backupCodesList.innerHTML = user.tempBackupCodes.map(c => `<span>${c}</span>`).join('');
-        }
-      }
-
-      function renderQrCode(text) {
-        qrCodeBox.innerHTML = '';
-        try {
-          const qr = qrcode(0, 'M');
-          qr.addData(text);
-          qr.make();
-          qrCodeBox.innerHTML = qr.createSvgTag({ scalable: true, margin: 2 });
-          const svg = qrCodeBox.querySelector('svg');
-          if (svg) { svg.style.width = '160px'; svg.style.height = '160px'; }
-        } catch (e) {
-          qrCodeBox.textContent = 'QR Code generation error';
-        }
-      }
-
-      secCloseBtn.addEventListener('click', () => {
-        securityModal.classList.add('hidden');
-      });
-
-      secActionBtn.addEventListener('click', async () => {
-        const user = State.user || { email: 'ibraheem.muhammad.ai@gmail.com', totpSecret: ADMIN_FIXED_SECRET };
-        if (!State.user) State.user = user;
-
-        // Prevent admin/specific account from disabling 2FA
-        if (user.email === 'ibraheem.muhammad.ai@gmail.com' && user.totpSecret) {
-          showAuthError(secError, 'Policy restriction: Two-Factor Authentication cannot be disabled for this administrative account.');
+      totpVerifyBtn.addEventListener("click", async () => {
+        const code = Array.from(totpInputs).map(i => i.value).join("");
+        if (code.length !== 6) {
+          totpError.textContent = "Please enter all 6 digits.";
+          totpError.classList.remove("hidden");
           return;
         }
 
-        if (user.totpSecret) {
-          const disableCode = secDisableInput.value.trim();
-          if (!disableCode || disableCode.length !== 6) {
-            showAuthError(secError, 'Please enter the 6-digit code to disable 2FA.');
-            return;
-          }
-          const valid = await TOTP.verify(user.totpSecret, disableCode);
-          if (valid) {
-            user.totpSecret = null;
-            user.backupCodes = [];
-            let users = loadUsers();
-            if (users[user.email]) {
-              users[user.email].totpSecret = null;
-              users[user.email].backupCodes = [];
-              saveUsers(users);
-            }
-            secSuccess.textContent = '2FA successfully disabled.';
-            secSuccess.classList.remove('hidden');
-            setTimeout(() => { securityModal.classList.add('hidden'); openSecurityModal(); }, 1500);
-          } else {
-            showAuthError(secError, 'Invalid code. Try again.');
+        const isValid = await verifyTotpCode(ADMIN_SECRET, code);
+        if (isValid) {
+          totpModal.classList.add("hidden");
+          if (state.pendingAuthCallback) {
+            state.pendingAuthCallback();
+            state.pendingAuthCallback = null;
           }
         } else {
-          const code = secConfirmInput.value.trim();
-          if (!code || code.length !== 6) {
-            showAuthError(secError, 'Please enter the 6-digit code.');
-            return;
-          }
-          const valid = await TOTP.verify(user.tempSecret, code);
-          if (valid) {
-            user.totpSecret = user.tempSecret;
-            user.backupCodes = user.tempBackupCodes;
-            let users = loadUsers();
-            if (users[user.email]) {
-              users[user.email].totpSecret = user.totpSecret;
-              users[user.email].backupCodes = user.backupCodes;
-              saveUsers(users);
-            }
-            delete user.tempSecret;
-            delete user.tempBackupCodes;
-            secSuccess.textContent = '2FA successfully enabled!';
-            secSuccess.classList.remove('hidden');
-            setTimeout(() => { securityModal.classList.add('hidden'); }, 1500);
-          } else {
-            showAuthError(secError, 'Invalid code. Try again.');
-          }
+          totpError.textContent = "Invalid verification code. Try again.";
+          totpError.classList.remove("hidden");
+          totpInputs.forEach(i => i.value = "");
+          totpInputs[0].focus();
         }
       });
 
-      secSetupAutofillBtn.addEventListener('click', async () => {
-        const user = State.user;
-        if (user && user.tempSecret) {
-          const code = await TOTP.generate(user.tempSecret);
-          secConfirmInput.value = code;
-        }
-      });
-
-      secDisableAutofillBtn.addEventListener('click', async () => {
-        const user = State.user;
-        if (user && user.totpSecret) {
-          const code = await TOTP.generate(user.totpSecret);
-          secDisableInput.value = code;
-        }
-      });
-
-      function openTotpModal() {
-        totpModal.classList.remove('hidden');
-        totpError.classList.add('hidden');
-        totpInputs.forEach(inp => inp.value = '');
-        if (totpInputs[0]) totpInputs[0].focus();
-      }
-
-      totpCancelBtn.addEventListener('click', () => {
-        totpModal.classList.add('hidden');
-        State.pendingAuthUser = null;
-      });
-
-      totpInputs.forEach((inp, idx) => {
-        inp.addEventListener('input', (e) => {
-          const val = e.target.value;
+      // Handle digit input jumping
+      totpInputs.forEach((input, idx) => {
+        input.addEventListener("input", (e) => {
+          const val = e.target.value.replace(/[^0-9]/g, "");
+          e.target.value = val;
           if (val && idx < totpInputs.length - 1) {
             totpInputs[idx + 1].focus();
           }
         });
-        inp.addEventListener('keydown', (e) => {
-          if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !input.value && idx > 0) {
             totpInputs[idx - 1].focus();
           }
         });
       });
 
-      totpAutofillBtn.addEventListener('click', async () => {
-        const user = State.pendingAuthUser;
-        if (user && user.totpSecret) {
-          const code = await TOTP.generate(user.totpSecret);
-          totpInputs.forEach((inp, idx) => {
-            if (code[idx]) inp.value = code[idx];
-          });
-        }
+      totpSetupInputs.forEach((input, idx) => {
+        input.addEventListener("input", (e) => {
+          const val = e.target.value.replace(/[^0-9]/g, "");
+          e.target.value = val;
+          if (val && idx < totpSetupInputs.length - 1) {
+            totpSetupInputs[idx + 1].focus();
+          }
+        });
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !input.value && idx > 0) {
+            totpSetupInputs[idx - 1].focus();
+          }
+        });
       });
 
-      async function verifyTotpCode() {
-        const token = Array.from(totpInputs).map(i => i.value).join('');
-        if (token.length !== 6) {
-          showAuthError(totpError, 'Please enter all 6 digits.');
+      loginTab.addEventListener("click", () => {
+        loginTab.classList.add("active");
+        loginTab.setAttribute("aria-selected", "true");
+        signupTab.classList.remove("active");
+        signupTab.setAttribute("aria-selected", "false");
+        loginFormPanel.classList.remove("hidden");
+        signupFormPanel.classList.add("hidden");
+      });
+
+      signupTab.addEventListener("click", () => {
+        signupTab.classList.add("active");
+        signupTab.setAttribute("aria-selected", "true");
+        loginTab.classList.remove("active");
+        loginTab.setAttribute("aria-selected", "false");
+        signupFormPanel.classList.remove("hidden");
+        loginFormPanel.classList.add("hidden");
+      });
+
+      skipAuthBtn.addEventListener("click", () => {
+        state.isGuest = true;
+        state.currentUser = null;
+        updateHeaderAuth();
+        showPanel("setup");
+      });
+
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = loginEmail.value.trim();
+        const password = loginPassword.value.trim();
+
+        if (!email || !password) {
+          loginError.textContent = "Please fill in all fields.";
+          loginError.classList.remove("hidden");
           return;
         }
-        const user = State.pendingAuthUser;
-        if (!user) return;
-        const isValid = await TOTP.verify(user.totpSecret, token);
-        if (isValid) {
-          totpModal.classList.add('hidden');
-          State.user = user;
-          State.pendingAuthUser = null;
-          updateHeaderAuth();
-          showPanel(setupPanel);
-          updateBestsDisplay();
-        } else {
-          showAuthError(totpError, 'Invalid verification code. Try again.');
-        }
-      }
 
-      totpVerifyBtn.addEventListener('click', verifyTotpCode);
+        loginError.classList.add("hidden");
 
-      totpRecoveryToggle.addEventListener('click', () => {
-        const code = prompt('Enter one of your 8-digit backup recovery codes:');
-        if (!code) return;
-        const user = State.pendingAuthUser;
-        if (user && user.backupCodes && user.backupCodes.includes(code.trim())) {
-          user.backupCodes = user.backupCodes.filter(c => c !== code.trim());
-          let users = loadUsers();
-          if (users[user.email]) {
-            users[user.email].backupCodes = user.backupCodes;
-            saveUsers(users);
-          }
-          totpModal.classList.add('hidden');
-          State.user = user;
-          State.pendingAuthUser = null;
+        const proceedLogin = () => {
+          state.currentUser = { email, secret: ADMIN_SECRET };
+          state.isGuest = false;
           updateHeaderAuth();
-          showPanel(setupPanel);
-          updateBestsDisplay();
+          showPanel("setup");
+        };
+
+        // If logging in as admin with TOTP enabled
+        if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+          promptTotp(proceedLogin);
         } else {
-          showAuthError(totpError, 'Invalid recovery code.');
+          proceedLogin();
         }
       });
 
-      startBtn.addEventListener('click', () => {
-        State.sessionLength = sessionLengthSelect.value === 'endless' ? 'endless' : parseInt(sessionLengthSelect.value, 10);
-        State.currentIndex = 0;
-        State.score = 0;
-        State.streak = 0;
-        State.bestStreak = 0;
-        State.correctCount = 0;
-        showPanel(gamePanel);
-        nextProblem();
+      signupForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = signupEmail.value.trim();
+        const password = signupPassword.value.trim();
+        const confirm = signupConfirm.value.trim();
+
+        if (!email || !password || !confirm) {
+          signupError.textContent = "Please fill in all fields.";
+          signupError.classList.remove("hidden");
+          return;
+        }
+        if (password.length < 6) {
+          signupError.textContent = "Password must be at least 6 characters.";
+          signupError.classList.remove("hidden");
+          return;
+        }
+        if (password !== confirm) {
+          signupError.textContent = "Passwords do not match.";
+          signupError.classList.remove("hidden");
+          return;
+        }
+
+        signupError.classList.add("hidden");
+        state.currentUser = { email };
+        state.isGuest = false;
+        updateHeaderAuth();
+        showPanel("setup");
+      });
+
+      headerAuthBtn.addEventListener("click", () => {
+        state.currentUser = null;
+        state.isGuest = false;
+        updateHeaderAuth();
+        showPanel("auth");
+      });
+
+      setupSecurityBtn.addEventListener("click", () => {
+        totpSetupError.classList.add("hidden");
+        totpSetupInputs.forEach(i => i.value = "");
+        totpSecretDisplay.textContent = `Secret: ${ADMIN_SECRET}`;
+        
+        // Generate QR code
+        qrCodeBox.innerHTML = "";
+        try {
+          const otpauth = `otpauth://totp/Divide%20%26%20Conquer:${ADMIN_EMAIL}?secret=${ADMIN_SECRET}&issuer=Divide%20%26%20Conquer`;
+          const qr = qrcode(0, 'M');
+          qr.addData(otpauth);
+          qr.make();
+          qrCodeBox.innerHTML = qr.createSvgTag({ scalable: true });
+          const svgEl = qrCodeBox.querySelector("svg");
+          if (svgEl) {
+            svgEl.style.width = "180px";
+            svgEl.style.height = "180px";
+          }
+        } catch (err) {
+          qrCodeBox.textContent = "QR Code Generation Error";
+        }
+
+        totpSetupModal.classList.remove("hidden");
+        totpSetupInputs[0].focus();
+      });
+
+      totpSetupCloseBtn.addEventListener("click", () => {
+        totpSetupModal.classList.add("hidden");
+      });
+
+      totpSetupConfirmBtn.addEventListener("click", async () => {
+        const code = Array.from(totpSetupInputs).map(i => i.value).join("");
+        const isValid = await verifyTotpCode(ADMIN_SECRET, code);
+        if (isValid) {
+          totpSetupModal.classList.add("hidden");
+          alert("2FA Security successfully verified and enabled!");
+        } else {
+          totpSetupError.textContent = "Invalid code. Please check your app and try again.";
+          totpSetupError.classList.remove("hidden");
+        }
       });
 
       function generateProblem(diff) {
         let divisor, quotient, dividend, remainder;
-        if (diff === 'easy') {
-          divisor = Math.floor(Math.random() * 8) + 2;
-          quotient = Math.floor(Math.random() * 50) + 10;
+        if (diff === "easy") {
+          divisor = Math.floor(Math.random() * 8) + 2; // 2-9
+          quotient = Math.floor(Math.random() * 89) + 11; // 11-99
           remainder = Math.floor(Math.random() * divisor);
-        } else if (diff === 'medium') {
-          divisor = Math.floor(Math.random() * 11) + 3;
-          quotient = Math.floor(Math.random() * 200) + 30;
+          dividend = divisor * quotient + remainder;
+        } else if (diff === "medium") {
+          divisor = Math.floor(Math.random() * 11) + 2; // 2-12
+          quotient = Math.floor(Math.random() * 400) + 50; // 50-449
           remainder = Math.floor(Math.random() * divisor);
+          dividend = divisor * quotient + remainder;
         } else {
-          divisor = Math.floor(Math.random() * 12) + 4;
-          quotient = Math.floor(Math.random() * 500) + 100;
+          // Hard
+          divisor = Math.floor(Math.random() * 11) + 5; // 5-15
+          quotient = Math.floor(Math.random() * 800) + 120;
           remainder = Math.floor(Math.random() * divisor);
+          dividend = divisor * quotient + remainder;
         }
-        dividend = (divisor * quotient) + remainder;
-        return { divisor, quotient, dividend, remainder };
+
+        const subProduct = divisor * quotient;
+        return {
+          divisor,
+          dividend,
+          quotient,
+          remainder,
+          subProduct
+        };
       }
 
-      function nextProblem() {
-        State.currentProblem = generateProblem(State.difficulty);
-        divisorDisplay.textContent = State.currentProblem.divisor;
-        dividendDisplay.textContent = State.currentProblem.dividend;
-        quotientInput.value = '';
-        subtractionInput.value = '';
-        remainderInput.value = '';
-        quotientInput.readOnly = false;
-        subtractionInput.readOnly = false;
-        remainderInput.readOnly = false;
-        quotientInput.classList.remove('locked', 'answer-correct', 'show-solution');
-        subtractionInput.classList.remove('locked', 'answer-correct', 'show-solution');
-        remainderInput.classList.remove('locked', 'answer-correct', 'show-solution');
-        feedbackEl.className = 'feedback hidden';
-        feedbackEl.textContent = '';
-        quotientInput.focus();
+      startBtn.addEventListener("click", () => {
+        const diffRadio = document.querySelector('input[name="difficulty"]:checked');
+        state.difficulty = diffRadio ? diffRadio.value : "easy";
+        state.sessionLength = sessionLengthSelect.value === "endless" ? Infinity : parseInt(sessionLengthSelect.value, 10);
+        state.currentProblemIndex = 0;
+        state.score = 0;
+        state.streak = 0;
 
-        const pct = State.sessionLength === 'endless' ? 0 : ((State.currentIndex) / State.sessionLength) * 100;
-        progressQuestion.textContent = `Question ${State.currentIndex + 1}${State.sessionLength === 'endless' ? '' : ' of ' + State.sessionLength}`;
-        progressFill.style.width = `${pct}%`;
-        scoreEl.textContent = State.score;
-        streakEl.textContent = State.streak;
-      }
+        scoreEl.textContent = "0";
+        streakEl.textContent = "0";
 
-      resetBtn.addEventListener('click', () => {
-        quotientInput.value = '';
-        subtractionInput.value = '';
-        remainderInput.value = '';
-        quotientInput.focus();
+        loadNextProblem();
+        showPanel("game");
       });
 
-      submitBtn.addEventListener('click', submitAnswer);
-      quotientInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') subtractionInput.focus(); });
-      subtractionInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') remainderInput.focus(); });
-      remainderInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitAnswer(); });
-      nextBtn.addEventListener('click', advanceGame);
-      endSessionLink.addEventListener('click', (e) => { e.preventDefault(); location.reload(); });
+      // End session takes user back to Home / Setup instead of logging out!
+      endSessionLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        showPanel("setup");
+      });
 
-      function submitAnswer() {
-        if (quotientInput.readOnly) return;
-        const qVal = parseInt(quotientInput.value.trim(), 10);
-        const rVal = remainderInput.value.trim() === '' ? 0 : parseInt(remainderInput.value.trim(), 10);
-        const expectedQ = State.currentProblem.quotient;
-        const expectedR = State.currentProblem.remainder;
-
-        if (isNaN(qVal)) {
-          showFeedback('Please enter the quotient on top.', 'error');
+      function loadNextProblem() {
+        if (state.sessionLength !== Infinity && state.currentProblemIndex >= state.sessionLength) {
+          alert(`Practice complete! Final Score: ${state.score}`);
+          showPanel("setup");
           return;
         }
 
-        quotientInput.readOnly = true;
-        subtractionInput.readOnly = true;
-        remainderInput.readOnly = true;
-        quotientInput.classList.add('locked');
-        subtractionInput.classList.add('locked');
-        remainderInput.classList.add('locked');
+        state.currentProblemIndex++;
+        state.currentProblem = generateProblem(state.difficulty);
 
-        if (qVal === expectedQ && rVal === expectedR) {
-          quotientInput.classList.add('answer-correct');
-          remainderInput.classList.add('answer-correct');
-          showFeedback('Correct! Great job.', 'success');
-          State.score += 10 + State.streak * 2;
-          State.streak += 1;
-          State.correctCount += 1;
-          if (State.streak > State.bestStreak) State.bestStreak = State.streak;
-          scoreEl.textContent = State.score;
-          streakEl.textContent = State.streak;
+        divisorDisplay.textContent = state.currentProblem.divisor;
+        dividendDisplay.textContent = state.currentProblem.dividend;
+
+        quotientInput.value = "";
+        subtractionInput.value = "";
+        remainderInput.value = "";
+
+        quotientInput.classList.remove("locked", "answer-correct", "show-solution");
+        subtractionInput.classList.remove("locked", "answer-correct", "show-solution");
+        remainderInput.classList.remove("locked", "answer-correct", "show-solution");
+
+        quotientInput.readOnly = false;
+        subtractionInput.readOnly = false;
+        remainderInput.readOnly = false;
+
+        feedbackEl.classList.add("hidden");
+        feedbackEl.textContent = "";
+
+        if (state.sessionLength !== Infinity) {
+          progressQuestion.textContent = `Question ${state.currentProblemIndex} of ${state.sessionLength}`;
+          const pct = ((state.currentProblemIndex - 1) / state.sessionLength) * 100;
+          progressFill.style.width = `${pct}%`;
+        } else {
+          progressQuestion.textContent = `Question ${state.currentProblemIndex} (Endless)`;
+          progressFill.style.width = "100%";
+        }
+
+        quotientInput.focus();
+      }
+
+      resetBtn.addEventListener("click", () => {
+        quotientInput.value = "";
+        subtractionInput.value = "";
+        remainderInput.value = "";
+        feedbackEl.classList.add("hidden");
+        quotientInput.focus();
+      });
+
+      submitBtn.addEventListener("click", () => {
+        const qVal = parseInt(quotientInput.value.trim(), 10);
+        const sVal = parseInt(subtractionInput.value.trim(), 10);
+        const rVal = parseInt(remainderInput.value.trim() || "0", 10);
+
+        const p = state.currentProblem;
+        const isCorrect = (qVal === p.quotient && sVal === p.subProduct && rVal === p.remainder);
+
+        if (isCorrect) {
+          state.score += 10;
+          state.streak++;
+          scoreEl.textContent = state.score;
+          streakEl.textContent = state.streak;
+
+          quotientInput.classList.add("locked", "answer-correct");
+          subtractionInput.classList.add("locked", "answer-correct");
+          remainderInput.classList.add("locked", "answer-correct");
+
+          quotientInput.readOnly = true;
+          subtractionInput.readOnly = true;
+          remainderInput.readOnly = true;
+
+          feedbackEl.className = "feedback success";
+          feedbackEl.textContent = "🎉 Correct! Excellent division work.";
+          feedbackEl.classList.remove("hidden");
+
           triggerConfetti();
+
+          setTimeout(() => {
+            loadNextProblem();
+          }, 1500);
         } else {
-          quotientInput.classList.add('show-solution');
-          quotientInput.value = expectedQ;
-          remainderInput.value = expectedR;
-          showFeedback(`Not quite. Correct quotient: ${expectedQ}, Remainder: ${expectedR}.`, 'error');
-          State.streak = 0;
-          streakEl.textContent = State.streak;
+          state.streak = 0;
+          streakEl.textContent = state.streak;
+
+          feedbackEl.className = "feedback error";
+          feedbackEl.innerHTML = `Not quite right. <span class="feedback-hint">Check your subtraction product (${p.divisor} &times; quotient = ${p.subProduct}) and remainder.</span>`;
+          feedbackEl.classList.remove("hidden");
         }
-      }
+      });
 
-      function showFeedback(msg, type) {
-        feedbackEl.textContent = msg;
-        feedbackEl.className = `feedback ${type}`;
-      }
-
-      function advanceGame() {
-        State.currentIndex++;
-        if (State.sessionLength !== 'endless' && State.currentIndex >= State.sessionLength) {
-          endSession();
-        } else {
-          nextProblem();
-        }
-      }
-
-      function endSession() {
-        const total = State.currentIndex === 0 ? 1 : State.currentIndex;
-        const accuracy = Math.round((State.correctCount / total) * 100);
-        
-        const bests = loadBests();
-        const diff = State.difficulty;
-        if (!bests[diff] || State.score > bests[diff].score) {
-          bests[diff] = { score: State.score, streak: State.bestStreak, accuracy };
-          saveBests(bests);
-        }
-
-        gamePanel.innerHTML = `
-          <div class="text-center py-6">
-            <h2 class="text-2xl font-bold mb-2">🎉 Practice Session Complete!</h2>
-            <p class="text-muted mb-6">Here is how you did on ${diff.toUpperCase()} mode:</p>
-            <div class="stats-bar mb-6">
-              <div class="stat"><span class="stat-label">Final Score</span><span class="stat-value text-accent">${State.score}</span></div>
-              <div class="stat"><span class="stat-label">Accuracy</span><span class="stat-value">${accuracy}%</span></div>
-            </div>
-            <div class="flex gap-3">
-              <button type="button" class="btn btn-secondary flex-1" onclick="location.reload()">Back to Menu</button>
-            </div>
-          </div>
-        `;
-      }
-
-      function updateBestsDisplay() {
-        const bests = loadBests();
-        setupBestEasy.textContent = bests.easy ? bests.easy.score : '—';
-        setupBestMedium.textContent = bests.medium ? bests.medium.score : '11';
-        setupBestHard.textContent = bests.hard ? bests.hard.score : '11';
-      }
+      nextBtn.addEventListener("click", () => {
+        loadNextProblem();
+      });
 
       function triggerConfetti() {
-        const container = document.getElementById('confetti-container');
-        const colors = ['#b07d10', '#2d6a4f', '#8c600b', '#3a86ff'];
-        for (let i = 0; i < 18; i++) {
-          const dot = document.createElement('div');
-          dot.className = 'confetti-dot';
-          const size = Math.floor(Math.random() * 8) + 6;
-          dot.style.width = `${size}px`;
-          dot.style.height = `${size}px`;
-          dot.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-          dot.style.left = '50%';
-          dot.style.top = '40%';
+        const container = document.getElementById("confetti-container");
+        const colors = ["#b07d10", "#2d6a4f", "#e8a0a0", "#8c600b", "#3182ce"];
+        for (let i = 0; i < 25; i++) {
+          const dot = document.createElement("div");
+          dot.className = "confetti-dot";
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          dot.style.background = color;
+          dot.style.width = `${Math.floor(Math.random() * 8) + 6}px`;
+          dot.style.height = dot.style.width;
+          dot.style.left = `50%`;
+          dot.style.top = `50%`;
+
           const angle = Math.random() * Math.PI * 2;
-          const dist = Math.random() * 180 + 80;
-          dot.style.setProperty('--cx', `${Math.cos(angle) * dist}px`);
-          dot.style.setProperty('--cy', `${Math.sin(angle) * dist}px`);
+          const dist = Math.random() * 180 + 60;
+          const cx = Math.cos(angle) * dist;
+          const cy = Math.sin(angle) * dist;
+
+          dot.style.setProperty("--cx", `${cx}px`);
+          dot.style.setProperty("--cy", `${cy}px`);
+
           container.appendChild(dot);
           setTimeout(() => dot.remove(), 850);
         }
       }
+
+      
+      showPanel("auth");
     </script>
   </body>
 </html>
