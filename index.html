@@ -12,10 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-      :root{--bg:#e8e4dc;--surface:#fffef9;--ink:#1a1f24;--muted:#5c656d;--accent:#b07d10;--accent-dark:#8c600b;--success:#2d6a4f;--error:#9b2226;--border:#ddd5c8;--paper-line:#b8cce8;--paper-margin:#e8a0a0;--shadow:0 12px 40px rgba(26,31,36,0.08);--radius:16px;--font-display:"Fraunces",Georgia,serif;--font-body:"Source Sans 3",system-ui,sans-serif;--font-hand:"Patrick Hand","Segoe Print",cursive}
+      :root{--bg:#e8e4dc;--surface:#fffef9;--ink:#1a1f24;--muted:#5c656d;--accent:#b07d10;--accent-dark:#8c600b;--success:#2d6a4f;--error:#9b2226;--border:#ddd5c8;--paper-line:#b8cce8;--paper-margin:#e8a0a0;--shadow:0 12px 40px rgba(26,31,36,.08);--radius:16px;--font-display:"Fraunces",Georgia,serif;--font-body:"Source Sans 3",system-ui,sans-serif;--font-hand:"Patrick Hand","Segoe Print",cursive}
       @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
       *,*::before,*::after{box-sizing:border-box}
-      body{margin:0;min-height:100vh;font-family:var(--font-body);font-size:1.05rem;color:var(--ink);background:var(--bg);background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(176,125,16,0.08),transparent),linear-gradient(180deg,var(--bg) 0%,#ddd8cf 100%);overflow-x:hidden}
+      body{margin:0;min-height:100vh;font-family:var(--font-body);font-size:1.05rem;color:var(--ink);background:var(--bg);background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(176,125,16,.08),transparent),linear-gradient(180deg,var(--bg) 0%,#ddd8cf 100%);overflow-x:hidden}
       .bg-shapes{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
       .bg-shape{position:absolute;border-radius:50%;opacity:.04;background:var(--accent);animation:fb linear infinite}
       @keyframes fb{0%{transform:translateY(105vh) rotate(0) scale(1)}50%{transform:translateY(50vh) rotate(180deg) scale(1.12)}100%{transform:translateY(-12vh) rotate(360deg) scale(1)}}
@@ -80,7 +80,7 @@
       .cdd-opt.selected{background:rgba(176,125,16,.1);font-weight:700;color:var(--accent-dark)}
       .cdd-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:transparent;flex-shrink:0;transition:border-color .15s,color .15s,background .15s}
       .cdd-opt.selected .cdd-check{background:var(--accent);border-color:var(--accent);color:#fff}
-      .cdd-custom-row{padding:.6rem 1rem .85rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.5rem;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .25s ease,padding .25s ease}
+      .cdd-custom-row{padding:0;border-top:1px solid var(--border);display:flex;align-items:center;gap:.5rem;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .25s ease,padding .25s ease}
       .cdd-custom-row.visible{max-height:80px;opacity:1;padding:.75rem 1rem .85rem}
       .cdd-custom-row label{font-size:.9rem;font-weight:600;white-space:nowrap;color:var(--ink)}
       .cdd-custom-row input[type="number"]{width:90px;padding:.5rem .65rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);text-align:center;font-weight:700;transition:border-color .2s,box-shadow .2s}
@@ -181,7 +181,6 @@
         </div>
       </header>
       <main class="main">
-        <!-- AUTH -->
         <section class="panel auth" id="auth-panel">
           <div class="auth-tabs" role="tablist">
             <button type="button" class="auth-tab active" id="login-tab" role="tab" aria-selected="true">Log in</button>
@@ -210,7 +209,6 @@
             </form>
           </div>
         </section>
-        <!-- SETUP -->
         <section class="panel setup hidden" id="setup-panel">
           <h2 class="m-0 mb-6">Practice setup</h2>
           <fieldset class="field-group"><legend>Difficulty Level</legend>
@@ -259,7 +257,6 @@
           </fieldset>
           <button type="button" class="btn btn-primary" id="start-btn">Start practice</button>
         </section>
-        <!-- GAME -->
         <section class="panel game hidden" id="game-panel" aria-live="polite">
           <div class="stats-bar">
             <div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="score">0</span></div>
@@ -286,14 +283,13 @@
             </div>
             <p class="feedback hidden" id="feedback" role="alert"></p>
             <div class="instructions-legend">
-              <div><strong>Quotient</strong> — on top, above the line</div>
-              <div><strong>Subtraction</strong> — write the number you subtract (divisor x quotient)</div>
-              <div><strong>Remainder</strong> — what is left at the bottom</div>
+              <div><strong>Quotient</strong> -- on top, above the line</div>
+              <div><strong>Subtraction</strong> -- write the number you subtract (divisor x quotient)</div>
+              <div><strong>Remainder</strong> -- what is left at the bottom</div>
             </div>
             <div class="mt-4"><a href="#" id="end-session-link" class="text-xs text-gray-500 hover:underline">End session</a></div>
           </div>
         </section>
-        <!-- RESULTS -->
         <section class="panel results hidden" id="results-panel">
           <div class="results-hero"><h2 id="results-title">Session Complete</h2><p id="results-subtitle"></p></div>
           <div class="results-stats">
@@ -308,7 +304,6 @@
         </section>
       </main>
     </div>
-    <!-- MODALS -->
     <div class="modal-overlay hidden" id="settings-modal" role="dialog" aria-modal="true">
       <div class="modal-box">
         <h3 class="text-xl font-bold mb-4 text-center">Practice Settings</h3>
@@ -331,7 +326,7 @@
             <button type="button" class="btn btn-secondary text-xs py-2 px-3" id="setup-security-btn" style="border-radius:10px">Setup 2FA</button>
           </div>
         </div>
-        <div class="mt-6"><button type="button" class="btn btn-primary w-full" id="settings-close-btn">Save &amp; Close</button></div>
+        <div class="mt-6"><button type="button" class="btn btn-primary w-full" id="settings-close-btn">Save and Close</button></div>
       </div>
     </div>
     <div class="modal-overlay hidden" id="confirm-modal" role="dialog" aria-modal="true">
@@ -434,237 +429,228 @@
       </div>
     </div>
     <div id="worksheet-print-area" class="hidden"></div>
-
     <script>
-    /* ====== BASE32 / TOTP ====== */
-    const B32={a:"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",decode(s){let c=s.replace(/=+$/,"").toUpperCase(),b="",r=[];for(let i=0;i<c.length;i++){let v=this.a.indexOf(c[i]);if(v>-1)b+=v.toString(2).padStart(5,"0")}for(let i=0;i+8<=b.length;i+=8)r.push(parseInt(b.substr(i,8),2));return new Uint8Array(r)}};
-    async function hmacSha1(k,m){const ck=await crypto.subtle.importKey("raw",k,{name:"HMAC",hash:{name:"SHA-1"}},false,["sign"]);return new Uint8Array(await crypto.subtle.sign("HMAC",ck,m))}
-    async function genTotp(secret,step=30,off=0){try{const kb=B32.decode(secret),cnt=Math.floor(Date.now()/1000/step)+off,buf=new ArrayBuffer(8);new DataView(buf).setUint32(4,cnt,false);const h=await hmacSha1(kb,buf),o=h[h.length-1]&0xf,bin=((h[o]&0x7f)<<24)|((h[o+1]&0xff)<<16)|((h[o+2]&0xff)<<8)|(h[o+3]&0xff);return(bin%1000000).toString().padStart(6,"0")}catch(e){return null}}
-    async function verifyTotp(secret,code){if(!code||code.length!==6)return false;for(let o=-1;o<=1;o++){if(await genTotp(secret,30,o)===code)return true}return false}
+    /* ====== TOTP ====== */
+    var B32={a:"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",decode:function(s){var c=s.replace(/=+$/,"").toUpperCase(),b="",r=[];for(var i=0;i<c.length;i++){var v=this.a.indexOf(c[i]);if(v>-1)b+=v.toString(2).padStart(5,"0")}for(var j=0;j+8<=b.length;j+=8)r.push(parseInt(b.substr(j,8),2));return new Uint8Array(r)}};
+    async function hmacSha1(k,m){var ck=await crypto.subtle.importKey("raw",k,{name:"HMAC",hash:{name:"SHA-1"}},false,["sign"]);return new Uint8Array(await crypto.subtle.sign("HMAC",ck,m))}
+    async function genTotp(secret,step,off){step=step||30;off=off||0;try{var kb=B32.decode(secret),cnt=Math.floor(Date.now()/1000/step)+off,buf=new ArrayBuffer(8);new DataView(buf).setUint32(4,cnt,false);var h=await hmacSha1(kb,buf),o=h[h.length-1]&0xf,bin=((h[o]&0x7f)<<24)|((h[o+1]&0xff)<<16)|((h[o+2]&0xff)<<8)|(h[o+3]&0xff);return(bin%1000000).toString().padStart(6,"0")}catch(e){return null}}
+    async function verifyTotp(secret,code){if(!code||code.length!==6)return false;for(var o=-1;o<=1;o++){if(await genTotp(secret,30,o)===code)return true}return false}
 
-    /* ====== ADMIN CONSTANTS (undeletable) ====== */
-    const ADMIN_EMAIL="ibraheem.muhammad.ai@gmail.com";
-    const ADMIN_PASS="Midea@222";
-    const ADMIN_SECRET="3W6PVGFORLAYR3L3";
+    /* ====== ADMIN (undeletable) ====== */
+    var ADMIN_EMAIL="ibraheem.muhammad.ai@gmail.com";
+    var ADMIN_PASS="Midea@222";
+    var ADMIN_SECRET="3W6PVGFORLAYR3L3";
 
-    /* ====== GENERIC CUSTOM DROPDOWN FACTORY ====== */
+    /* ====== CUSTOM DROPDOWN FACTORY ====== */
     function makeCDD(wrapId,triggerId,listId,labelId,opts,onChange){
-      const trigger=document.getElementById(triggerId),list=document.getElementById(listId),label=document.getElementById(labelId);
-      const options=list.querySelectorAll(".cdd-opt");let selVal=opts.initial||options[0].dataset.value,open=false;
+      var trigger=document.getElementById(triggerId),list=document.getElementById(listId),label=document.getElementById(labelId);
+      var options=list.querySelectorAll(".cdd-opt");
+      var selVal=opts.initial||options[0].dataset.value;
+      var open=false;
       function close(){open=false;trigger.classList.remove("open");list.classList.remove("open");trigger.setAttribute("aria-expanded","false")}
       function pick(v){
-        selVal=v;options.forEach(o=>o.classList.toggle("selected",o.dataset.value===v));
-        const lbl=opts.labelMap?opts.labelMap[v]:null;
-        if(lbl)label.textContent=lbl;
-        close();if(onChange)onChange(v);
-        /* Handle custom row visibility */
-        const cr=list.querySelector(".cdd-custom-row");
-        if(cr){if(v==="custom"){cr.classList.add("visible");const inp=cr.querySelector("input");if(inp)setTimeout(()=>inp.focus(),150)}else{cr.classList.remove("visible")}}
+        selVal=v;
+        options.forEach(function(o){o.classList.toggle("selected",o.dataset.value===v)});
+        if(opts.labelMap&&opts.labelMap[v])label.textContent=opts.labelMap[v];
+        close();
+        if(onChange)onChange(v);
+        var cr=list.querySelector(".cdd-custom-row");
+        if(cr){if(v==="custom"){cr.classList.add("visible");var inp=cr.querySelector("input");if(inp)setTimeout(function(){inp.focus()},150)}else{cr.classList.remove("visible")}}
       }
-      trigger.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();open=!open;trigger.classList.toggle("open",open);list.classList.toggle("open",open);trigger.setAttribute("aria-expanded",open)});
-      options.forEach(o=>o.addEventListener("click",e=>{e.stopPropagation();pick(o.dataset.value)}));
-      list.addEventListener("click",e=>e.stopPropagation());
-      document.addEventListener("click",e=>{if(open&&!document.getElementById(wrapId).contains(e.target))close()});
-      document.addEventListener("keydown",e=>{if(e.key==="Escape"&&open){close();trigger.focus()}});
-      return{getValue:()=>selVal,pick,updateLabel:v=>{if(opts.labelMap&&opts.labelMap[v])label.textContent=opts.labelMap[v]}}
+      trigger.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();open=!open;trigger.classList.toggle("open",open);list.classList.toggle("open",open);trigger.setAttribute("aria-expanded",String(open))});
+      options.forEach(function(o){o.addEventListener("click",function(e){e.stopPropagation();pick(o.dataset.value)})});
+      list.addEventListener("click",function(e){e.stopPropagation()});
+      document.addEventListener("click",function(e){if(open&&!document.getElementById(wrapId).contains(e.target))close()});
+      document.addEventListener("keydown",function(e){if(e.key==="Escape"&&open){close();trigger.focus()}});
+      return{getValue:function(){return selVal},pick:pick,updateLabel:function(v){if(opts.labelMap&&opts.labelMap[v])label.textContent=opts.labelMap[v]}}
     }
 
-    /* ====== SESSION LENGTH DROPDOWN ====== */
-    const slCdd=makeCDD("sl-wrap","sl-trigger","sl-list","sl-label",{
-      initial:"20",
-      labelMap:{10:"10 problems",20:"20 problems",30:"30 problems",50:"50 problems",endless:"Endless",custom:"Custom -- enter a number"}
-    });
-    /* Live-update label when typing custom value */
+    /* ====== SESSION LENGTH ====== */
+    var slCdd=makeCDD("sl-wrap","sl-trigger","sl-list","sl-label",{initial:"20",labelMap:{10:"10 problems",20:"20 problems",30:"30 problems",50:"50 problems",endless:"Endless",custom:"Custom -- enter a number"}});
     document.getElementById("sl-custom-input").addEventListener("input",function(){
-      const v=parseInt(this.value,10);slCdd.updateLabel("custom");
+      var v=parseInt(this.value,10);slCdd.updateLabel("custom");
       if(v&&v>0)document.getElementById("sl-label").textContent=v+" problems (custom)";
     });
     window.getSessionLength=function(){
-      const v=slCdd.getValue();
+      var v=slCdd.getValue();
       if(v==="endless")return"endless";
-      if(v==="custom"){const n=parseInt(document.getElementById("sl-custom-input").value,10);return(n&&n>=1)?n:5}
+      if(v==="custom"){var n=parseInt(document.getElementById("sl-custom-input").value,10);return(n&&n>=1)?n:5}
       return parseInt(v,10);
     };
 
-    /* ====== FONT STYLE DROPDOWNS (setup + settings) ====== */
-    const fontLabelMap={handwriting:"Notebook Handwriting",sans:"Clean Modern",serif:"Classic Serif"};
-    let currentFont="handwriting";
+    /* ====== FONT DROPDOWNS ====== */
+    var fontLabelMap={handwriting:"Notebook Handwriting",sans:"Clean Modern",serif:"Classic Serif"};
+    var currentFont="handwriting";
     function applyFont(f){document.body.className="font-"+f;currentFont=f}
-    const sfCdd=makeCDD("sf-wrap","sf-trigger","sf-list","sf-label",{initial:"handwriting",labelMap:fontLabelMap},applyFont);
-    const sf2Cdd=makeCDD("sf2-wrap","sf2-trigger","sf2-list","sf2-label",{initial:"handwriting",labelMap:fontLabelMap},applyFont);
+    var sfCdd=makeCDD("sf-wrap","sf-trigger","sf-list","sf-label",{initial:"handwriting",labelMap:fontLabelMap},applyFont);
+    var sf2Cdd=makeCDD("sf2-wrap","sf2-trigger","sf2-list","sf2-label",{initial:"handwriting",labelMap:fontLabelMap},applyFont);
 
     /* ====== WORKSHEET DROPDOWNS ====== */
-    const wsDiffMap={easy:"Easy",medium:"Medium",hard:"Hard"};
-    const wsDiffCdd=makeCDD("ws-diff-wrap","ws-diff-trigger","ws-diff-list","ws-diff-label",{initial:"medium",labelMap:wsDiffMap});
-    const wsCntMap={6:"6 Problems",12:"12 Problems",18:"18 Problems"};
-    const wsCntCdd=makeCDD("ws-cnt-wrap","ws-cnt-trigger","ws-cnt-list","ws-cnt-label",{initial:"12",labelMap:wsCntMap});
+    var wsDiffCdd=makeCDD("ws-diff-wrap","ws-diff-trigger","ws-diff-list","ws-diff-label",{initial:"medium",labelMap:{easy:"Easy",medium:"Medium",hard:"Hard"}});
+    var wsCntCdd=makeCDD("ws-cnt-wrap","ws-cnt-trigger","ws-cnt-list","ws-cnt-label",{initial:"12",labelMap:{6:"6 Problems",12:"12 Problems",18:"18 Problems"}});
 
-    /* ====== APP STATE ====== */
-    const state={currentUser:null,isGuest:false,difficulty:"easy",selectedDivisors:[2,4,5,8,9,10],sessionLength:20,currentProblemIndex:0,score:0,streak:0,bestStreak:0,currentProblem:null,pendingAuthCallback:null};
+    /* ====== STATE ====== */
+    var state={currentUser:null,isGuest:false,difficulty:"easy",selectedDivisors:[2,4,5,8,9,10],sessionLength:20,currentProblemIndex:0,score:0,streak:0,bestStreak:0,currentProblem:null,pendingAuthCallback:null};
 
-    /* ====== LOCALSTORAGE + ADMIN PROTECTION ====== */
-    function getUsers(){try{return JSON.parse(localStorage.getItem("dc_users")||"{}")}catch{return{}}}
+    /* ====== STORAGE + ADMIN PROTECTION ====== */
+    function getUsers(){try{return JSON.parse(localStorage.getItem("dc_users")||"{}")}catch(e){return{}}}
     function saveUsers(u){localStorage.setItem("dc_users",JSON.stringify(u))}
-    /* Admin always exists as fallback */
     function getUser(email){
-      const users=getUsers();
-      if(email===ADMIN_EMAIL){
-        /* Always return admin, even if localStorage was wiped */
-        return{password:ADMIN_PASS,totpSecret:ADMIN_SECRET,createdAt:users[ADMIN_EMAIL]?.createdAt||Date.now(),_protected:true};
-      }
-      return users[email]||null;
+      if(email===ADMIN_EMAIL)return{password:ADMIN_PASS,totpSecret:ADMIN_SECRET,createdAt:getUsers()[ADMIN_EMAIL]?getUsers()[ADMIN_EMAIL].createdAt:Date.now(),_protected:true};
+      return getUsers()[email]||null;
     }
-    function getScores(){try{return JSON.parse(localStorage.getItem("dc_scores")||"[]")}catch{return[]}}
+    function getScores(){try{return JSON.parse(localStorage.getItem("dc_scores")||"[]")}catch(e){return[]}}
     function saveScores(s){localStorage.setItem("dc_scores",JSON.stringify(s))}
-    /* Clear scores but preserve admin's scores */
-    function clearScoresProtected(){
-      const scores=getScores().filter(s=>s.player===ADMIN_EMAIL);
-      saveScores(scores);
-    }
+    function clearScoresProtected(){saveScores(getScores().filter(function(s){return s.player===ADMIN_EMAIL}))}
 
     /* ====== DOM REFS ====== */
-    const $=id=>document.getElementById(id);
-    const authPanel=$("auth-panel"),setupPanel=$("setup-panel"),gamePanel=$("game-panel"),resultsPanel=$("results-panel");
-    const headerAuth=$("header-auth"),userGreetingName=$("user-greeting-name");
-    const setupDivCont=$("setup-divisor-container"),settingsDivCont=$("settings-divisor-container");
-    const loginForm=$("login-form"),loginEmail=$("login-email"),loginPassword=$("login-password"),loginError=$("login-error");
-    const signupForm=$("signup-form"),signupEmail=$("signup-email"),signupPassword=$("signup-password"),signupConfirm=$("signup-confirm"),signupError=$("signup-error");
-    const scoreEl=$("score"),streakEl=$("streak"),progressQuestion=$("progress-question"),progressFill=$("progress-fill"),progressTrack=$("progress-track");
-    const divisorDisplay=$("divisor-display"),dividendDisplay=$("dividend-display");
-    const quotientInput=$("quotient-input"),subtractionInput=$("subtraction-input"),remainderInput=$("remainder-input");
-    const submitBtn=$("submit-btn"),nextBtn=$("next-btn"),resetBtn=$("reset-btn"),feedbackEl=$("feedback"),endSessionLink=$("end-session-link");
-    const confirmModal=$("confirm-modal"),confirmCancelBtn=$("confirm-cancel-btn"),confirmOkBtn=$("confirm-ok-btn"),confirmModalDesc=$("confirm-modal-desc");
-    const totpModal=$("totp-modal"),totpInputs=document.querySelectorAll("#totp-inputs .totp-digit-input"),totpError=$("totp-error"),totpCancelBtn=$("totp-cancel-btn"),totpVerifyBtn=$("totp-verify-btn");
-    const totpSetupModal=$("totp-setup-modal"),totpSetupInputs=document.querySelectorAll("#totp-setup-inputs .totp-digit-input"),totpSetupError=$("totp-setup-error"),totpSetupCloseBtn=$("totp-setup-close-btn"),totpSetupConfirmBtn=$("totp-setup-confirm-btn"),qrCodeBox=$("qr-code-box"),totpSecretDisplay=$("totp-secret-display");
-    const leaderboardModal=$("leaderboard-modal"),leaderboardBody=$("leaderboard-body"),leaderboardCloseBtn=$("leaderboard-close-btn"),clearScoresBtn=$("clear-scores-btn");
-    const worksheetModal=$("worksheet-modal"),worksheetCloseBtn=$("worksheet-close-btn"),worksheetPdfBtn=$("worksheet-pdf-btn"),worksheetPrintBtn=$("worksheet-print-btn");
-    const confettiContainer=$("confetti-container");
+    function $(id){return document.getElementById(id)}
+    var authPanel=$("auth-panel"),setupPanel=$("setup-panel"),gamePanel=$("game-panel"),resultsPanel=$("results-panel");
+    var headerAuth=$("header-auth"),userGreetingName=$("user-greeting-name");
+    var setupDivCont=$("setup-divisor-container"),settingsDivCont=$("settings-divisor-container");
+    var loginForm=$("login-form"),loginEmail=$("login-email"),loginPassword=$("login-password"),loginError=$("login-error");
+    var signupForm=$("signup-form"),signupEmail=$("signup-email"),signupPassword=$("signup-password"),signupConfirm=$("signup-confirm"),signupError=$("signup-error");
+    var scoreEl=$("score"),streakEl=$("streak"),progressQuestion=$("progress-question"),progressFill=$("progress-fill"),progressTrack=$("progress-track");
+    var divisorDisplay=$("divisor-display"),dividendDisplay=$("dividend-display");
+    var quotientInput=$("quotient-input"),subtractionInput=$("subtraction-input"),remainderInput=$("remainder-input");
+    var submitBtn=$("submit-btn"),nextBtn=$("next-btn"),resetBtn=$("reset-btn"),feedbackEl=$("feedback"),endSessionLink=$("end-session-link");
+    var confirmModal=$("confirm-modal"),confirmCancelBtn=$("confirm-cancel-btn"),confirmOkBtn=$("confirm-ok-btn"),confirmModalDesc=$("confirm-modal-desc");
+    var totpModal=$("totp-modal"),totpInputs=document.querySelectorAll("#totp-inputs .totp-digit-input"),totpError=$("totp-error"),totpCancelBtn=$("totp-cancel-btn"),totpVerifyBtn=$("totp-verify-btn");
+    var totpSetupModal=$("totp-setup-modal"),totpSetupInputs=document.querySelectorAll("#totp-setup-inputs .totp-digit-input"),totpSetupError=$("totp-setup-error"),totpSetupCloseBtn=$("totp-setup-close-btn"),totpSetupConfirmBtn=$("totp-setup-confirm-btn"),qrCodeBox=$("qr-code-box"),totpSecretDisplay=$("totp-secret-display");
+    var leaderboardModal=$("leaderboard-modal"),leaderboardBody=$("leaderboard-body"),leaderboardCloseBtn=$("leaderboard-close-btn"),clearScoresBtn=$("clear-scores-btn");
+    var worksheetModal=$("worksheet-modal"),worksheetCloseBtn=$("worksheet-close-btn"),worksheetPdfBtn=$("worksheet-pdf-btn"),worksheetPrintBtn=$("worksheet-print-btn");
+    var confettiContainer=$("confetti-container");
 
     /* ====== DIVISOR PILLS ====== */
-    function makePills(c,sel,cb){c.innerHTML="";for(let d=2;d<=15;d++){const l=document.createElement("label");l.className="divisor-pill";const i=document.createElement("input");i.type="checkbox";i.value=d;i.checked=sel.includes(d);i.addEventListener("change",cb);l.appendChild(i);l.appendChild(document.createTextNode(d));c.appendChild(l)}}
-    function readPills(c){return Array.from(c.querySelectorAll("input:checked")).map(i=>+i.value)}
-    makePills(setupDivCont,state.selectedDivisors,()=>{state.selectedDivisors=readPills(setupDivCont)});
-    makePills(settingsDivCont,state.selectedDivisors,()=>{state.selectedDivisors=readPills(settingsDivCont)});
-    function applyPreset(arr){[setupDivCont,settingsDivCont].forEach(c=>c.querySelectorAll("input").forEach(i=>{i.checked=arr.includes(+i.value)}));state.selectedDivisors=[...arr]}
-    $("setup-divisors-preset").addEventListener("click",()=>applyPreset([2,4,5,8,9,10]));
-    $("setup-divisors-all").addEventListener("click",()=>applyPreset(Array.from({length:14},(_,i)=>i+2)));
-    $("settings-divisors-preset").addEventListener("click",()=>applyPreset([2,4,5,8,9,10]));
-    $("settings-divisors-all").addEventListener("click",()=>applyPreset(Array.from({length:14},(_,i)=>i+2)));
+    function makePills(c,sel,cb){c.innerHTML="";for(var d=2;d<=15;d++){var l=document.createElement("label");l.className="divisor-pill";var i=document.createElement("input");i.type="checkbox";i.value=d;i.checked=sel.indexOf(d)>-1;i.addEventListener("change",cb);l.appendChild(i);l.appendChild(document.createTextNode(d));c.appendChild(l)}}
+    function readPills(c){return Array.from(c.querySelectorAll("input:checked")).map(function(i){return parseInt(i.value,10)})}
+    makePills(setupDivCont,state.selectedDivisors,function(){state.selectedDivisors=readPills(setupDivCont)});
+    makePills(settingsDivCont,state.selectedDivisors,function(){state.selectedDivisors=readPills(settingsDivCont)});
+    function applyPreset(arr){[setupDivCont,settingsDivCont].forEach(function(c){c.querySelectorAll("input").forEach(function(i){i.checked=arr.indexOf(parseInt(i.value,10))>-1})});state.selectedDivisors=arr.slice()}
+    $("setup-divisors-preset").addEventListener("click",function(){applyPreset([2,4,5,8,9,10])});
+    $("setup-divisors-all").addEventListener("click",function(){applyPreset(Array.from({length:14},function(_,i){return i+2}))});
+    $("settings-divisors-preset").addEventListener("click",function(){applyPreset([2,4,5,8,9,10])});
+    $("settings-divisors-all").addEventListener("click",function(){applyPreset(Array.from({length:14},function(_,i){return i+2}))});
 
     /* ====== AUTH TABS ====== */
-    $("login-tab").addEventListener("click",()=>{$("login-tab").classList.add("active");$("signup-tab").classList.remove("active");$("login-form-panel").classList.remove("hidden");$("signup-form-panel").classList.add("hidden")});
-    $("signup-tab").addEventListener("click",()=>{$("signup-tab").classList.add("active");$("login-tab").classList.remove("active");$("signup-form-panel").classList.remove("hidden");$("login-form-panel").classList.add("hidden")});
+    $("login-tab").addEventListener("click",function(){$("login-tab").classList.add("active");$("signup-tab").classList.remove("active");$("login-form-panel").classList.remove("hidden");$("signup-form-panel").classList.add("hidden")});
+    $("signup-tab").addEventListener("click",function(){$("signup-tab").classList.add("active");$("login-tab").classList.remove("active");$("signup-form-panel").classList.remove("hidden");$("login-form-panel").classList.add("hidden")});
 
     /* ====== PANEL NAV ====== */
-    function showPanel(p){[authPanel,setupPanel,gamePanel,resultsPanel].forEach(x=>x.classList.add("hidden"));p.classList.remove("hidden");p.style.animation="none";p.offsetHeight;p.style.animation=""}
+    function showPanel(p){[authPanel,setupPanel,gamePanel,resultsPanel].forEach(function(x){x.classList.add("hidden")});p.classList.remove("hidden");p.style.animation="none";p.offsetHeight;p.style.animation=""}
     function updateHeader(){if(state.currentUser){headerAuth.classList.remove("hidden");headerAuth.classList.add("visible");userGreetingName.textContent=state.currentUser}else{headerAuth.classList.add("hidden");headerAuth.classList.remove("visible")}}
     function goHome(){showPanel(state.currentUser||state.isGuest?setupPanel:authPanel)}
 
     /* ====== AUTH ====== */
-    $("skip-auth-btn").addEventListener("click",()=>{state.isGuest=true;state.currentUser=null;updateHeader();showPanel(setupPanel)});
+    $("skip-auth-btn").addEventListener("click",function(){state.isGuest=true;state.currentUser=null;updateHeader();showPanel(setupPanel)});
 
-    loginForm.addEventListener("submit",async e=>{
+    loginForm.addEventListener("submit",async function(e){
       e.preventDefault();loginError.classList.add("hidden");
-      const email=loginEmail.value.trim().toLowerCase(),pw=loginPassword.value;
+      var email=loginEmail.value.trim().toLowerCase(),pw=loginPassword.value;
       if(!email||!pw){loginError.textContent="Please fill in all fields.";loginError.classList.remove("hidden");return}
-      const user=getUser(email);
+      var user=getUser(email);
       if(!user){loginError.textContent="No account found.";loginError.classList.remove("hidden");return}
       if(user.password!==pw){loginError.textContent="Incorrect password.";loginError.classList.remove("hidden");return}
-      const secret=user.totpSecret;
-      if(secret){
-        state.pendingAuthCallback=()=>{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)};
-        showTotpVerify(secret);
+      if(user.totpSecret){
+        state.pendingAuthCallback=function(){state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)};
+        showTotpVerify(user.totpSecret);
       }else{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)}
     });
 
-    signupForm.addEventListener("submit",e=>{
+    signupForm.addEventListener("submit",function(e){
       e.preventDefault();signupError.classList.add("hidden");
-      const email=signupEmail.value.trim().toLowerCase(),pw=signupPassword.value,cf=signupConfirm.value;
+      var email=signupEmail.value.trim().toLowerCase(),pw=signupPassword.value,cf=signupConfirm.value;
       if(!email||!pw||!cf){signupError.textContent="Please fill in all fields.";signupError.classList.remove("hidden");return}
       if(pw.length<6){signupError.textContent="Password must be at least 6 characters.";signupError.classList.remove("hidden");return}
       if(pw!==cf){signupError.textContent="Passwords do not match.";signupError.classList.remove("hidden");return}
       if(email===ADMIN_EMAIL){signupError.textContent="That email is reserved.";signupError.classList.remove("hidden");return}
-      const users=getUsers();if(users[email]){signupError.textContent="Account already exists.";signupError.classList.remove("hidden");return}
+      var users=getUsers();if(users[email]){signupError.textContent="Account already exists.";signupError.classList.remove("hidden");return}
       users[email]={password:pw,totpSecret:null,createdAt:Date.now()};saveUsers(users);
       state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel);
     });
 
-    $("header-auth-btn").addEventListener("click",()=>{state.currentUser=null;state.isGuest=false;updateHeader();showPanel(authPanel)});
+    $("header-auth-btn").addEventListener("click",function(){state.currentUser=null;state.isGuest=false;updateHeader();showPanel(authPanel)});
 
     /* ====== TOTP ====== */
-    function setupAutoAdvance(inputs){inputs.forEach((inp,i)=>{inp.value="";inp.addEventListener("input",()=>{if(inp.value.length===1&&i<inputs.length-1)inputs[i+1].focus()});inp.addEventListener("keydown",e=>{if(e.key==="Backspace"&&inp.value===""&&i>0)inputs[i-1].focus()});inp.addEventListener("paste",e=>{e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData("text").trim();for(let j=0;j<Math.min(t.length,inputs.length);j++)inputs[j].value=t[j]||"";inputs[Math.min(t.length,inputs.length-1)].focus()})})}
+    function setupAutoAdvance(inputs){inputs.forEach(function(inp,i){inp.value="";inp.addEventListener("input",function(){if(inp.value.length===1&&i<inputs.length-1)inputs[i+1].focus()});inp.addEventListener("keydown",function(e){if(e.key==="Backspace"&&inp.value===""&&i>0)inputs[i-1].focus()});inp.addEventListener("paste",function(e){e.preventDefault();var t=(e.clipboardData||window.clipboardData).getData("text").trim();for(var j=0;j<Math.min(t.length,inputs.length);j++)inputs[j].value=t[j]||"";inputs[Math.min(t.length,inputs.length-1)].focus()})})}
     setupAutoAdvance(totpInputs);setupAutoAdvance(totpSetupInputs);
-    function getCode(inputs){return Array.from(inputs).map(i=>i.value).join("")}
-    function clearCode(inputs){inputs.forEach(i=>i.value="")}
+    function getCode(inputs){return Array.from(inputs).map(function(i){return i.value}).join("")}
+    function clearCode(inputs){inputs.forEach(function(i){i.value=""})}
 
-    function showTotpVerify(secret){totpError.classList.add("hidden");clearCode(totpInputs);totpModal.classList.remove("hidden");setTimeout(()=>totpInputs[0].focus(),100)}
-    totpCancelBtn.addEventListener("click",()=>{totpModal.classList.add("hidden");state.pendingAuthCallback=null});
-    totpVerifyBtn.addEventListener("click",async()=>{
-      const code=getCode(totpInputs);
+    function showTotpVerify(secret){totpError.classList.add("hidden");clearCode(totpInputs);totpModal.classList.remove("hidden");setTimeout(function(){totpInputs[0].focus()},100)}
+    totpCancelBtn.addEventListener("click",function(){totpModal.classList.add("hidden");state.pendingAuthCallback=null});
+    totpVerifyBtn.addEventListener("click",async function(){
+      var code=getCode(totpInputs);
       if(code.length!==6){totpError.textContent="Enter all 6 digits.";totpError.classList.remove("hidden");return}
-      const user=getUser(state.currentUser||ADMIN_EMAIL);
+      var user=getUser(state.currentUser||ADMIN_EMAIL);
       if(await verifyTotp(user.totpSecret,code)){totpModal.classList.add("hidden");if(state.pendingAuthCallback){state.pendingAuthCallback();state.pendingAuthCallback=null}}
       else{totpError.textContent="Invalid code.";totpError.classList.remove("hidden");clearCode(totpInputs);totpInputs[0].focus()}
     });
 
     /* TOTP Setup */
-    $("setup-security-btn").addEventListener("click",()=>{
+    $("setup-security-btn").addEventListener("click",function(){
       if(!state.currentUser){alert("Please log in first.");return}
       if(state.currentUser===ADMIN_EMAIL){alert("2FA is permanently enabled for this account.");return}
-      const users=getUsers(),user=users[state.currentUser];if(!user)return;
-      const secret=genRandomSecret(),url="otpauth://totp/DivideAndConquer:"+encodeURIComponent(state.currentUser)+"?secret="+secret+"&issuer=DivideAndConquer&algorithm=SHA1&digits=6&period=30";
+      var users=getUsers(),user=users[state.currentUser];if(!user)return;
+      var secret=genRandomSecret(),url="otpauth://totp/DivideAndConquer:"+encodeURIComponent(state.currentUser)+"?secret="+secret+"&issuer=DivideAndConquer&algorithm=SHA1&digits=6&period=30";
       qrCodeBox.innerHTML="";
-      try{const qr=qrcode(0,"M");qr.addData(url);qr.make();qrCodeBox.innerHTML=qr.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){qrCodeBox.innerHTML="<p style='color:var(--error)'>QR failed. Use the secret key.</p>"}
+      try{var qr=qrcode(0,"M");qr.addData(url);qr.make();qrCodeBox.innerHTML=qr.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){qrCodeBox.innerHTML="<p style='color:var(--error)'>QR failed. Use the secret key.</p>"}
       totpSecretDisplay.textContent=secret;totpSetupError.classList.add("hidden");clearCode(totpSetupInputs);
-      totpSetupModal.classList.remove("hidden");totpSetupModal._secret=secret;setTimeout(()=>totpSetupInputs[0].focus(),100);
+      totpSetupModal.classList.remove("hidden");totpSetupModal._secret=secret;setTimeout(function(){totpSetupInputs[0].focus()},100);
     });
-    totpSetupCloseBtn.addEventListener("click",()=>{totpSetupModal.classList.add("hidden")});
-    totpSetupConfirmBtn.addEventListener("click",async()=>{
-      const code=getCode(totpSetupInputs);
+    totpSetupCloseBtn.addEventListener("click",function(){totpSetupModal.classList.add("hidden")});
+    totpSetupConfirmBtn.addEventListener("click",async function(){
+      var code=getCode(totpSetupInputs);
       if(code.length!==6){totpSetupError.textContent="Enter all 6 digits.";totpSetupError.classList.remove("hidden");return}
       if(await verifyTotp(totpSetupModal._secret,code)){
-        const users=getUsers();if(users[state.currentUser]){users[state.currentUser].totpSecret=totpSetupModal._secret;saveUsers(users)}
+        var users=getUsers();if(users[state.currentUser]){users[state.currentUser].totpSecret=totpSetupModal._secret;saveUsers(users)}
         totpSetupModal.classList.add("hidden");alert("2FA is now enabled.");
       }else{totpSetupError.textContent="Invalid code.";totpSetupError.classList.remove("hidden");clearCode(totpSetupInputs);totpSetupInputs[0].focus()}
     });
-    function genRandomSecret(len=16){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let s="";const r=new Uint8Array(len);crypto.getRandomValues(r);for(let i=0;i<len;i++)s+=a[r[i]%a.length];return s}
+    function genRandomSecret(len){len=len||16;var a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",s="",r=new Uint8Array(len);crypto.getRandomValues(r);for(var i=0;i<len;i++)s+=a[r[i]%a.length];return s}
 
     /* ====== SETTINGS ====== */
-    $("header-settings-btn").addEventListener("click",()=>{settingsDivCont.querySelectorAll("input").forEach(i=>{i.checked=state.selectedDivisors.includes(+i.value)});sf2Cdd.pick(currentFont);settingsModal.classList.remove("hidden")});
-    $("settings-close-btn").addEventListener("click",()=>{
+    $("header-settings-btn").addEventListener("click",function(){
+      settingsDivCont.querySelectorAll("input").forEach(function(i){i.checked=state.selectedDivisors.indexOf(parseInt(i.value,10))>-1});
+      sf2Cdd.pick(currentFont);
+      settingsModal.classList.remove("hidden");
+    });
+    /* THIS WAS THE BUG: the old code had add("hidden") then remove("hidden") on same line */
+    $("settings-close-btn").addEventListener("click",function(){
       state.selectedDivisors=readPills(settingsDivCont);
-      setupDivCont.querySelectorAll("input").forEach(i=>{i.checked=state.selectedDivisors.includes(+i.value)});
-      applyFont(sf2Cdd.getValue());sfCdd.pick(currentFont);
-      settingsModal.classList.remove("hidden");settingsModal.classList.add("hidden");
+      setupDivCont.querySelectorAll("input").forEach(function(i){i.checked=state.selectedDivisors.indexOf(parseInt(i.value,10))>-1});
+      applyFont(sf2Cdd.getValue());
+      sfCdd.pick(currentFont);
+      settingsModal.classList.add("hidden");
     });
 
     /* ====== LEADERBOARD ====== */
     $("header-leaderboard-btn").addEventListener("click",renderLeaderboard);
-    function escH(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML}
+    function escH(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
     function renderLeaderboard(){
-      const scores=getScores().sort((a,b)=>b.score-a.score).slice(0,20);
-      leaderboardBody.innerHTML=scores.length?scores.map((s,i)=>"<tr><td>"+(i+1)+"</td><td>"+escH(s.player)+"</td><td><strong>"+s.score+"</strong></td><td>"+escH(s.difficulty)+"</td><td>"+new Date(s.date).toLocaleDateString()+"</td></tr>").join(""):"<tr><td colspan='5' class='text-center py-4 text-gray-500'>No scores yet.</td></tr>";
+      var scores=getScores().sort(function(a,b){return b.score-a.score}).slice(0,20);
+      leaderboardBody.innerHTML=scores.length?scores.map(function(s,i){return"<tr><td>"+(i+1)+"</td><td>"+escH(s.player)+"</td><td><strong>"+s.score+"</strong></td><td>"+escH(s.difficulty)+"</td><td>"+new Date(s.date).toLocaleDateString()+"</td></tr>"}).join(""):"<tr><td colspan='5' class='text-center py-4 text-gray-500'>No scores yet.</td></tr>";
       leaderboardModal.classList.remove("hidden");
     }
-    leaderboardCloseBtn.addEventListener("click",()=>leaderboardModal.classList.add("hidden"));
-    clearScoresBtn.addEventListener("click",()=>{
+    leaderboardCloseBtn.addEventListener("click",function(){leaderboardModal.classList.add("hidden")});
+    clearScoresBtn.addEventListener("click",function(){
       confirmModalDesc.textContent="Clear all saved scores? Admin scores are protected and will be kept.";
-      confirmOkBtn.onclick=()=>{clearScoresProtected();renderLeaderboard();confirmModal.classList.add("hidden")};
+      confirmOkBtn.onclick=function(){clearScoresProtected();renderLeaderboard();confirmModal.classList.add("hidden")};
       confirmModal.classList.remove("hidden");
     });
-    confirmCancelBtn.addEventListener("click",()=>confirmModal.classList.add("hidden"));
+    confirmCancelBtn.addEventListener("click",function(){confirmModal.classList.add("hidden")});
 
     /* ====== WORKSHEETS ====== */
-    $("header-worksheet-btn").addEventListener("click",()=>worksheetModal.classList.remove("hidden"));
-    worksheetCloseBtn.addEventListener("click",()=>worksheetModal.classList.add("hidden"));
-    function genProblems(diff,count){const r={easy:{d:[2,3,4,5,6,7,8,9],m:81},medium:{d:[2,3,4,5,6,7,8,9,10,11,12],m:144},hard:{d:[5,6,7,8,9,10,11,12,13,14,15],m:225}},c=r[diff]||r.medium,p=[];for(let i=0;i<count;i++){const dv=c.d[Math.floor(Math.random()*c.d.length)],mq=Math.max(Math.floor(c.m/dv),1),q=Math.floor(Math.random()*mq)+1;p.push({divisor:dv,dividend:dv*q,quotient:q,remainder:0})}return p}
-    function buildWSHtml(problems,ans){let h='<div style="font-family:Georgia,serif;padding:1rem"><h2 style="text-align:center;margin-bottom:.25rem">Divide & Conquer -- Worksheet</h2><p style="text-align:center;color:#888;font-size:.85rem;margin-bottom:1.5rem">Name: _______________ Date: _______________</p><div class="worksheet-grid">';problems.forEach((p,i)=>{h+='<div class="worksheet-problem"><div style="font-size:1.1rem;margin-bottom:.5rem;font-weight:600;color:#555">'+(i+1)+'.</div><div style="font-size:1.6rem;font-family:\'Patrick Hand\',cursive"><div style="text-align:right;border-bottom:2px solid #333;padding-bottom:2px;margin-bottom:4px;min-height:1.4em"></div><div style="display:flex;align-items:center;gap:.3rem"><span style="font-weight:700">'+p.divisor+'</span><svg width="12" height="36" viewBox="0 0 12 36"><path d="M12 0L12 36L0 36" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>'+p.dividend+'</span></div></div>'+(ans?'<div style="margin-top:.5rem;font-size:.85rem;color:var(--success);font-weight:600">Answer: '+p.quotient+'</div>':'')+'</div>'});h+='</div>';if(ans){h+='<div style="margin-top:2rem;padding-top:1rem;border-top:2px dashed #ccc"><h3 style="text-align:center;font-size:1rem">Answer Key</h3><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.5rem;font-size:.9rem">';problems.forEach((p,i)=>{h+='<div>'+(i+1)+'. '+p.quotient+'</div>'});h+='</div></div>'}h+='</div>';return h}
-    function handleWS(action){const diff=wsDiffCdd.getValue(),count=+wsCntCdd.getValue(),ans=$("ws-include-answers").checked,problems=genProblems(diff,count),html=buildWSHtml(problems,ans),pa=$("worksheet-print-area");pa.innerHTML=html;pa.classList.remove("hidden");if(action==="print"){window.print();setTimeout(()=>pa.classList.add("hidden"),1000)}else{html2pdf().set({margin:.5,filename:"division-worksheet.pdf",image:{type:"jpeg",quality:.98},html2canvas:{scale:2},jsPDF:{unit:"in",format:"letter",orientation:"portrait"}}).from(pa).save().then(()=>pa.classList.add("hidden"))}worksheetModal.classList.add("hidden")}
-    worksheetPrintBtn.addEventListener("click",()=>handleWS("print"));
-    worksheetPdfBtn.addEventListener("click",()=>handleWS("pdf"));
+    $("header-worksheet-btn").addEventListener("click",function(){worksheetModal.classList.remove("hidden")});
+    worksheetCloseBtn.addEventListener("click",function(){worksheetModal.classList.add("hidden")});
+    function genProblems(diff,count){var r={easy:{d:[2,3,4,5,6,7,8,9],m:81},medium:{d:[2,3,4,5,6,7,8,9,10,11,12],m:144},hard:{d:[5,6,7,8,9,10,11,12,13,14,15],m:225}},c=r[diff]||r.medium,p=[];for(var i=0;i<count;i++){var dv=c.d[Math.floor(Math.random()*c.d.length)],mq=Math.max(Math.floor(c.m/dv),1),q=Math.floor(Math.random()*mq)+1;p.push({divisor:dv,dividend:dv*q,quotient:q,remainder:0})}return p}
+    function buildWSHtml(problems,ans){var h='<div style="font-family:Georgia,serif;padding:1rem"><h2 style="text-align:center;margin-bottom:.25rem">Divide and Conquer -- Worksheet</h2><p style="text-align:center;color:#888;font-size:.85rem;margin-bottom:1.5rem">Name: _______________ Date: _______________</p><div class="worksheet-grid">';problems.forEach(function(p,i){h+='<div class="worksheet-problem"><div style="font-size:1.1rem;margin-bottom:.5rem;font-weight:600;color:#555">'+(i+1)+'.</div><div style="font-size:1.6rem;font-family:\'Patrick Hand\',cursive"><div style="text-align:right;border-bottom:2px solid #333;padding-bottom:2px;margin-bottom:4px;min-height:1.4em"></div><div style="display:flex;align-items:center;gap:.3rem"><span style="font-weight:700">'+p.divisor+'</span><svg width="12" height="36" viewBox="0 0 12 36"><path d="M12 0L12 36L0 36" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>'+p.dividend+'</span></div></div>'+(ans?'<div style="margin-top:.5rem;font-size:.85rem;color:var(--success);font-weight:600">Answer: '+p.quotient+'</div>':'')+'</div>'});h+='</div>';if(ans){h+='<div style="margin-top:2rem;padding-top:1rem;border-top:2px dashed #ccc"><h3 style="text-align:center;font-size:1rem">Answer Key</h3><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.5rem;font-size:.9rem">';problems.forEach(function(p,i){h+='<div>'+(i+1)+'. '+p.quotient+'</div>'});h+='</div></div>'}h+='</div>';return h}
+    function handleWS(action){var diff=wsDiffCdd.getValue(),count=parseInt(wsCntCdd.getValue(),10),ans=$("ws-include-answers").checked,problems=genProblems(diff,count),html=buildWSHtml(problems,ans),pa=$("worksheet-print-area");pa.innerHTML=html;pa.classList.remove("hidden");if(action==="print"){window.print();setTimeout(function(){pa.classList.add("hidden")},1000)}else{html2pdf().set({margin:.5,filename:"division-worksheet.pdf",image:{type:"jpeg",quality:.98},html2canvas:{scale:2},jsPDF:{unit:"in",format:"letter",orientation:"portrait"}}).from(pa).save().then(function(){pa.classList.add("hidden")})}worksheetModal.classList.add("hidden")}
+    worksheetPrintBtn.addEventListener("click",function(){handleWS("print")});
+    worksheetPdfBtn.addEventListener("click",function(){handleWS("pdf")});
 
     /* ====== GAME ====== */
-    function genProblem(){const ds=state.selectedDivisors.length?state.selectedDivisors:[2,3,4,5],dv=ds[Math.floor(Math.random()*ds.length)];let mq;const d=state.difficulty;if(d==="easy")mq=Math.floor(80/dv);else if(d==="medium")mq=Math.floor(140/dv);else mq=Math.floor(220/dv);mq=Math.max(mq,2);const q=Math.floor(Math.random()*mq)+1;return{divisor:dv,dividend:dv*q,quotient:q,remainder:0}}
+    function genProblem(){var ds=state.selectedDivisors.length?state.selectedDivisors:[2,3,4,5],dv=ds[Math.floor(Math.random()*ds.length)];var mq;if(state.difficulty==="easy")mq=Math.floor(80/dv);else if(state.difficulty==="medium")mq=Math.floor(140/dv);else mq=Math.floor(220/dv);mq=Math.max(mq,2);var q=Math.floor(Math.random()*mq)+1;return{divisor:dv,dividend:dv*q,quotient:q,remainder:0}}
 
     function startGame(){
       state.sessionLength=window.getSessionLength();state.difficulty=document.querySelector('input[name="difficulty"]:checked').value;
@@ -673,28 +659,28 @@
     }
 
     function loadProblem(){
-      state.currentProblem=genProblem();const p=state.currentProblem;
+      state.currentProblem=genProblem();var p=state.currentProblem;
       divisorDisplay.textContent=p.divisor;dividendDisplay.textContent=p.dividend;
       quotientInput.value="";subtractionInput.value="";remainderInput.value="";
       quotientInput.readOnly=false;subtractionInput.readOnly=false;remainderInput.readOnly=false;
-      [quotientInput,subtractionInput,remainderInput].forEach(i=>i.classList.remove("locked","answer-correct"));
+      [quotientInput,subtractionInput,remainderInput].forEach(function(i){i.classList.remove("locked","answer-correct")});
       submitBtn.disabled=false;nextBtn.disabled=true;feedbackEl.classList.add("hidden");
-      const total=state.sessionLength==="endless"?"∞":state.sessionLength;
+      var total=state.sessionLength==="endless"?"infinity":state.sessionLength;
       progressQuestion.textContent="Question "+(state.currentProblemIndex+1)+" of "+total;
-      if(state.sessionLength!=="endless"){const pct=(state.currentProblemIndex/state.sessionLength)*100;progressFill.style.width=pct+"%";progressTrack.setAttribute("aria-valuenow",Math.round(pct))}else{progressFill.style.width="0%";progressTrack.setAttribute("aria-valuenow",0)}
-      setTimeout(()=>quotientInput.focus(),100);
+      if(state.sessionLength!=="endless"){var pct=(state.currentProblemIndex/state.sessionLength)*100;progressFill.style.width=pct+"%";progressTrack.setAttribute("aria-valuenow",Math.round(pct))}else{progressFill.style.width="0%";progressTrack.setAttribute("aria-valuenow",0)}
+      setTimeout(function(){quotientInput.focus()},100);
     }
 
     function checkAnswer(){
-      const p=state.currentProblem,qv=quotientInput.value.trim(),sv=subtractionInput.value.trim(),rv=remainderInput.value.trim();
+      var p=state.currentProblem,qv=quotientInput.value.trim(),sv=subtractionInput.value.trim(),rv=remainderInput.value.trim();
       if(!qv){feedbackEl.className="feedback error";feedbackEl.innerHTML="Please enter a quotient.";feedbackEl.classList.remove("hidden");return}
-      const uq=+qv,us=sv!==""?+sv:null,ur=rv!==""?+rv:0,es=p.divisor*p.quotient;
-      let ok=uq===p.quotient;if(ok&&us!==null)ok=us===es;if(ok)ok=ur===p.remainder;
+      var uq=parseInt(qv,10),us=sv!==""?parseInt(sv,10):null,ur=rv!==""?parseInt(rv,10):0,es=p.divisor*p.quotient;
+      var ok=uq===p.quotient;if(ok&&us!==null)ok=us===es;if(ok)ok=ur===p.remainder;
       quotientInput.readOnly=true;subtractionInput.readOnly=true;remainderInput.readOnly=true;submitBtn.disabled=true;
       if(ok){
         state.score++;state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;
         scoreEl.textContent=state.score;streakEl.textContent=state.streak;
-        [quotientInput,subtractionInput,remainderInput].forEach(i=>i.classList.add("answer-correct"));
+        [quotientInput,subtractionInput,remainderInput].forEach(function(i){i.classList.add("answer-correct")});
         feedbackEl.className="feedback success";feedbackEl.innerHTML="Correct! "+p.dividend+" / "+p.divisor+" = "+p.quotient;feedbackEl.classList.remove("hidden");spawnConfetti();
       }else{
         state.streak=0;streakEl.textContent="0";feedbackEl.className="feedback error";
@@ -710,23 +696,23 @@
 
     /* ====== RESULTS ====== */
     function showResults(){
-      const name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();
+      var name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();
       scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores);
-      const total=state.currentProblemIndex,pct=total?Math.round(state.score/total*100):0;
+      var total=state.currentProblemIndex,pct=total?Math.round(state.score/total*100):0;
       $("results-score").textContent=state.score;$("results-accuracy").textContent=pct+"%";$("results-streak").textContent=state.bestStreak;
       $("results-subtitle").textContent="You answered "+state.score+" out of "+total+" correctly ("+pct+"%)";
       $("results-title").textContent=pct===100?"Perfect Score!":pct>=80?"Great Job!":pct>=50?"Session Complete":"Keep Practicing!";
-      showPanel(resultsPanel);if(pct>=80)for(let w=0;w<3;w++)setTimeout(spawnConfetti,w*200);
+      showPanel(resultsPanel);if(pct>=80)for(var w=0;w<3;w++)setTimeout(spawnConfetti,w*200);
     }
     $("results-home-btn").addEventListener("click",goHome);
     $("results-again-btn").addEventListener("click",startGame);
 
-    /* End session early -> confirm -> go home (no results) */
-    endSessionLink.addEventListener("click",e=>{
+    /* End session early */
+    endSessionLink.addEventListener("click",function(e){
       e.preventDefault();confirmModalDesc.textContent="End this session early? Progress will be saved.";
-      confirmOkBtn.onclick=()=>{
+      confirmOkBtn.onclick=function(){
         confirmModal.classList.add("hidden");
-        if(state.currentProblemIndex>0){const name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores)}
+        if(state.currentProblemIndex>0){var name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores)}
         goHome();
       };confirmModal.classList.remove("hidden");
     });
@@ -735,11 +721,11 @@
     $("start-btn").addEventListener("click",startGame);
     submitBtn.addEventListener("click",checkAnswer);
     nextBtn.addEventListener("click",nextProblem);
-    resetBtn.addEventListener("click",()=>{quotientInput.value="";subtractionInput.value="";remainderInput.value="";feedbackEl.classList.add("hidden");quotientInput.focus()});
-    [quotientInput,subtractionInput,remainderInput].forEach(inp=>{inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(!submitBtn.disabled)checkAnswer();else if(!nextBtn.disabled)nextProblem()}})});
+    resetBtn.addEventListener("click",function(){quotientInput.value="";subtractionInput.value="";remainderInput.value="";feedbackEl.classList.add("hidden");quotientInput.focus()});
+    [quotientInput,subtractionInput,remainderInput].forEach(function(inp){inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();if(!submitBtn.disabled)checkAnswer();else if(!nextBtn.disabled)nextProblem()}})});
 
     /* ====== CONFETTI ====== */
-    function spawnConfetti(){const r=document.getElementById("paper-sheet").getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cols=["#b07d10","#2d6a4f","#9b2226","#457b9d","#e9c46a","#f4a261"];for(let i=0;i<18;i++){const d=document.createElement("div");d.className="confetti-dot";const a=Math.PI*2*i/18+(Math.random()-.5)*.5,dist=60+Math.random()*100;d.style.cssText="left:"+cx+"px;top:"+cy+"px;width:"+(6+Math.random()*6)+"px;height:"+(6+Math.random()*6)+"px;background:"+cols[i%cols.length]+";--cx:"+(Math.cos(a)*dist)+"px;--cy:"+(Math.sin(a)*dist-40)+"px;";confettiContainer.appendChild(d);setTimeout(()=>d.remove(),900)}}
+    function spawnConfetti(){var r=document.getElementById("paper-sheet").getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cols=["#b07d10","#2d6a4f","#9b2226","#457b9d","#e9c46a","#f4a261"];for(var i=0;i<18;i++){var d=document.createElement("div");d.className="confetti-dot";var a=Math.PI*2*i/18+(Math.random()-.5)*.5,dist=60+Math.random()*100;d.style.cssText="left:"+cx+"px;top:"+cy+"px;width:"+(6+Math.random()*6)+"px;height:"+(6+Math.random()*6)+"px;background:"+cols[i%cols.length]+";--cx:"+(Math.cos(a)*dist)+"px;--cy:"+(Math.sin(a)*dist-40)+"px;";confettiContainer.appendChild(d);setTimeout(function(){d.remove()},900)}}
 
     /* ====== INIT ====== */
     updateHeader();
