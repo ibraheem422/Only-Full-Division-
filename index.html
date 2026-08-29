@@ -1,734 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Divide & Conquer — Division Practice</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23d46a32%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%239a4518%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M14%2010%20L14%2022%20L10%2022%22%20fill%3D%22none%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%20%20%3Cline%20x1%3D%2214%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2222%22%20cy%3D%228%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2222%22%20cy%3D%2224%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%0A%20%20%3Cline%20x1%3D%2219%22%20y1%3D%2216%22%20x2%3D%2225%22%20y2%3D%2216%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Patrick+Hand&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-      :root{--bg:#e8e4dc;--surface:#fffef9;--ink:#1a1f24;--muted:#5c656d;--accent:#b07d10;--accent-dark:#8c600b;--success:#2d6a4f;--error:#9b2226;--border:#ddd5c8;--paper-line:#b8cce8;--paper-margin:#e8a0a0;--shadow:0 12px 40px rgba(26,31,36,.08);--radius:16px;--font-display:"Fraunces",Georgia,serif;--font-body:"Source Sans 3",system-ui,sans-serif;--font-hand:"Patrick Hand","Segoe Print",cursive}
-      @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-      *,*::before,*::after{box-sizing:border-box}
-      body{margin:0;min-height:100vh;font-family:var(--font-body);font-size:1.05rem;color:var(--ink);background:var(--bg);background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(176,125,16,.08),transparent),linear-gradient(180deg,var(--bg) 0%,#ddd8cf 100%);overflow-x:hidden}
-      .bg-shapes{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-      .bg-shape{position:absolute;border-radius:50%;opacity:.04;background:var(--accent);animation:fb linear infinite}
-      @keyframes fb{0%{transform:translateY(105vh) rotate(0) scale(1)}50%{transform:translateY(50vh) rotate(180deg) scale(1.12)}100%{transform:translateY(-12vh) rotate(360deg) scale(1)}}
-      .confetti-container{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
-      .confetti-dot{position:absolute;border-radius:50%;animation:cf .85s ease-out forwards}
-      @keyframes cf{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0)}100%{opacity:0;transform:translate(var(--cx),var(--cy)) scale(.2) rotate(400deg)}}
-      .page{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:2rem 1.25rem 3rem}
-      .header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
-      .header-brand{display:flex;align-items:center;gap:1rem;flex-shrink:0;min-width:0}
-      .header-brand h1{white-space:nowrap}
-      .header-auth{display:flex;align-items:center;gap:.75rem;flex-shrink:0;font-size:.92rem}
-      @keyframes hi{0%{opacity:0;transform:translateX(12px)}100%{opacity:1;transform:translateX(0)}}
-      .header-auth.visible{animation:hi .3s ease forwards}
-      .user-greeting{color:var(--muted)}.user-greeting strong{color:var(--ink)}
-      .logout-link{color:var(--ink);font-weight:600;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit;font-size:inherit;padding:0}
-      .logout-link:hover{color:var(--accent-dark)}
-      .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);opacity:0;transform:translateY(20px);animation:pi .45s ease forwards}
-      @keyframes pi{to{opacity:1;transform:translateY(0)}}
-      .panel h2{margin:0 0 1.25rem;font-family:var(--font-display);font-size:1.35rem}
-      .auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem;padding:.35rem;background:var(--bg);border-radius:12px}
-      .auth-tab{font-family:inherit;font-size:.95rem;font-weight:600;padding:.65rem 1rem;border:none;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
-      .auth-tab:hover{color:var(--ink)}.auth-tab.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(26,31,36,.08)}
-      .auth-lead{margin:0 0 1.25rem;color:var(--muted);font-size:.95rem}
-      .auth-form{display:grid;gap:1rem}
-      .field{display:grid;gap:.35rem}.field-label{font-weight:600;font-size:.92rem}
-      .field input[type="text"],.field input[type="email"],.field input[type="password"]{width:100%;padding:.65rem .85rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);transition:border-color .2s,box-shadow .2s}
-      .field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.12)}
-      .field-hint{color:var(--muted);font-size:.82rem}
-      .auth-error{margin:0;padding:.65rem .85rem;border-radius:10px;background:rgba(155,34,38,.1);color:var(--error);font-size:.92rem;font-weight:600}
-      .auth-submit{width:100%;margin-top:.25rem}
-      .skip-auth{display:block;width:100%;text-align:center;margin-bottom:1.25rem;padding:.6rem;font-family:inherit;font-size:.92rem;font-weight:600;color:var(--muted);background:transparent;border:2px dashed var(--border);border-radius:10px;cursor:pointer;transition:color .2s,border-color .2s,background .2s,transform .15s}
-      .skip-auth:hover{color:var(--accent);border-color:var(--accent);background:rgba(176,125,16,.04)}.skip-auth:active{transform:scale(.98)}
-      .logo-link{flex-shrink:0;display:block;border-radius:14px;line-height:0;transition:transform .25s,box-shadow .25s}
-      .logo-link:hover{transform:translateY(-2px) rotate(-2deg);box-shadow:0 6px 20px rgba(176,125,16,.2)}
-      .logo{width:44px;height:44px;display:block;border-radius:12px;box-shadow:var(--shadow)}
-      .header h1{margin:0;font-family:var(--font-display);font-size:1.6rem;font-weight:700}
-      .tagline{margin:.15rem 0 0;color:var(--muted);font-size:.9rem}
-      .main{display:grid;gap:1.25rem}
-      .field-group{border:none;margin:0 0 1.5rem;padding:0}
-      .field-group legend{font-weight:700;margin-bottom:.75rem;font-size:1rem;color:var(--ink)}
-      .radio-grid{display:grid;gap:.75rem}
-      .radio-card{cursor:pointer;display:block}.radio-card input{position:absolute;opacity:0;pointer-events:none}
-      .radio-card-inner{display:block;padding:1rem 1.25rem;border:2px solid var(--border);border-radius:12px;background:var(--surface);transition:border-color .2s,background .2s,box-shadow .2s}
-      .radio-card-inner:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
-      .radio-card input:checked+.radio-card-inner{border-color:var(--accent);background:#fffefb;box-shadow:0 0 0 1px var(--accent)}
-      .radio-card-inner strong{display:block;margin-bottom:.2rem;font-size:1.05rem}
-      .radio-card-inner small{color:var(--muted);font-size:.9rem}
-      .divisor-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
-      .divisor-pill{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:40px;padding:0 .75rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);font-weight:700;cursor:pointer;user-select:none;transition:border-color .2s,background .2s,color .2s}
-      .divisor-pill input{position:absolute;opacity:0;pointer-events:none}
-      .divisor-pill:has(input:checked){border-color:var(--accent);background:var(--accent);color:#fff}
-      .cdd-wrap{position:relative}
-      .cdd-trigger{width:100%;padding:.75rem 1rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:12px;background:var(--surface);cursor:pointer;text-align:left;color:var(--ink);font-weight:400;display:flex;align-items:center;justify-content:space-between;gap:.5rem;transition:border-color .2s,box-shadow .2s}
-      .cdd-trigger:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
-      .cdd-trigger.open{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);border-bottom-left-radius:0;border-bottom-right-radius:0}
-      .cdd-arrow{display:inline-block;width:0;height:0;flex-shrink:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--muted);transition:transform .2s}
-      .cdd-trigger.open .cdd-arrow{transform:rotate(180deg)}
-      .cdd-list{position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--surface);border:2px solid var(--accent);border-top:none;border-bottom-left-radius:12px;border-bottom-right-radius:12px;box-shadow:0 8px 24px rgba(26,31,36,.12);max-height:0;overflow:hidden;opacity:0;transition:max-height .25s ease,opacity .2s ease}
-      .cdd-list.open{max-height:280px;opacity:1;overflow-y:auto}
-      .cdd-opt{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;cursor:pointer;font-size:.95rem;transition:background .15s;color:var(--ink)}
-      .cdd-opt:hover{background:rgba(176,125,16,.06)}
-      .cdd-opt.selected{background:rgba(176,125,16,.1);font-weight:700;color:var(--accent-dark)}
-      .cdd-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:transparent;flex-shrink:0;transition:border-color .15s,color .15s,background .15s}
-      .cdd-opt.selected .cdd-check{background:var(--accent);border-color:var(--accent);color:#fff}
-      .cdd-custom-row{padding:0;border-top:1px solid var(--border);display:flex;align-items:center;gap:.5rem;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .25s ease,padding .25s ease}
-      .cdd-custom-row.visible{max-height:80px;opacity:1;padding:.75rem 1rem .85rem}
-      .cdd-custom-row label{font-size:.9rem;font-weight:600;white-space:nowrap;color:var(--ink)}
-      .cdd-custom-row input[type="number"]{width:90px;padding:.5rem .65rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);text-align:center;font-weight:700;transition:border-color .2s,box-shadow .2s}
-      .cdd-custom-row input[type="number"]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.12)}
-      .cdd-custom-row .cdd-hint{font-size:.78rem;color:var(--muted)}
-      body.font-handwriting .division-house,body.font-handwriting .house-input{font-family:var(--font-hand)}
-      body.font-sans .division-house,body.font-sans .house-input{font-family:var(--font-body)}
-      body.font-serif .division-house,body.font-serif .house-input{font-family:var(--font-display)}
-      .btn{font-family:inherit;font-size:1rem;font-weight:700;padding:.85rem 1.25rem;border-radius:12px;border:none;cursor:pointer;position:relative;overflow:hidden;transition:transform .12s,background .2s,opacity .2s,box-shadow .2s}
-      .btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none!important;transform:none!important}
-      .btn-primary{background:#b07d10;color:#fff;box-shadow:0 4px 12px rgba(176,125,16,.25)}
-      .btn-primary:hover:not(:disabled){background:#8c600b;box-shadow:0 6px 16px rgba(176,125,16,.3);transform:translateY(-1px)}
-      .btn-secondary{background:var(--bg);color:var(--ink);border:2px solid var(--border)}
-      .btn-secondary:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px)}
-      #start-btn{width:100%}
-      .hidden{display:none!important}
-      .stats-bar{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:.85rem}
-      .progress-wrap{margin-bottom:1.5rem}
-      .progress-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.45rem}
-      .progress-question{font-size:.9rem;font-weight:600;color:var(--ink)}
-      .progress-track{height:10px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);position:relative}
-      .progress-fill{height:100%;width:0%;position:relative;background:linear-gradient(90deg,var(--accent),var(--accent-dark));border-radius:999px;transition:width .5s cubic-bezier(.22,1,.36,1)}
-      .stat{text-align:center;padding:.65rem;background:var(--bg);border-radius:10px}
-      .stat-label{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-      .stat-value{font-family:var(--font-display);font-size:1.5rem;font-weight:700;display:inline-block}
-      .problem-card{text-align:center}
-      .problem-label{margin:0 0 1rem;color:var(--muted);font-size:.9rem}
-      .paper-wrap{max-width:480px;margin:0 auto 1.25rem}
-      .paper-sheet{position:relative;background:#fff;border:1px solid #ccc;border-radius:4px;padding:2rem 1.5rem 2rem 2.75rem;box-shadow:0 2px 8px rgba(0,0,0,.06),inset 0 0 0 1px rgba(0,0,0,.04);background-image:repeating-linear-gradient(transparent,transparent 31px,var(--paper-line) 31px,var(--paper-line) 32px);background-size:100% 32px;background-position:0 1.5rem}
-      .paper-sheet::before{content:"";position:absolute;top:0;bottom:0;left:2rem;width:2px;background:var(--paper-margin);opacity:.55}
-      .division-house{--work-width:10ch;--side-width:2.5rem;--bracket-width:1.2rem;position:relative;z-index:1;font-family:var(--font-hand);font-size:2.25rem;line-height:1.15;color:var(--ink)}
-      .house-row{display:grid;grid-template-columns:var(--side-width) var(--bracket-width) var(--work-width);align-items:end;min-height:2.5rem}
-      .house-side{display:flex;align-items:flex-end;justify-content:flex-end;padding-right:.35rem;padding-bottom:.1rem}
-      .house-bracket{position:relative;align-self:stretch;color:var(--ink)}
-      .bracket-svg{width:100%;height:100%;min-height:2.5rem;display:block}
-      .house-work{position:relative;width:var(--work-width);display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end}
-      .house-divisor,.house-dividend{font-variant-numeric:tabular-nums;letter-spacing:.05em;text-align:right;width:100%;padding-right:.1rem}
-      .house-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-      .house-input{width:100%;border:none;border-bottom:2px dashed rgba(176,125,16,.45);background:transparent;font-family:var(--font-hand);font-size:2.25rem;font-weight:400;color:var(--accent-dark);text-align:right;padding:0 .1rem .05rem;font-variant-numeric:tabular-nums;letter-spacing:.05em;outline:none}
-      .house-input:focus{border-bottom-color:var(--accent);background:rgba(176,125,16,.06)}
-      .house-input.locked,.house-input:read-only{border-bottom-style:solid;border-bottom-color:transparent;background:transparent;color:var(--ink);cursor:default}
-      .house-input.answer-correct{color:var(--success)}
-      .house-line{width:100%;height:2px;background:var(--ink);border-radius:1px}
-      .house-line-top{margin-top:.1rem}
-      .house-line-sub{width:80%;margin-left:auto;border-bottom:1.5px solid var(--ink);margin-bottom:.2rem}
-      .quotient-row{margin-bottom:.1rem}
-      .subtraction-row{font-size:1.8rem;min-height:2rem;color:var(--muted)}
-      .sub-input{font-size:1.8rem;border-bottom-style:dotted;text-align:right}
-      .action-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;max-width:480px;margin:0 auto 1rem}
-      .feedback{margin:0;font-weight:600;padding:.75rem 1rem;border-radius:10px;text-align:left;max-width:480px;margin-inline:auto;font-size:.95rem;line-height:1.5}
-      .feedback.success{background:rgba(45,106,79,.12);color:var(--success)}
-      .feedback.error{background:rgba(155,34,38,.1);color:var(--error)}
-      .feedback-hint{display:block;margin-top:.35rem;font-weight:400;color:var(--muted);font-size:.88rem}
-      .instructions-legend{max-width:480px;margin:1rem auto 0;text-align:left;font-size:.85rem;color:var(--muted);display:grid;gap:.25rem}
-      .instructions-legend strong{color:var(--ink)}
-      .modal-overlay{position:fixed;inset:0;background:rgba(26,31,36,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1.25rem;z-index:1000}
-      .modal-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;max-width:480px;width:100%;box-shadow:var(--shadow);animation:dp .3s cubic-bezier(.16,1,.3,1) forwards;max-height:90vh;overflow-y:auto}
-      @keyframes dp{0%{transform:scale(.92) translateY(10px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
-      .totp-digits{display:flex;justify-content:center;gap:.5rem;margin:1.25rem 0}
-      .totp-digit-input{width:45px;height:52px;text-align:center;font-size:1.75rem;font-weight:700;font-family:var(--font-display);border:2px solid var(--border);border-radius:10px;background:var(--surface);transition:border-color .2s,box-shadow .2s}
-      .totp-digit-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.15)}
-      .qr-container{display:flex;justify-content:center;margin:1rem 0;padding:1rem;background:#fff;border:1px solid var(--border);border-radius:12px}
-      @media print{body *{visibility:hidden!important}#worksheet-print-area,#worksheet-print-area *{visibility:visible!important}#worksheet-print-area{position:absolute!important;left:0!important;top:0!important;width:100%!important;background:#fff!important;color:#000!important;padding:1.5rem!important;margin:0!important;box-shadow:none!important}.page-break{page-break-after:always}}
-      .leaderboard-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.92rem}
-      .leaderboard-table th,.leaderboard-table td{padding:.5rem .65rem;text-align:left;border-bottom:1px solid var(--border)}
-      .leaderboard-table th{background:var(--bg);font-weight:700;color:var(--ink)}
-      .worksheet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem 1.5rem;margin-top:1.5rem}
-      .worksheet-problem{border:1px dashed #ccc;padding:1rem;border-radius:8px;page-break-inside:avoid}
-      .results-hero{text-align:center;padding:1.5rem 0 .5rem}
-      .results-hero h2{font-family:var(--font-display);font-size:1.9rem;margin:0 0 .4rem}
-      .results-hero p{color:var(--muted);font-size:1rem;margin:0}
-      .results-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;max-width:420px;margin:1.5rem auto}
-      .results-actions{display:flex;gap:.75rem;max-width:360px;margin:1rem auto 0}
-    </style>
-  </head>
-  <body>
-    <div class="bg-shapes" aria-hidden="true">
-      <div class="bg-shape" style="width:320px;height:320px;top:-100px;left:-80px"></div>
-      <div class="bg-shape" style="width:400px;height:400px;bottom:-150px;right:-100px;animation-delay:-7s"></div>
-    </div>
-    <div class="confetti-container" id="confetti-container" aria-hidden="true"></div>
-    <div class="page">
-      <header class="header">
-        <div class="header-brand">
-          <a class="logo-link" href="#" aria-label="Home">
-            <svg class="logo" width="44" height="44" viewBox="0 0 64 64"><defs><linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b07d10"/><stop offset="100%" stop-color="#8c600b"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#lbg)"/><path d="M30 24L30 44L24 44" fill="none" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="30" y1="28" x2="44" y2="28" stroke="#fffef9" stroke-width="2" stroke-linecap="round"/><circle cx="44" cy="20" r="2.2" fill="#fffef9"/><circle cx="44" cy="48" r="2.2" fill="#fffef9"/><line x1="40" y1="34" x2="48" y2="34" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round"/></svg>
-          </a>
-          <div><h1>Divide &amp; Conquer</h1><p class="tagline">Practice long division the way you write it on paper.</p></div>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-leaderboard-btn" style="border-radius:10px">Leaderboard</button>
-          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-worksheet-btn" style="border-radius:10px">Worksheets</button>
-          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-settings-btn" style="border-radius:10px">Settings</button>
-          <div class="header-auth hidden" id="header-auth">
-            <span class="user-greeting">Hi, <strong id="user-greeting-name"></strong></span>
-            <button type="button" class="logout-link" id="header-auth-btn">Log out</button>
-          </div>
-        </div>
-      </header>
-      <main class="main">
-        <section class="panel auth" id="auth-panel">
-          <div class="auth-tabs" role="tablist">
-            <button type="button" class="auth-tab active" id="login-tab" role="tab" aria-selected="true">Log in</button>
-            <button type="button" class="auth-tab" id="signup-tab" role="tab" aria-selected="false">Sign up</button>
-          </div>
-          <button type="button" class="skip-auth" id="skip-auth-btn">Play as guest &rarr;</button>
-          <div id="login-form-panel">
-            <h2>Welcome back</h2>
-            <p class="auth-lead">Log in to save scores and practice with security.</p>
-            <form class="auth-form" id="login-form" autocomplete="off" novalidate>
-              <label class="field"><span class="field-label">Email</span><input type="email" id="login-email" required placeholder="you@example.com" /></label>
-              <label class="field"><span class="field-label">Password</span><input type="password" id="login-password" required placeholder="--------" /></label>
-              <p class="auth-error hidden" id="login-error" role="alert"></p>
-              <button type="submit" class="btn btn-primary auth-submit">Log in</button>
-            </form>
-          </div>
-          <div class="hidden" id="signup-form-panel">
-            <h2>Create an account</h2>
-            <p class="auth-lead">Sign up to track your division progress.</p>
-            <form class="auth-form" id="signup-form" autocomplete="off" novalidate>
-              <label class="field"><span class="field-label">Email</span><input type="email" id="signup-email" required placeholder="you@example.com" /></label>
-              <label class="field"><span class="field-label">Password</span><input type="password" id="signup-password" required placeholder="--------" /><small class="field-hint">At least 6 characters</small></label>
-              <label class="field"><span class="field-label">Confirm password</span><input type="password" id="signup-confirm" required placeholder="--------" /></label>
-              <p class="auth-error hidden" id="signup-error" role="alert"></p>
-              <button type="submit" class="btn btn-primary auth-submit">Create account</button>
-            </form>
-          </div>
-        </section>
-        <section class="panel setup hidden" id="setup-panel">
-          <h2 class="m-0 mb-6">Practice setup</h2>
-          <fieldset class="field-group"><legend>Difficulty Level</legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="difficulty" value="easy" checked /><span class="radio-card-inner"><strong>Easy</strong><small>Divisors 2 - 9, standard dividends</small></span></label>
-              <label class="radio-card"><input type="radio" name="difficulty" value="medium" /><span class="radio-card-inner"><strong>Medium</strong><small>Divisors 2 - 12, larger dividends</small></span></label>
-              <label class="radio-card"><input type="radio" name="difficulty" value="hard" /><span class="radio-card-inner"><strong>Hard</strong><small>Divisors 5 - 15, extended long division</small></span></label>
-            </div>
-          </fieldset>
-          <fieldset class="field-group"><legend>Specific Divisors to Practice</legend>
-            <p class="text-xs text-gray-600 mb-2">Select which numbers to include in problems.</p>
-            <div class="divisor-grid" id="setup-divisor-container"></div>
-            <div class="flex gap-2 mt-2 text-xs">
-              <button type="button" class="text-amber-700 hover:underline font-semibold" id="setup-divisors-preset">Preset: 2, 4, 5, 8, 9, 10</button>
-              <span class="text-gray-400">|</span>
-              <button type="button" class="text-amber-700 hover:underline font-semibold" id="setup-divisors-all">Select All</button>
-            </div>
-          </fieldset>
-          <fieldset class="field-group"><legend>Session length</legend>
-            <div class="cdd-wrap" id="sl-wrap">
-              <button type="button" class="cdd-trigger" id="sl-trigger" aria-expanded="false"><span id="sl-label">20 problems</span><span class="cdd-arrow"></span></button>
-              <div class="cdd-list" id="sl-list" role="listbox">
-                <div class="cdd-opt" data-value="10"><span>10 problems</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt selected" data-value="20"><span>20 problems</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="30"><span>30 problems</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="50"><span>50 problems</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="endless"><span>Endless</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="custom"><span>Custom</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-custom-row" id="sl-custom">
-                  <label for="sl-custom-input">Enter count:</label>
-                  <input type="number" id="sl-custom-input" min="1" max="999" placeholder="5" inputmode="numeric" />
-                  <span class="cdd-hint">questions</span>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-          <fieldset class="field-group"><legend>Worksheet Font Style</legend>
-            <div class="cdd-wrap" id="sf-wrap">
-              <button type="button" class="cdd-trigger" id="sf-trigger" aria-expanded="false"><span id="sf-label">Notebook Handwriting</span><span class="cdd-arrow"></span></button>
-              <div class="cdd-list" id="sf-list" role="listbox">
-                <div class="cdd-opt selected" data-value="handwriting"><span>Notebook Handwriting</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="sans"><span>Clean Modern</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="serif"><span>Classic Serif</span><span class="cdd-check">&#10003;</span></div>
-              </div>
-            </div>
-          </fieldset>
-          <button type="button" class="btn btn-primary" id="start-btn">Start practice</button>
-        </section>
-        <section class="panel game hidden" id="game-panel" aria-live="polite">
-          <div class="stats-bar">
-            <div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="score">0</span></div>
-            <div class="stat"><span class="stat-label">Streak</span><span class="stat-value" id="streak">0</span></div>
-          </div>
-          <div class="progress-wrap">
-            <div class="progress-meta"><span class="progress-question" id="progress-question">Question 1 of 20</span></div>
-            <div class="progress-track" id="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
-          </div>
-          <div class="problem-card" id="problem-card">
-            <p class="problem-label">Write your work like on notebook paper</p>
-            <div class="paper-wrap"><div class="paper-sheet" id="paper-sheet">
-              <div class="division-house" id="division-house">
-                <div class="house-row quotient-row"><div class="house-side"></div><div class="house-bracket"></div><div class="house-work"><label class="house-label" for="quotient-input">Quotient</label><input type="text" id="quotient-input" class="house-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" aria-label="Quotient" /><div class="house-line house-line-top"></div></div></div>
-                <div class="house-row dividend-row"><div class="house-side"><span class="house-divisor" id="divisor-display">&mdash;</span></div><div class="house-bracket" aria-hidden="true"><svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none"><path d="M12 0L12 48L0 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="house-work"><span class="house-dividend" id="dividend-display">&mdash;</span></div></div>
-                <div class="house-row subtraction-row"><div class="house-side"></div><div class="house-bracket"></div><div class="house-work"><input type="text" id="subtraction-input" class="house-input sub-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" aria-label="Subtraction step" /><div class="house-line-sub"></div></div></div>
-                <div class="house-row remainder-row" style="margin-top:.5rem"><div class="house-side"><span style="font-size:1.1rem;color:var(--muted);font-weight:600">Rem:</span></div><div class="house-bracket"></div><div class="house-work"><input type="text" id="remainder-input" class="house-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="3" placeholder="0" aria-label="Remainder" /></div></div>
-              </div>
-            </div></div>
-            <div class="action-row">
-              <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
-              <button type="button" class="btn btn-primary" id="submit-btn">Submit answer</button>
-              <button type="button" class="btn btn-secondary" id="next-btn" disabled>Next</button>
-            </div>
-            <p class="feedback hidden" id="feedback" role="alert"></p>
-            <div class="instructions-legend">
-              <div><strong>Quotient</strong> -- on top, above the line</div>
-              <div><strong>Subtraction</strong> -- write the number you subtract (divisor x quotient)</div>
-              <div><strong>Remainder</strong> -- what is left at the bottom</div>
-            </div>
-            <div class="mt-4"><a href="#" id="end-session-link" class="text-xs text-gray-500 hover:underline">End session</a></div>
-          </div>
-        </section>
-        <section class="panel results hidden" id="results-panel">
-          <div class="results-hero"><h2 id="results-title">Session Complete</h2><p id="results-subtitle"></p></div>
-          <div class="results-stats">
-            <div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="results-score">0</span></div>
-            <div class="stat"><span class="stat-label">Accuracy</span><span class="stat-value" id="results-accuracy">0%</span></div>
-            <div class="stat"><span class="stat-label">Best Streak</span><span class="stat-value" id="results-streak">0</span></div>
-          </div>
-          <div class="results-actions">
-            <button type="button" class="btn btn-secondary flex-1" id="results-home-btn">Back to Home</button>
-            <button type="button" class="btn btn-primary flex-1" id="results-again-btn">Play Again</button>
-          </div>
-        </section>
-      </main>
-    </div>
-    <div class="modal-overlay hidden" id="settings-modal" role="dialog" aria-modal="true">
-      <div class="modal-box">
-        <h3 class="text-xl font-bold mb-4 text-center">Practice Settings</h3>
-        <div class="space-y-4">
-          <div class="field"><span class="field-label" style="display:block;margin-bottom:.35rem">Divisors Allowed</span><p class="text-xs text-gray-500 mb-2">Check the numbers to include:</p><div class="divisor-grid" id="settings-divisor-container"></div>
-            <div class="flex gap-2 mt-2 text-xs"><button type="button" class="text-amber-700 hover:underline font-semibold" id="settings-divisors-preset">Preset: 2, 4, 5, 8, 9, 10</button><span class="text-gray-400">|</span><button type="button" class="text-amber-700 hover:underline font-semibold" id="settings-divisors-all">Select All</button></div>
-          </div>
-          <div class="field"><span class="field-label" style="display:block;margin-bottom:.35rem">Worksheet Font Style</span>
-            <div class="cdd-wrap" id="sf2-wrap">
-              <button type="button" class="cdd-trigger" id="sf2-trigger" aria-expanded="false"><span id="sf2-label">Notebook Handwriting</span><span class="cdd-arrow"></span></button>
-              <div class="cdd-list" id="sf2-list" role="listbox">
-                <div class="cdd-opt selected" data-value="handwriting"><span>Notebook Handwriting</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="sans"><span>Clean Modern</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="serif"><span>Classic Serif</span><span class="cdd-check">&#10003;</span></div>
-              </div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px dashed var(--border)">
-            <div><strong style="font-size:.92rem;display:block">Two-Factor Authentication</strong><small style="color:var(--muted);font-size:.82rem">Protect your account</small></div>
-            <button type="button" class="btn btn-secondary text-xs py-2 px-3" id="setup-security-btn" style="border-radius:10px">Setup 2FA</button>
-          </div>
-        </div>
-        <div class="mt-6"><button type="button" class="btn btn-primary w-full" id="settings-close-btn">Save and Close</button></div>
-      </div>
-    </div>
-    <div class="modal-overlay hidden" id="confirm-modal" role="dialog" aria-modal="true">
-      <div class="modal-box text-center">
-        <h3 class="text-xl font-bold mb-2">Confirm Action</h3>
-        <p class="text-sm text-gray-600 mb-6" id="confirm-modal-desc">Are you sure?</p>
-        <div class="flex gap-2">
-          <button type="button" class="btn btn-secondary flex-1" id="confirm-cancel-btn">Cancel</button>
-          <button type="button" class="btn btn-primary flex-1" id="confirm-ok-btn" style="background:var(--error)">Confirm</button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-overlay hidden" id="totp-modal" role="dialog" aria-modal="true">
-      <div class="modal-box text-center">
-        <h3 class="text-xl font-bold mb-2">Two-Factor Authentication</h3>
-        <p class="text-sm text-gray-600 mb-4">Enter the 6-digit code from your authenticator app.</p>
-        <div class="totp-digits" id="totp-inputs">
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-        </div>
-        <p class="auth-error hidden mb-3" id="totp-error" role="alert"></p>
-        <div class="flex gap-2">
-          <button type="button" class="btn btn-secondary flex-1" id="totp-cancel-btn">Cancel</button>
-          <button type="button" class="btn btn-primary flex-1" id="totp-verify-btn">Verify</button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-overlay hidden" id="totp-setup-modal" role="dialog" aria-modal="true">
-      <div class="modal-box">
-        <h3 class="text-xl font-bold mb-2 text-center">Setup Authenticator</h3>
-        <p class="text-sm text-gray-600 mb-3 text-center">Scan this QR code or enter the secret key manually.</p>
-        <div class="qr-container" id="qr-code-box"></div>
-        <div class="text-xs text-center font-mono font-bold text-gray-700 mb-3" id="totp-secret-display"></div>
-        <p class="text-xs text-gray-500 mb-4 text-center">Enter a code to confirm setup:</p>
-        <div class="totp-digits" id="totp-setup-inputs">
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-          <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
-        </div>
-        <p class="auth-error hidden mb-3" id="totp-setup-error" role="alert"></p>
-        <div class="flex gap-2">
-          <button type="button" class="btn btn-secondary flex-1" id="totp-setup-close-btn">Close</button>
-          <button type="button" class="btn btn-primary flex-1" id="totp-setup-confirm-btn">Enable 2FA</button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-overlay hidden" id="leaderboard-modal" role="dialog" aria-modal="true">
-      <div class="modal-box" style="max-width:540px">
-        <h3 class="text-xl font-bold mb-2 text-center">Leaderboard</h3>
-        <p class="text-sm text-gray-600 mb-3 text-center">High scores from completed sessions.</p>
-        <div style="max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:10px">
-          <table class="leaderboard-table"><thead><tr><th>#</th><th>Player</th><th>Score</th><th>Difficulty</th><th>Date</th></tr></thead>
-          <tbody id="leaderboard-body"><tr><td colspan="5" class="text-center py-4 text-gray-500">No scores yet.</td></tr></tbody></table>
-        </div>
-        <div class="flex gap-2 mt-4">
-          <button type="button" class="btn btn-secondary text-xs py-2 px-3" id="clear-scores-btn">Clear Scores</button>
-          <button type="button" class="btn btn-primary flex-1 py-2" id="leaderboard-close-btn">Close</button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-overlay hidden" id="worksheet-modal" role="dialog" aria-modal="true">
-      <div class="modal-box" style="max-width:580px">
-        <h3 class="text-xl font-bold mb-2 text-center">Worksheet Generator</h3>
-        <p class="text-sm text-gray-600 mb-4 text-center">Generate custom worksheets for offline practice.</p>
-        <div class="grid grid-cols-2 gap-3 mb-4">
-          <label class="field"><span class="field-label">Difficulty</span>
-            <div class="cdd-wrap" id="ws-diff-wrap">
-              <button type="button" class="cdd-trigger" id="ws-diff-trigger" aria-expanded="false"><span id="ws-diff-label">Medium</span><span class="cdd-arrow"></span></button>
-              <div class="cdd-list" id="ws-diff-list" role="listbox">
-                <div class="cdd-opt" data-value="easy"><span>Easy (Divisors 2-9)</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt selected" data-value="medium"><span>Medium (Divisors 2-12)</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="hard"><span>Hard (Divisors 5-15)</span><span class="cdd-check">&#10003;</span></div>
-              </div>
-            </div>
-          </label>
-          <label class="field"><span class="field-label">Problem Count</span>
-            <div class="cdd-wrap" id="ws-cnt-wrap">
-              <button type="button" class="cdd-trigger" id="ws-cnt-trigger" aria-expanded="false"><span id="ws-cnt-label">12 Problems</span><span class="cdd-arrow"></span></button>
-              <div class="cdd-list" id="ws-cnt-list" role="listbox">
-                <div class="cdd-opt" data-value="6"><span>6 Problems</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt selected" data-value="12"><span>12 Problems</span><span class="cdd-check">&#10003;</span></div>
-                <div class="cdd-opt" data-value="18"><span>18 Problems</span><span class="cdd-check">&#10003;</span></div>
-              </div>
-            </div>
-          </label>
-        </div>
-        <label class="flex items-center gap-2 mb-4 cursor-pointer text-sm font-semibold"><input type="checkbox" id="ws-include-answers" class="w-4 h-4" /><span>Include Answer Key</span></label>
-        <div class="flex flex-col sm:flex-row gap-2">
-          <button type="button" class="btn btn-secondary flex-1" id="worksheet-close-btn">Cancel</button>
-          <button type="button" class="btn btn-secondary flex-1" id="worksheet-pdf-btn">Generate PDF</button>
-          <button type="button" class="btn btn-primary flex-1" id="worksheet-print-btn">Print Worksheet</button>
-        </div>
-      </div>
-    </div>
-    <div id="worksheet-print-area" class="hidden"></div>
-    <script>
-    /* ====== TOTP ====== */
-    var B32={a:"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",decode:function(s){var c=s.replace(/=+$/,"").toUpperCase(),b="",r=[];for(var i=0;i<c.length;i++){var v=this.a.indexOf(c[i]);if(v>-1)b+=v.toString(2).padStart(5,"0")}for(var j=0;j+8<=b.length;j+=8)r.push(parseInt(b.substr(j,8),2));return new Uint8Array(r)}};
-    async function hmacSha1(k,m){var ck=await crypto.subtle.importKey("raw",k,{name:"HMAC",hash:{name:"SHA-1"}},false,["sign"]);return new Uint8Array(await crypto.subtle.sign("HMAC",ck,m))}
-    async function genTotp(secret,step,off){step=step||30;off=off||0;try{var kb=B32.decode(secret),cnt=Math.floor(Date.now()/1000/step)+off,buf=new ArrayBuffer(8);new DataView(buf).setUint32(4,cnt,false);var h=await hmacSha1(kb,buf),o=h[h.length-1]&0xf,bin=((h[o]&0x7f)<<24)|((h[o+1]&0xff)<<16)|((h[o+2]&0xff)<<8)|(h[o+3]&0xff);return(bin%1000000).toString().padStart(6,"0")}catch(e){return null}}
-    async function verifyTotp(secret,code){if(!code||code.length!==6)return false;for(var o=-1;o<=1;o++){if(await genTotp(secret,30,o)===code)return true}return false}
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Divide & Conquer</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23d46a32%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%239a4518%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M14%2010%20L14%2022%20L10%2022%22%20fill%3D%22none%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cline%20x1%3D%2214%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%228%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2224%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%3Cline%20x1%3D%2219%22%20y1%3D%2216%22%20x2%3D%2225%22%20y2%3D%2216%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Patrick+Hand&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root{--bg:#e8e4dc;--surface:#fffef9;--ink:#1a1f24;--muted:#5c656d;--accent:#b07d10;--accent-dark:#8c600b;--success:#2d6a4f;--error:#9b2226;--border:#ddd5c8;--paper-line:#b8cce8;--paper-margin:#e8a0a0;--shadow:0 12px 40px rgba(26,31,36,.08);--radius:16px;--font-display:"Fraunces",Georgia,serif;--font-body:"Source Sans 3",system-ui,sans-serif;--font-hand:"Patrick Hand","Segoe Print",cursive}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:var(--font-body);font-size:1.05rem;color:var(--ink);background:var(--bg);background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(176,125,16,.08),transparent),linear-gradient(180deg,var(--bg),#ddd8cf);overflow-x:hidden}
+.bg-shapes{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}.bg-shape{position:absolute;border-radius:50%;opacity:.04;background:var(--accent);animation:fb linear infinite}
+@keyframes fb{0%{transform:translateY(105vh) rotate(0) scale(1)}50%{transform:translateY(50vh) rotate(180deg) scale(1.12)}100%{transform:translateY(-12vh) rotate(360deg) scale(1)}}
+.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}.confetti-dot{position:absolute;border-radius:50%;animation:cf .85s ease-out forwards}
+@keyframes cf{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--cx),var(--cy)) scale(.2) rotate(400deg)}}
+.page{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:2rem 1.25rem 3rem}
+.header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+.header-brand{display:flex;align-items:center;gap:1rem;flex-shrink:0}.header-brand h1{white-space:nowrap}
+.header-auth{display:flex;align-items:center;gap:.75rem;flex-shrink:0;font-size:.92rem}
+@keyframes hi{0%{opacity:0;transform:translateX(12px)}100%{opacity:1;transform:translateX(0)}}.header-auth.visible{animation:hi .3s ease forwards}
+.user-greeting{color:var(--muted)}.user-greeting strong{color:var(--ink)}
+.logout-link{color:var(--ink);font-weight:600;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit;font-size:inherit;padding:0}.logout-link:hover{color:var(--accent-dark)}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);opacity:0;transform:translateY(20px);animation:pi .45s ease forwards}
+@keyframes pi{to{opacity:1;transform:translateY(0)}}.panel h2{margin:0 0 1.25rem;font-family:var(--font-display);font-size:1.35rem}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem;padding:.35rem;background:var(--bg);border-radius:12px}
+.auth-tab{font-family:inherit;font-size:.95rem;font-weight:600;padding:.65rem 1rem;border:none;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}.auth-tab:hover{color:var(--ink)}.auth-tab.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(26,31,36,.08)}
+.auth-lead{margin:0 0 1.25rem;color:var(--muted);font-size:.95rem}.auth-form{display:grid;gap:1rem}
+.field{display:grid;gap:.35rem}.field-label{font-weight:600;font-size:.92rem}
+.field input[type="text"],.field input[type="email"],.field input[type="password"]{width:100%;padding:.65rem .85rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);transition:border-color .2s,box-shadow .2s}
+.field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.12)}
+.field-hint{color:var(--muted);font-size:.82rem}
+.auth-error{margin:0;padding:.65rem .85rem;border-radius:10px;background:rgba(155,34,38,.1);color:var(--error);font-size:.92rem;font-weight:600}.auth-submit{width:100%;margin-top:.25rem}
+.skip-auth{display:block;width:100%;text-align:center;margin-bottom:1.25rem;padding:.6rem;font-family:inherit;font-size:.92rem;font-weight:600;color:var(--muted);background:transparent;border:2px dashed var(--border);border-radius:10px;cursor:pointer;transition:color .2s,border-color .2s,background .2s,transform .15s}.skip-auth:hover{color:var(--accent);border-color:var(--accent);background:rgba(176,125,16,.04)}.skip-auth:active{transform:scale(.98)}
+.logo-link{flex-shrink:0;display:block;border-radius:14px;line-height:0;transition:transform .25s,box-shadow .25s}.logo-link:hover{transform:translateY(-2px) rotate(-2deg);box-shadow:0 6px 20px rgba(176,125,16,.2)}
+.logo{width:44px;height:44px;display:block;border-radius:12px;box-shadow:var(--shadow)}.header h1{margin:0;font-family:var(--font-display);font-size:1.6rem;font-weight:700}.tagline{margin:.15rem 0 0;color:var(--muted);font-size:.9rem}
+.main{display:grid;gap:1.25rem}.field-group{border:none;margin:0 0 1.5rem;padding:0}.field-group legend{font-weight:700;margin-bottom:.75rem;font-size:1rem;color:var(--ink)}
+.radio-grid{display:grid;gap:.75rem}.radio-card{cursor:pointer;display:block}.radio-card input{position:absolute;opacity:0;pointer-events:none}
+.radio-card-inner{display:block;padding:1rem 1.25rem;border:2px solid var(--border);border-radius:12px;background:var(--surface);transition:border-color .2s,background .2s,box-shadow .2s}.radio-card-inner:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}.radio-card input:checked+.radio-card-inner{border-color:var(--accent);background:#fffefb;box-shadow:0 0 0 1px var(--accent)}.radio-card-inner strong{display:block;margin-bottom:.2rem;font-size:1.05rem}.radio-card-inner small{color:var(--muted);font-size:.9rem}
+.divisor-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}.divisor-pill{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:40px;padding:0 .75rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);font-weight:700;cursor:pointer;user-select:none;transition:border-color .2s,background .2s,color .2s}.divisor-pill input{position:absolute;opacity:0;pointer-events:none}.divisor-pill:has(input:checked){border-color:var(--accent);background:var(--accent);color:#fff}
+.cdd-wrap{position:relative}.cdd-trigger{width:100%;padding:.75rem 1rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:12px;background:var(--surface);cursor:pointer;text-align:left;color:var(--ink);font-weight:400;display:flex;align-items:center;justify-content:space-between;gap:.5rem;transition:border-color .2s,box-shadow .2s}.cdd-trigger:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}.cdd-trigger.open{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);border-bottom-left-radius:0;border-bottom-right-radius:0}
+.cdd-arrow{display:inline-block;width:0;height:0;flex-shrink:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--muted);transition:transform .2s}.cdd-trigger.open .cdd-arrow{transform:rotate(180deg)}
+.cdd-list{position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--surface);border:2px solid var(--accent);border-top:none;border-bottom-left-radius:12px;border-bottom-right-radius:12px;box-shadow:0 8px 24px rgba(26,31,36,.12);max-height:0;overflow:hidden;opacity:0;transition:max-height .25s ease,opacity .2s ease}.cdd-list.open{max-height:280px;opacity:1;overflow-y:auto}
+.cdd-opt{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;cursor:pointer;font-size:.95rem;transition:background .15s;color:var(--ink)}.cdd-opt:hover{background:rgba(176,125,16,.06)}.cdd-opt.selected{background:rgba(176,125,16,.1);font-weight:700;color:var(--accent-dark)}
+.cdd-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:transparent;flex-shrink:0;transition:border-color .15s,color .15s,background .15s}.cdd-opt.selected .cdd-check{background:var(--accent);border-color:var(--accent);color:#fff}
+.cdd-custom-row{padding:.6rem 1rem .85rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.5rem;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .25s ease,padding .25s ease}.cdd-custom-row.visible{max-height:80px;opacity:1;padding:.75rem 1rem .85rem}
+.cdd-custom-row label{font-size:.9rem;font-weight:600;white-space:nowrap;color:var(--ink)}.cdd-custom-row input[type="number"]{width:90px;padding:.5rem .65rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);text-align:center;font-weight:700;transition:border-color .2s,box-shadow .2s}.cdd-custom-row input[type="number"]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.12)}.cdd-custom-row .cdd-hint{font-size:.78rem;color:var(--muted)}
+body.font-handwriting .division-house,body.font-handwriting .house-input{font-family:var(--font-hand)}body.font-sans .division-house,body.font-sans .house-input{font-family:var(--font-body)}body.font-serif .division-house,body.font-serif .house-input{font-family:var(--font-display)}
+.btn{font-family:inherit;font-size:1rem;font-weight:700;padding:.85rem 1.25rem;border-radius:12px;border:none;cursor:pointer;position:relative;overflow:hidden;transition:transform .12s,background .2s,opacity .2s,box-shadow .2s}.btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none!important;transform:none!important}
+.btn-primary{background:#b07d10;color:#fff;box-shadow:0 4px 12px rgba(176,125,16,.25)}.btn-primary:hover:not(:disabled){background:#8c600b;box-shadow:0 6px 16px rgba(176,125,16,.3);transform:translateY(-1px)}
+.btn-secondary{background:var(--bg);color:var(--ink);border:2px solid var(--border)}.btn-secondary:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px)}
+#start-btn{width:100%}.hidden{display:none!important}
+.stats-bar{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:.85rem}.progress-wrap{margin-bottom:1.5rem}.progress-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.45rem}.progress-question{font-size:.9rem;font-weight:600;color:var(--ink)}
+.progress-track{height:10px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);position:relative}.progress-fill{height:100%;width:0%;position:relative;background:linear-gradient(90deg,var(--accent),var(--accent-dark));border-radius:999px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+.stat{text-align:center;padding:.65rem;background:var(--bg);border-radius:10px}.stat-label{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}.stat-value{font-family:var(--font-display);font-size:1.5rem;font-weight:700;display:inline-block}
+.problem-card{text-align:center}.problem-label{margin:0 0 1rem;color:var(--muted);font-size:.9rem}
+.paper-wrap{max-width:480px;margin:0 auto 1.25rem}.paper-sheet{position:relative;background:#fff;border:1px solid #ccc;border-radius:4px;padding:2rem 1.5rem 2rem 2.75rem;box-shadow:0 2px 8px rgba(0,0,0,.06),inset 0 0 0 1px rgba(0,0,0,.04);background-image:repeating-linear-gradient(transparent,transparent 31px,var(--paper-line) 31px,var(--paper-line) 32px);background-size:100% 32px;background-position:0 1.5rem}
+.paper-sheet::before{content:"";position:absolute;top:0;bottom:0;left:2rem;width:2px;background:var(--paper-margin);opacity:.55}
+.division-house{--work-width:10ch;--side-width:2.5rem;--bracket-width:1.2rem;position:relative;z-index:1;font-family:var(--font-hand);font-size:2.25rem;line-height:1.15;color:var(--ink)}
+.house-row{display:grid;grid-template-columns:var(--side-width) var(--bracket-width) var(--work-width);align-items:end;min-height:2.5rem}
+.house-side{display:flex;align-items:flex-end;justify-content:flex-end;padding-right:.35rem;padding-bottom:.1rem}.house-bracket{position:relative;align-self:stretch;color:var(--ink)}.bracket-svg{width:100%;height:100%;min-height:2.5rem;display:block}
+.house-work{position:relative;width:var(--work-width);display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end}
+.house-divisor,.house-dividend{font-variant-numeric:tabular-nums;letter-spacing:.05em;text-align:right;width:100%;padding-right:.1rem}
+.house-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.house-input{width:100%;border:none;border-bottom:2px dashed rgba(176,125,16,.45);background:transparent;font-family:var(--font-hand);font-size:2.25rem;font-weight:400;color:var(--accent-dark);text-align:right;padding:0 .1rem .05rem;font-variant-numeric:tabular-nums;letter-spacing:.05em;outline:none}.house-input:focus{border-bottom-color:var(--accent);background:rgba(176,125,16,.06)}
+.house-input.locked,.house-input:read-only{border-bottom-style:solid;border-bottom-color:transparent;background:transparent;color:var(--ink);cursor:default}.house-input.answer-correct{color:var(--success)}
+.house-line{width:100%;height:2px;background:var(--ink);border-radius:1px}.house-line-top{margin-top:.1rem}.house-line-sub{width:80%;margin-left:auto;border-bottom:1.5px solid var(--ink);margin-bottom:.2rem}
+.quotient-row{margin-bottom:.1rem}.subtraction-row{font-size:1.8rem;min-height:2rem;color:var(--muted)}.sub-input{font-size:1.8rem;border-bottom-style:dotted;text-align:right}
+.action-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;max-width:480px;margin:0 auto 1rem}
+.feedback{margin:0;font-weight:600;padding:.75rem 1rem;border-radius:10px;text-align:left;max-width:480px;margin-inline:auto;font-size:.95rem;line-height:1.5}.feedback.success{background:rgba(45,106,79,.12);color:var(--success)}.feedback.error{background:rgba(155,34,38,.1);color:var(--error)}.feedback-hint{display:block;margin-top:.35rem;font-weight:400;color:var(--muted);font-size:.88rem}
+.instructions-legend{max-width:480px;margin:1rem auto 0;text-align:left;font-size:.85rem;color:var(--muted);display:grid;gap:.25rem}.instructions-legend strong{color:var(--ink)}
+.modal-overlay{position:fixed;inset:0;background:rgba(26,31,36,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1.25rem;z-index:1000}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;max-width:480px;width:100%;box-shadow:var(--shadow);animation:dp .3s cubic-bezier(.16,1,.3,1) forwards;max-height:90vh;overflow-y:auto}
+@keyframes dp{0%{transform:scale(.92) translateY(10px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+.totp-digits{display:flex;justify-content:center;gap:.5rem;margin:1.25rem 0}.totp-digit-input{width:45px;height:52px;text-align:center;font-size:1.75rem;font-weight:700;font-family:var(--font-display);border:2px solid var(--border);border-radius:10px;background:var(--surface);transition:border-color .2s,box-shadow .2s}.totp-digit-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.15)}
+.qr-container{display:flex;justify-content:center;margin:1rem 0;padding:1rem;background:#fff;border:1px solid var(--border);border-radius:12px}
+@media print{body *{visibility:hidden!important}#worksheet-print-area,#worksheet-print-area *{visibility:visible!important}#worksheet-print-area{position:absolute!important;left:0!important;top:0!important;width:100%!important;background:#fff!important;color:#000!important;padding:1.5rem!important;margin:0!important;box-shadow:none!important}}
+.leaderboard-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.92rem}.leaderboard-table th,.leaderboard-table td{padding:.5rem .65rem;text-align:left;border-bottom:1px solid var(--border)}.leaderboard-table th{background:var(--bg);font-weight:700;color:var(--ink)}
+.worksheet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem 1.5rem;margin-top:1.5rem}.worksheet-problem{border:1px dashed #ccc;padding:1rem;border-radius:8px;page-break-inside:avoid}
+.results-hero{text-align:center;padding:1.5rem 0 .5rem}.results-hero h2{font-family:var(--font-display);font-size:1.9rem;margin:0 0 .4rem}.results-hero p{color:var(--muted);font-size:1rem;margin:0}
+.results-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;max-width:420px;margin:1.5rem auto}.results-actions{display:flex;gap:.75rem;max-width:360px;margin:1rem auto 0}
+</style>
+</head>
+<body>
+<div class="bg-shapes" aria-hidden="true"><div class="bg-shape" style="width:320px;height:320px;top:-100px;left:-80px"></div><div class="bg-shape" style="width:400px;height:400px;bottom:-150px;right:-100px;animation-delay:-7s"></div></div>
+<div class="confetti-container" id="confetti-container" aria-hidden="true"></div>
+<div class="page">
+<header class="header">
+<div class="header-brand">
+<a class="logo-link" href="#" aria-label="Home"><svg class="logo" width="44" height="44" viewBox="0 0 64 64"><defs><linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b07d10"/><stop offset="100%" stop-color="#8c600b"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#lbg)"/><path d="M30 24L30 44L24 44" fill="none" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="30" y1="28" x2="44" y2="28" stroke="#fffef9" stroke-width="2" stroke-linecap="round"/><circle cx="44" cy="20" r="2.2" fill="#fffef9"/><circle cx="44" cy="48" r="2.2" fill="#fffef9"/><line x1="40" y1="34" x2="48" y2="34" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round"/></svg></a>
+<div><h1>Divide &amp; Conquer</h1><p class="tagline">Practice long division the way you write it on paper.</p></div>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-leaderboard-btn" style="border-radius:10px">Leaderboard</button>
+<button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-worksheet-btn" style="border-radius:10px">Worksheets</button>
+<button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-settings-btn" style="border-radius:10px">Settings</button>
+<div class="header-auth hidden" id="header-auth"><span class="user-greeting">Hi, <strong id="user-greeting-name"></strong></span><button type="button" class="logout-link" id="header-auth-btn">Log out</button></div>
+</div>
+</header>
+<main class="main">
+<section class="panel auth" id="auth-panel">
+<div class="auth-tabs" role="tablist"><button type="button" class="auth-tab active" id="login-tab">Log in</button><button type="button" class="auth-tab" id="signup-tab">Sign up</button></div>
+<button type="button" class="skip-auth" id="skip-auth-btn">Play as guest &rarr;</button>
+<div id="login-form-panel"><h2>Welcome back</h2><p class="auth-lead">Log in to save scores and practice with security.</p>
+<form class="auth-form" id="login-form" autocomplete="off" novalidate><label class="field"><span class="field-label">Email</span><input type="email" id="login-email" required placeholder="you@example.com"/></label><label class="field"><span class="field-label">Password</span><input type="password" id="login-password" required placeholder="--------"/></label><p class="auth-error hidden" id="login-error" role="alert"></p><button type="submit" class="btn btn-primary auth-submit">Log in</button></form></div>
+<div class="hidden" id="signup-form-panel"><h2>Create an account</h2><p class="auth-lead">Sign up to track your division progress.</p>
+<form class="auth-form" id="signup-form" autocomplete="off" novalidate><label class="field"><span class="field-label">Email</span><input type="email" id="signup-email" required placeholder="you@example.com"/></label><label class="field"><span class="field-label">Password</span><input type="password" id="signup-password" required placeholder="--------"/><small class="field-hint">At least 6 characters</small></label><label class="field"><span class="field-label">Confirm password</span><input type="password" id="signup-confirm" required placeholder="--------"/></label><p class="auth-error hidden" id="signup-error" role="alert"></p><button type="submit" class="btn btn-primary auth-submit">Create account</button></form></div>
+</section>
+<section class="panel setup hidden" id="setup-panel">
+<h2 class="m-0 mb-6">Practice setup</h2>
+<fieldset class="field-group"><legend>Difficulty Level</legend><div class="radio-grid">
+<label class="radio-card"><input type="radio" name="difficulty" value="easy" checked/><span class="radio-card-inner"><strong>Easy</strong><small>Divisors 2 - 9</small></span></label>
+<label class="radio-card"><input type="radio" name="difficulty" value="medium"/><span class="radio-card-inner"><strong>Medium</strong><small>Divisors 2 - 12</small></span></label>
+<label class="radio-card"><input type="radio" name="difficulty" value="hard"/><span class="radio-card-inner"><strong>Hard</strong><small>Divisors 5 - 15</small></span></label>
+</div></fieldset>
+<fieldset class="field-group"><legend>Specific Divisors to Practice</legend><p class="text-xs text-gray-600 mb-2">Select which numbers to include.</p><div class="divisor-grid" id="setup-divisor-container"></div>
+<div class="flex gap-2 mt-2 text-xs"><button type="button" class="text-amber-700 hover:underline font-semibold" id="setup-divisors-preset">Preset: 2, 4, 5, 8, 9, 10</button><span class="text-gray-400">|</span><button type="button" class="text-amber-700 hover:underline font-semibold" id="setup-divisors-all">Select All</button></div></fieldset>
+<fieldset class="field-group"><legend>Session length</legend><div class="cdd-wrap" id="sl-wrap"><button type="button" class="cdd-trigger" id="sl-trigger" aria-expanded="false"><span id="sl-label">20 problems</span><span class="cdd-arrow"></span></button><div class="cdd-list" id="sl-list" role="listbox">
+<div class="cdd-opt" data-value="10"><span>10 problems</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt selected" data-value="20"><span>20 problems</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="30"><span>30 problems</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="50"><span>50 problems</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="endless"><span>Endless</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="custom"><span>Custom</span><span class="cdd-check">&#10003;</span></div>
+<div class="cdd-custom-row" id="sl-custom"><label for="sl-custom-input">Enter count:</label><input type="number" id="sl-custom-input" min="1" max="999" placeholder="5" inputmode="numeric"/><span class="cdd-hint">questions</span></div>
+</div></div></fieldset>
+<fieldset class="field-group"><legend>Worksheet Font Style</legend><div class="cdd-wrap" id="sf-wrap"><button type="button" class="cdd-trigger" id="sf-trigger" aria-expanded="false"><span id="sf-label">Notebook Handwriting</span><span class="cdd-arrow"></span></button><div class="cdd-list" id="sf-list" role="listbox">
+<div class="cdd-opt selected" data-value="handwriting"><span>Notebook Handwriting</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="sans"><span>Clean Modern</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="serif"><span>Classic Serif</span><span class="cdd-check">&#10003;</span></div>
+</div></div></fieldset>
+<button type="button" class="btn btn-primary" id="start-btn">Start practice</button>
+</section>
+<section class="panel game hidden" id="game-panel" aria-live="polite">
+<div class="stats-bar"><div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="score">0</span></div><div class="stat"><span class="stat-label">Streak</span><span class="stat-value" id="streak">0</span></div></div>
+<div class="progress-wrap"><div class="progress-meta"><span class="progress-question" id="progress-question">Question 1 of 20</span></div><div class="progress-track" id="progress-track" role="progressbar" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div></div>
+<div class="problem-card" id="problem-card"><p class="problem-label">Write your work like on notebook paper</p>
+<div class="paper-wrap"><div class="paper-sheet" id="paper-sheet"><div class="division-house" id="division-house">
+<div class="house-row quotient-row"><div class="house-side"></div><div class="house-bracket"></div><div class="house-work"><label class="house-label" for="quotient-input">Quotient</label><input type="text" id="quotient-input" class="house-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" aria-label="Quotient"/><div class="house-line house-line-top"></div></div></div>
+<div class="house-row dividend-row"><div class="house-side"><span class="house-divisor" id="divisor-display">&mdash;</span></div><div class="house-bracket" aria-hidden="true"><svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none"><path d="M12 0L12 48L0 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="house-work"><span class="house-dividend" id="dividend-display">&mdash;</span></div></div>
+<div class="house-row subtraction-row"><div class="house-side"></div><div class="house-bracket"></div><div class="house-work"><input type="text" id="subtraction-input" class="house-input sub-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" aria-label="Subtraction step"/><div class="house-line-sub"></div></div></div>
+<div class="house-row remainder-row" style="margin-top:.5rem"><div class="house-side"><span style="font-size:1.1rem;color:var(--muted);font-weight:600">Rem:</span></div><div class="house-bracket"></div><div class="house-work"><input type="text" id="remainder-input" class="house-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="3" placeholder="0" aria-label="Remainder"/></div></div>
+</div></div></div>
+<div class="action-row"><button type="button" class="btn btn-secondary" id="reset-btn">Reset</button><button type="button" class="btn btn-primary" id="submit-btn">Submit answer</button><button type="button" class="btn btn-secondary" id="next-btn" disabled>Next</button></div>
+<p class="feedback hidden" id="feedback" role="alert"></p>
+<div class="instructions-legend"><div><strong>Quotient</strong> -- on top, above the line</div><div><strong>Subtraction</strong> -- write the number you subtract (divisor x quotient)</div><div><strong>Remainder</strong> -- what is left at the bottom</div></div>
+<div class="mt-4"><a href="#" id="end-session-link" class="text-xs text-gray-500 hover:underline">End session</a></div>
+</div></section>
+<section class="panel results hidden" id="results-panel">
+<div class="results-hero"><h2 id="results-title">Session Complete</h2><p id="results-subtitle"></p></div>
+<div class="results-stats"><div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="results-score">0</span></div><div class="stat"><span class="stat-label">Accuracy</span><span class="stat-value" id="results-accuracy">0%</span></div><div class="stat"><span class="stat-label">Best Streak</span><span class="stat-value" id="results-streak">0</span></div></div>
+<div class="results-actions"><button type="button" class="btn btn-secondary flex-1" id="results-home-btn">Back to Home</button><button type="button" class="btn btn-primary flex-1" id="results-again-btn">Play Again</button></div>
+</section>
+</main></div>
 
-    /* ====== ADMIN (undeletable) ====== */
-    var ADMIN_EMAIL="ibraheem.muhammad.ai@gmail.com";
-    var ADMIN_PASS="Midea@222";
-    var ADMIN_SECRET="3W6PVGFORLAYR3L3";
+<!-- Settings Modal -->
+<div class="modal-overlay hidden" id="settings-modal" role="dialog" aria-modal="true"><div class="modal-box">
+<h3 class="text-xl font-bold mb-4 text-center">Practice Settings</h3>
+<div class="space-y-4">
+<div class="field"><span class="field-label" style="display:block;margin-bottom:.35rem">Divisors Allowed</span><p class="text-xs text-gray-500 mb-2">Check the numbers to include:</p><div class="divisor-grid" id="settings-divisor-container"></div>
+<div class="flex gap-2 mt-2 text-xs"><button type="button" class="text-amber-700 hover:underline font-semibold" id="settings-divisors-preset">Preset: 2, 4, 5, 8, 9, 10</button><span class="text-gray-400">|</span><button type="button" class="text-amber-700 hover:underline font-semibold" id="settings-divisors-all">Select All</button></div></div>
+<div class="field"><span class="field-label" style="display:block;margin-bottom:.35rem">Worksheet Font Style</span>
+<div class="cdd-wrap" id="sf2-wrap"><button type="button" class="cdd-trigger" id="sf2-trigger" aria-expanded="false"><span id="sf2-label">Notebook Handwriting</span><span class="cdd-arrow"></span></button><div class="cdd-list" id="sf2-list" role="listbox">
+<div class="cdd-opt selected" data-value="handwriting"><span>Notebook Handwriting</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="sans"><span>Clean Modern</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="serif"><span>Classic Serif</span><span class="cdd-check">&#10003;</span></div>
+</div></div></div>
+<div style="display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px dashed var(--border)"><div><strong style="font-size:.92rem;display:block">Two-Factor Authentication</strong><small style="color:var(--muted);font-size:.82rem">Protect your account</small></div><button type="button" class="btn btn-secondary text-xs py-2 px-3" id="setup-security-btn" style="border-radius:10px">Setup 2FA</button></div>
+</div>
+<div class="mt-6"><button type="button" class="btn btn-primary w-full" id="settings-close-btn">Save and Close</button></div>
+</div></div>
 
-    /* ====== CUSTOM DROPDOWN FACTORY ====== */
-    function makeCDD(wrapId,triggerId,listId,labelId,opts,onChange){
-      var trigger=document.getElementById(triggerId),list=document.getElementById(listId),label=document.getElementById(labelId);
-      var options=list.querySelectorAll(".cdd-opt");
-      var selVal=opts.initial||options[0].dataset.value;
-      var open=false;
-      function close(){open=false;trigger.classList.remove("open");list.classList.remove("open");trigger.setAttribute("aria-expanded","false")}
-      function pick(v){
-        selVal=v;
-        options.forEach(function(o){o.classList.toggle("selected",o.dataset.value===v)});
-        if(opts.labelMap&&opts.labelMap[v])label.textContent=opts.labelMap[v];
-        close();
-        if(onChange)onChange(v);
-        var cr=list.querySelector(".cdd-custom-row");
-        if(cr){if(v==="custom"){cr.classList.add("visible");var inp=cr.querySelector("input");if(inp)setTimeout(function(){inp.focus()},150)}else{cr.classList.remove("visible")}}
-      }
-      trigger.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();open=!open;trigger.classList.toggle("open",open);list.classList.toggle("open",open);trigger.setAttribute("aria-expanded",String(open))});
-      options.forEach(function(o){o.addEventListener("click",function(e){e.stopPropagation();pick(o.dataset.value)})});
-      list.addEventListener("click",function(e){e.stopPropagation()});
-      document.addEventListener("click",function(e){if(open&&!document.getElementById(wrapId).contains(e.target))close()});
-      document.addEventListener("keydown",function(e){if(e.key==="Escape"&&open){close();trigger.focus()}});
-      return{getValue:function(){return selVal},pick:pick,updateLabel:function(v){if(opts.labelMap&&opts.labelMap[v])label.textContent=opts.labelMap[v]}}
-    }
+<!-- Confirm Modal -->
+<div class="modal-overlay hidden" id="confirm-modal" role="dialog" aria-modal="true"><div class="modal-box text-center">
+<h3 class="text-xl font-bold mb-2">Confirm Action</h3><p class="text-sm text-gray-600 mb-6" id="confirm-modal-desc">Are you sure?</p>
+<div class="flex gap-2"><button type="button" class="btn btn-secondary flex-1" id="confirm-cancel-btn">Cancel</button><button type="button" class="btn btn-primary flex-1" id="confirm-ok-btn" style="background:var(--error)">Confirm</button></div>
+</div></div>
 
-    /* ====== SESSION LENGTH ====== */
-    var slCdd=makeCDD("sl-wrap","sl-trigger","sl-list","sl-label",{initial:"20",labelMap:{10:"10 problems",20:"20 problems",30:"30 problems",50:"50 problems",endless:"Endless",custom:"Custom -- enter a number"}});
-    document.getElementById("sl-custom-input").addEventListener("input",function(){
-      var v=parseInt(this.value,10);slCdd.updateLabel("custom");
-      if(v&&v>0)document.getElementById("sl-label").textContent=v+" problems (custom)";
-    });
-    window.getSessionLength=function(){
-      var v=slCdd.getValue();
-      if(v==="endless")return"endless";
-      if(v==="custom"){var n=parseInt(document.getElementById("sl-custom-input").value,10);return(n&&n>=1)?n:5}
-      return parseInt(v,10);
-    };
+<!-- TOTP Verify Modal -->
+<div class="modal-overlay hidden" id="totp-modal" role="dialog" aria-modal="true"><div class="modal-box text-center">
+<h3 class="text-xl font-bold mb-2">Two-Factor Authentication</h3><p class="text-sm text-gray-600 mb-4">Enter the 6-digit code from your authenticator app.</p>
+<div class="totp-digits" id="totp-inputs"><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/></div>
+<p class="auth-error hidden mb-3" id="totp-error" role="alert"></p>
+<div class="flex gap-2"><button type="button" class="btn btn-secondary flex-1" id="totp-cancel-btn">Cancel</button><button type="button" class="btn btn-primary flex-1" id="totp-verify-btn">Verify</button></div>
+</div></div>
 
-    /* ====== FONT DROPDOWNS ====== */
-    var fontLabelMap={handwriting:"Notebook Handwriting",sans:"Clean Modern",serif:"Classic Serif"};
-    var currentFont="handwriting";
-    function applyFont(f){document.body.className="font-"+f;currentFont=f}
-    var sfCdd=makeCDD("sf-wrap","sf-trigger","sf-list","sf-label",{initial:"handwriting",labelMap:fontLabelMap},applyFont);
-    var sf2Cdd=makeCDD("sf2-wrap","sf2-trigger","sf2-list","sf2-label",{initial:"handwriting",labelMap:fontLabelMap},applyFont);
+<!-- TOTP Setup Modal -->
+<div class="modal-overlay hidden" id="totp-setup-modal" role="dialog" aria-modal="true"><div class="modal-box">
+<h3 class="text-xl font-bold mb-2 text-center">Setup Authenticator</h3><p class="text-sm text-gray-600 mb-3 text-center">Scan this QR code or enter the secret key manually.</p>
+<div class="qr-container" id="qr-code-box"></div><div class="text-xs text-center font-mono font-bold text-gray-700 mb-3" id="totp-secret-display"></div>
+<p class="text-xs text-gray-500 mb-4 text-center">Enter a code to confirm setup:</p>
+<div class="totp-digits" id="totp-setup-inputs"><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/></div>
+<p class="auth-error hidden mb-3" id="totp-setup-error" role="alert"></p>
+<div class="flex gap-2"><button type="button" class="btn btn-secondary flex-1" id="totp-setup-close-btn">Close</button><button type="button" class="btn btn-primary flex-1" id="totp-setup-confirm-btn">Enable 2FA</button></div>
+</div></div>
 
-    /* ====== WORKSHEET DROPDOWNS ====== */
-    var wsDiffCdd=makeCDD("ws-diff-wrap","ws-diff-trigger","ws-diff-list","ws-diff-label",{initial:"medium",labelMap:{easy:"Easy",medium:"Medium",hard:"Hard"}});
-    var wsCntCdd=makeCDD("ws-cnt-wrap","ws-cnt-trigger","ws-cnt-list","ws-cnt-label",{initial:"12",labelMap:{6:"6 Problems",12:"12 Problems",18:"18 Problems"}});
+<!-- Leaderboard Modal -->
+<div class="modal-overlay hidden" id="leaderboard-modal" role="dialog" aria-modal="true"><div class="modal-box" style="max-width:540px">
+<h3 class="text-xl font-bold mb-2 text-center">Leaderboard</h3><p class="text-sm text-gray-600 mb-3 text-center">High scores from completed sessions.</p>
+<div style="max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:10px"><table class="leaderboard-table"><thead><tr><th>#</th><th>Player</th><th>Score</th><th>Difficulty</th><th>Date</th></tr></thead><tbody id="leaderboard-body"><tr><td colspan="5" class="text-center py-4 text-gray-500">No scores yet.</td></tr></tbody></table></div>
+<div class="flex gap-2 mt-4"><button type="button" class="btn btn-secondary text-xs py-2 px-3" id="clear-scores-btn">Clear Scores</button><button type="button" class="btn btn-primary flex-1 py-2" id="leaderboard-close-btn">Close</button></div>
+</div></div>
 
-    /* ====== STATE ====== */
-    var state={currentUser:null,isGuest:false,difficulty:"easy",selectedDivisors:[2,4,5,8,9,10],sessionLength:20,currentProblemIndex:0,score:0,streak:0,bestStreak:0,currentProblem:null,pendingAuthCallback:null};
+<!-- Worksheet Modal -->
+<div class="modal-overlay hidden" id="worksheet-modal" role="dialog" aria-modal="true"><div class="modal-box" style="max-width:580px">
+<h3 class="text-xl font-bold mb-2 text-center">Worksheet Generator</h3><p class="text-sm text-gray-600 mb-4 text-center">Generate custom worksheets for offline practice.</p>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<label class="field"><span class="field-label">Difficulty</span><div class="cdd-wrap" id="ws-diff-wrap"><button type="button" class="cdd-trigger" id="ws-diff-trigger" aria-expanded="false"><span id="ws-diff-label">Medium</span><span class="cdd-arrow"></span></button><div class="cdd-list" id="ws-diff-list" role="listbox">
+<div class="cdd-opt" data-value="easy"><span>Easy (Divisors 2-9)</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt selected" data-value="medium"><span>Medium (Divisors 2-12)</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="hard"><span>Hard (Divisors 5-15)</span><span class="cdd-check">&#10003;</span></div>
+</div></div></label>
+<label class="field"><span class="field-label">Problem Count</span><div class="cdd-wrap" id="ws-cnt-wrap"><button type="button" class="cdd-trigger" id="ws-cnt-trigger" aria-expanded="false"><span id="ws-cnt-label">12 Problems</span><span class="cdd-arrow"></span></button><div class="cdd-list" id="ws-cnt-list" role="listbox">
+<div class="cdd-opt" data-value="6"><span>6 Problems</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt selected" data-value="12"><span>12 Problems</span><span class="cdd-check">&#10003;</span></div><div class="cdd-opt" data-value="18"><span>18 Problems</span><span class="cdd-check">&#10003;</span></div>
+</div></div></label>
+</div>
+<label class="flex items-center gap-2 mb-4 cursor-pointer text-sm font-semibold"><input type="checkbox" id="ws-include-answers" class="w-4 h-4"/><span>Include Answer Key</span></label>
+<div class="flex flex-col sm:flex-row gap-2"><button type="button" class="btn btn-secondary flex-1" id="worksheet-close-btn">Cancel</button><button type="button" class="btn btn-secondary flex-1" id="worksheet-pdf-btn">Generate PDF</button><button type="button" class="btn btn-primary flex-1" id="worksheet-print-btn">Print Worksheet</button></div>
+</div></div>
+<div id="worksheet-print-area" class="hidden"></div>
 
-    /* ====== STORAGE + ADMIN PROTECTION ====== */
-    function getUsers(){try{return JSON.parse(localStorage.getItem("dc_users")||"{}")}catch(e){return{}}}
-    function saveUsers(u){localStorage.setItem("dc_users",JSON.stringify(u))}
-    function getUser(email){
-      if(email===ADMIN_EMAIL)return{password:ADMIN_PASS,totpSecret:ADMIN_SECRET,createdAt:getUsers()[ADMIN_EMAIL]?getUsers()[ADMIN_EMAIL].createdAt:Date.now(),_protected:true};
-      return getUsers()[email]||null;
-    }
-    function getScores(){try{return JSON.parse(localStorage.getItem("dc_scores")||"[]")}catch(e){return[]}}
-    function saveScores(s){localStorage.setItem("dc_scores",JSON.stringify(s))}
-    function clearScoresProtected(){saveScores(getScores().filter(function(s){return s.player===ADMIN_EMAIL}))}
+<script>
+/* === TOTP === */
+const B32={a:"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",decode(s){let c=s.replace(/=+$/,"").toUpperCase(),b="",r=[];for(let i=0;i<c.length;i++){let v=this.a.indexOf(c[i]);if(v>-1)b+=v.toString(2).padStart(5,"0")}for(let i=0;i+8<=b.length;i+=8)r.push(parseInt(b.substr(i,8),2));return new Uint8Array(r)}};
+async function hmacSha1(k,m){const ck=await crypto.subtle.importKey("raw",k,{name:"HMAC",hash:{name:"SHA-1"}},false,["sign"]);return new Uint8Array(await crypto.subtle.sign("HMAC",ck,m))}
+async function genTotp(secret,step,off){step=step||30;off=off||0;try{const kb=B32.decode(secret),cnt=Math.floor(Date.now()/1000/step)+off,buf=new ArrayBuffer(8);new DataView(buf).setUint32(4,cnt,false);const h=await hmacSha1(kb,buf),o=h[h.length-1]&0xf,bin=((h[o]&0x7f)<<24)|((h[o+1]&0xff)<<16)|((h[o+2]&0xff)<<8)|(h[o+3]&0xff);return(bin%1000000).toString().padStart(6,"0")}catch(e){return null}}
+async function verifyTotp(secret,code){if(!code||code.length!==6)return false;for(let o=-1;o<=1;o++){if(await genTotp(secret,30,o)===code)return true}return false}
 
-    /* ====== DOM REFS ====== */
-    function $(id){return document.getElementById(id)}
-    var authPanel=$("auth-panel"),setupPanel=$("setup-panel"),gamePanel=$("game-panel"),resultsPanel=$("results-panel");
-    var headerAuth=$("header-auth"),userGreetingName=$("user-greeting-name");
-    var setupDivCont=$("setup-divisor-container"),settingsDivCont=$("settings-divisor-container");
-    var loginForm=$("login-form"),loginEmail=$("login-email"),loginPassword=$("login-password"),loginError=$("login-error");
-    var signupForm=$("signup-form"),signupEmail=$("signup-email"),signupPassword=$("signup-password"),signupConfirm=$("signup-confirm"),signupError=$("signup-error");
-    var scoreEl=$("score"),streakEl=$("streak"),progressQuestion=$("progress-question"),progressFill=$("progress-fill"),progressTrack=$("progress-track");
-    var divisorDisplay=$("divisor-display"),dividendDisplay=$("dividend-display");
-    var quotientInput=$("quotient-input"),subtractionInput=$("subtraction-input"),remainderInput=$("remainder-input");
-    var submitBtn=$("submit-btn"),nextBtn=$("next-btn"),resetBtn=$("reset-btn"),feedbackEl=$("feedback"),endSessionLink=$("end-session-link");
-    var confirmModal=$("confirm-modal"),confirmCancelBtn=$("confirm-cancel-btn"),confirmOkBtn=$("confirm-ok-btn"),confirmModalDesc=$("confirm-modal-desc");
-    var totpModal=$("totp-modal"),totpInputs=document.querySelectorAll("#totp-inputs .totp-digit-input"),totpError=$("totp-error"),totpCancelBtn=$("totp-cancel-btn"),totpVerifyBtn=$("totp-verify-btn");
-    var totpSetupModal=$("totp-setup-modal"),totpSetupInputs=document.querySelectorAll("#totp-setup-inputs .totp-digit-input"),totpSetupError=$("totp-setup-error"),totpSetupCloseBtn=$("totp-setup-close-btn"),totpSetupConfirmBtn=$("totp-setup-confirm-btn"),qrCodeBox=$("qr-code-box"),totpSecretDisplay=$("totp-secret-display");
-    var leaderboardModal=$("leaderboard-modal"),leaderboardBody=$("leaderboard-body"),leaderboardCloseBtn=$("leaderboard-close-btn"),clearScoresBtn=$("clear-scores-btn");
-    var worksheetModal=$("worksheet-modal"),worksheetCloseBtn=$("worksheet-close-btn"),worksheetPdfBtn=$("worksheet-pdf-btn"),worksheetPrintBtn=$("worksheet-print-btn");
-    var confettiContainer=$("confetti-container");
+/* === ADMIN (undeletable) === */
+const ADMIN_EMAIL="ibraheem.muhammad.ai@gmail.com",ADMIN_PASS="Midea@222",ADMIN_SECRET="3W6PVGFORLAYR3L3";
 
-    /* ====== DIVISOR PILLS ====== */
-    function makePills(c,sel,cb){c.innerHTML="";for(var d=2;d<=15;d++){var l=document.createElement("label");l.className="divisor-pill";var i=document.createElement("input");i.type="checkbox";i.value=d;i.checked=sel.indexOf(d)>-1;i.addEventListener("change",cb);l.appendChild(i);l.appendChild(document.createTextNode(d));c.appendChild(l)}}
-    function readPills(c){return Array.from(c.querySelectorAll("input:checked")).map(function(i){return parseInt(i.value,10)})}
-    makePills(setupDivCont,state.selectedDivisors,function(){state.selectedDivisors=readPills(setupDivCont)});
-    makePills(settingsDivCont,state.selectedDivisors,function(){state.selectedDivisors=readPills(settingsDivCont)});
-    function applyPreset(arr){[setupDivCont,settingsDivCont].forEach(function(c){c.querySelectorAll("input").forEach(function(i){i.checked=arr.indexOf(parseInt(i.value,10))>-1})});state.selectedDivisors=arr.slice()}
-    $("setup-divisors-preset").addEventListener("click",function(){applyPreset([2,4,5,8,9,10])});
-    $("setup-divisors-all").addEventListener("click",function(){applyPreset(Array.from({length:14},function(_,i){return i+2}))});
-    $("settings-divisors-preset").addEventListener("click",function(){applyPreset([2,4,5,8,9,10])});
-    $("settings-divisors-all").addEventListener("click",function(){applyPreset(Array.from({length:14},function(_,i){return i+2}))});
+/* === Custom Dropdown Factory === */
+function makeCDD(wrapId,triggerId,listId,labelId,opts,onChange){
+  const trigger=document.getElementById(triggerId),list=document.getElementById(listId),label=document.getElementById(labelId),options=list.querySelectorAll(".cdd-opt");
+  let selVal=opts.initial||options[0].dataset.value,open=false;
+  function close(){open=false;trigger.classList.remove("open");list.classList.remove("open");trigger.setAttribute("aria-expanded","false")}
+  function pick(v){selVal=v;options.forEach(o=>o.classList.toggle("selected",o.dataset.value===v));if(opts.labelMap&&opts.labelMap[v])label.textContent=opts.labelMap[v];close();if(onChange)onChange(v);const cr=list.querySelector(".cdd-custom-row");if(cr){if(v==="custom"){cr.classList.add("visible");const inp=cr.querySelector("input");if(inp)setTimeout(()=>inp.focus(),150)}else cr.classList.remove("visible")}}
+  trigger.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();open=!open;trigger.classList.toggle("open",open);list.classList.toggle("open",open);trigger.setAttribute("aria-expanded",String(open))});
+  options.forEach(o=>o.addEventListener("click",e=>{e.stopPropagation();pick(o.dataset.value)}));
+  list.addEventListener("click",e=>e.stopPropagation());
+  document.addEventListener("click",e=>{if(open&&!document.getElementById(wrapId).contains(e.target))close()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&open){close();trigger.focus()}});
+  return{getValue:()=>selVal,pick:p=>pick(p),setLabel:t=>{if(opts.labelMap&&opts.labelMap[t])label.textContent=opts.labelMap[t]}}
+}
 
-    /* ====== AUTH TABS ====== */
-    $("login-tab").addEventListener("click",function(){$("login-tab").classList.add("active");$("signup-tab").classList.remove("active");$("login-form-panel").classList.remove("hidden");$("signup-form-panel").classList.add("hidden")});
-    $("signup-tab").addEventListener("click",function(){$("signup-tab").classList.add("active");$("login-tab").classList.remove("active");$("signup-form-panel").classList.remove("hidden");$("login-form-panel").classList.add("hidden")});
+/* Session Length */
+const slCdd=makeCDD("sl-wrap","sl-trigger","sl-list","sl-label",{initial:"20",labelMap:{10:"10 problems",20:"20 problems",30:"30 problems",50:"50 problems",endless:"Endless",custom:"Custom -- enter a number"}});
+document.getElementById("sl-custom-input").addEventListener("input",function(){const v=parseInt(this.value,10);if(v&&v>0)document.getElementById("sl-label").textContent=v+" problems (custom)";else slCdd.setLabel("custom")});
+window.getSessionLength=function(){const v=slCdd.getValue();if(v==="endless")return"endless";if(v==="custom"){const n=parseInt(document.getElementById("sl-custom-input").value,10);return(n&&n>=1)?n:5}return parseInt(v,10)};
 
-    /* ====== PANEL NAV ====== */
-    function showPanel(p){[authPanel,setupPanel,gamePanel,resultsPanel].forEach(function(x){x.classList.add("hidden")});p.classList.remove("hidden");p.style.animation="none";p.offsetHeight;p.style.animation=""}
-    function updateHeader(){if(state.currentUser){headerAuth.classList.remove("hidden");headerAuth.classList.add("visible");userGreetingName.textContent=state.currentUser}else{headerAuth.classList.add("hidden");headerAuth.classList.remove("visible")}}
-    function goHome(){showPanel(state.currentUser||state.isGuest?setupPanel:authPanel)}
+/* Font dropdowns */
+const fontMap={handwriting:"Notebook Handwriting",sans:"Clean Modern",serif:"Classic Serif"};
+let currentFont="handwriting";
+function applyFont(f){document.body.className="font-"+f;currentFont=f}
+const sfCdd=makeCDD("sf-wrap","sf-trigger","sf-list","sf-label",{initial:"handwriting",labelMap:fontMap},applyFont);
+const sf2Cdd=makeCDD("sf2-wrap","sf2-trigger","sf2-list","sf2-label",{initial:"handwriting",labelMap:fontMap},applyFont);
 
-    /* ====== AUTH ====== */
-    $("skip-auth-btn").addEventListener("click",function(){state.isGuest=true;state.currentUser=null;updateHeader();showPanel(setupPanel)});
+/* Worksheet dropdowns */
+const wsDiffCdd=makeCDD("ws-diff-wrap","ws-diff-trigger","ws-diff-list","ws-diff-label",{initial:"medium",labelMap:{easy:"Easy",medium:"Medium",hard:"Hard"}});
+const wsCntCdd=makeCDD("ws-cnt-wrap","ws-cnt-trigger","ws-cnt-list","ws-cnt-label",{initial:"12",labelMap:{6:"6 Problems",12:"12 Problems",18:"18 Problems"}});
 
-    loginForm.addEventListener("submit",async function(e){
-      e.preventDefault();loginError.classList.add("hidden");
-      var email=loginEmail.value.trim().toLowerCase(),pw=loginPassword.value;
-      if(!email||!pw){loginError.textContent="Please fill in all fields.";loginError.classList.remove("hidden");return}
-      var user=getUser(email);
-      if(!user){loginError.textContent="No account found.";loginError.classList.remove("hidden");return}
-      if(user.password!==pw){loginError.textContent="Incorrect password.";loginError.classList.remove("hidden");return}
-      if(user.totpSecret){
-        state.pendingAuthCallback=function(){state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)};
-        showTotpVerify(user.totpSecret);
-      }else{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)}
-    });
+/* === State === */
+const state={currentUser:null,isGuest:false,difficulty:"easy",selectedDivisors:[2,4,5,8,9,10],sessionLength:20,currentProblemIndex:0,score:0,streak:0,bestStreak:0,currentProblem:null,pendingAuthCallback:null};
 
-    signupForm.addEventListener("submit",function(e){
-      e.preventDefault();signupError.classList.add("hidden");
-      var email=signupEmail.value.trim().toLowerCase(),pw=signupPassword.value,cf=signupConfirm.value;
-      if(!email||!pw||!cf){signupError.textContent="Please fill in all fields.";signupError.classList.remove("hidden");return}
-      if(pw.length<6){signupError.textContent="Password must be at least 6 characters.";signupError.classList.remove("hidden");return}
-      if(pw!==cf){signupError.textContent="Passwords do not match.";signupError.classList.remove("hidden");return}
-      if(email===ADMIN_EMAIL){signupError.textContent="That email is reserved.";signupError.classList.remove("hidden");return}
-      var users=getUsers();if(users[email]){signupError.textContent="Account already exists.";signupError.classList.remove("hidden");return}
-      users[email]={password:pw,totpSecret:null,createdAt:Date.now()};saveUsers(users);
-      state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel);
-    });
+/* === Storage + Admin Protection === */
+function getUsers(){try{return JSON.parse(localStorage.getItem("dc_users")||"{}")}catch{return{}}}
+function saveUsers(u){localStorage.setItem("dc_users",JSON.stringify(u))}
+function getUser(email){if(email===ADMIN_EMAIL)return{password:ADMIN_PASS,totpSecret:ADMIN_SECRET,createdAt:(getUsers()[ADMIN_EMAIL]||{}).createdAt||Date.now(),_protected:true};return getUsers()[email]||null}
+function getScores(){try{return JSON.parse(localStorage.getItem("dc_scores")||"[]")}catch{return[]}}
+function saveScores(s){localStorage.setItem("dc_scores",JSON.stringify(s))}
+function clearScoresProtected(){saveScores(getScores().filter(s=>s.player===ADMIN_EMAIL))}
 
-    $("header-auth-btn").addEventListener("click",function(){state.currentUser=null;state.isGuest=false;updateHeader();showPanel(authPanel)});
+/* === DOM === */
+const $=id=>document.getElementById(id);
+const authPanel=$("auth-panel"),setupPanel=$("setup-panel"),gamePanel=$("game-panel"),resultsPanel=$("results-panel"),settingsModal=$("settings-modal"),confirmModal=$("confirm-modal"),totpModal=$("totp-modal"),totpSetupModal=$("totp-setup-modal"),leaderboardModal=$("leaderboard-modal"),worksheetModal=$("worksheet-modal");
+const headerAuth=$("header-auth"),userGreetingName=$("user-greeting-name"),setupDivCont=$("setup-divisor-container"),settingsDivCont=$("settings-divisor-container");
+const scoreEl=$("score"),streakEl=$("streak"),progressQuestion=$("progress-question"),progressFill=$("progress-fill"),progressTrack=$("progress-track");
+const divisorDisplay=$("divisor-display"),dividendDisplay=$("dividend-display"),quotientInput=$("quotient-input"),subtractionInput=$("subtraction-input"),remainderInput=$("remainder-input");
+const submitBtn=$("submit-btn"),nextBtn=$("next-btn"),resetBtn=$("reset-btn"),feedbackEl=$("feedback");
+const totpInputs=document.querySelectorAll("#totp-inputs .totp-digit-input"),totpSetupInputs=document.querySelectorAll("#totp-setup-inputs .totp-digit-input");
 
-    /* ====== TOTP ====== */
-    function setupAutoAdvance(inputs){inputs.forEach(function(inp,i){inp.value="";inp.addEventListener("input",function(){if(inp.value.length===1&&i<inputs.length-1)inputs[i+1].focus()});inp.addEventListener("keydown",function(e){if(e.key==="Backspace"&&inp.value===""&&i>0)inputs[i-1].focus()});inp.addEventListener("paste",function(e){e.preventDefault();var t=(e.clipboardData||window.clipboardData).getData("text").trim();for(var j=0;j<Math.min(t.length,inputs.length);j++)inputs[j].value=t[j]||"";inputs[Math.min(t.length,inputs.length-1)].focus()})})}
-    setupAutoAdvance(totpInputs);setupAutoAdvance(totpSetupInputs);
-    function getCode(inputs){return Array.from(inputs).map(function(i){return i.value}).join("")}
-    function clearCode(inputs){inputs.forEach(function(i){i.value=""})}
+/* === Divisor Pills === */
+function makePills(c,sel,cb){c.innerHTML="";for(let d=2;d<=15;d++){const l=document.createElement("label");l.className="divisor-pill";const i=document.createElement("input");i.type="checkbox";i.value=d;i.checked=sel.includes(d);i.addEventListener("change",cb);l.appendChild(i);l.appendChild(document.createTextNode(d));c.appendChild(l)}}
+function readPills(c){return Array.from(c.querySelectorAll("input:checked")).map(i=>+i.value)}
+makePills(setupDivCont,state.selectedDivisors,()=>{state.selectedDivisors=readPills(setupDivCont)});
+makePills(settingsDivCont,state.selectedDivisors,()=>{state.selectedDivisors=readPills(settingsDivCont)});
+function applyPreset(a){[setupDivCont,settingsDivCont].forEach(c=>c.querySelectorAll("input").forEach(i=>{i.checked=a.includes(+i.value)}));state.selectedDivisors=[...a]}
+ $("setup-divisors-preset").addEventListener("click",()=>applyPreset([2,4,5,8,9,10]));
+ $("setup-divisors-all").addEventListener("click",()=>applyPreset(Array.from({length:14},(_,i)=>i+2)));
+ $("settings-divisors-preset").addEventListener("click",()=>applyPreset([2,4,5,8,9,10]));
+ $("settings-divisors-all").addEventListener("click",()=>applyPreset(Array.from({length:14},(_,i)=>i+2)));
 
-    function showTotpVerify(secret){totpError.classList.add("hidden");clearCode(totpInputs);totpModal.classList.remove("hidden");setTimeout(function(){totpInputs[0].focus()},100)}
-    totpCancelBtn.addEventListener("click",function(){totpModal.classList.add("hidden");state.pendingAuthCallback=null});
-    totpVerifyBtn.addEventListener("click",async function(){
-      var code=getCode(totpInputs);
-      if(code.length!==6){totpError.textContent="Enter all 6 digits.";totpError.classList.remove("hidden");return}
-      var user=getUser(state.currentUser||ADMIN_EMAIL);
-      if(await verifyTotp(user.totpSecret,code)){totpModal.classList.add("hidden");if(state.pendingAuthCallback){state.pendingAuthCallback();state.pendingAuthCallback=null}}
-      else{totpError.textContent="Invalid code.";totpError.classList.remove("hidden");clearCode(totpInputs);totpInputs[0].focus()}
-    });
+/* === Auth Tabs === */
+ $("login-tab").addEventListener("click",()=>{$("login-tab").classList.add("active");$("signup-tab").classList.remove("active");$("login-form-panel").classList.remove("hidden");$("signup-form-panel").classList.add("hidden")});
+ $("signup-tab").addEventListener("click",()=>{$("signup-tab").classList.add("active");$("login-tab").classList.remove("active");$("signup-form-panel").classList.remove("hidden");$("login-form-panel").classList.add("hidden")});
 
-    /* TOTP Setup */
-    $("setup-security-btn").addEventListener("click",function(){
-      if(!state.currentUser){alert("Please log in first.");return}
-      if(state.currentUser===ADMIN_EMAIL){alert("2FA is permanently enabled for this account.");return}
-      var users=getUsers(),user=users[state.currentUser];if(!user)return;
-      var secret=genRandomSecret(),url="otpauth://totp/DivideAndConquer:"+encodeURIComponent(state.currentUser)+"?secret="+secret+"&issuer=DivideAndConquer&algorithm=SHA1&digits=6&period=30";
-      qrCodeBox.innerHTML="";
-      try{var qr=qrcode(0,"M");qr.addData(url);qr.make();qrCodeBox.innerHTML=qr.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){qrCodeBox.innerHTML="<p style='color:var(--error)'>QR failed. Use the secret key.</p>"}
-      totpSecretDisplay.textContent=secret;totpSetupError.classList.add("hidden");clearCode(totpSetupInputs);
-      totpSetupModal.classList.remove("hidden");totpSetupModal._secret=secret;setTimeout(function(){totpSetupInputs[0].focus()},100);
-    });
-    totpSetupCloseBtn.addEventListener("click",function(){totpSetupModal.classList.add("hidden")});
-    totpSetupConfirmBtn.addEventListener("click",async function(){
-      var code=getCode(totpSetupInputs);
-      if(code.length!==6){totpSetupError.textContent="Enter all 6 digits.";totpSetupError.classList.remove("hidden");return}
-      if(await verifyTotp(totpSetupModal._secret,code)){
-        var users=getUsers();if(users[state.currentUser]){users[state.currentUser].totpSecret=totpSetupModal._secret;saveUsers(users)}
-        totpSetupModal.classList.add("hidden");alert("2FA is now enabled.");
-      }else{totpSetupError.textContent="Invalid code.";totpSetupError.classList.remove("hidden");clearCode(totpSetupInputs);totpSetupInputs[0].focus()}
-    });
-    function genRandomSecret(len){len=len||16;var a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",s="",r=new Uint8Array(len);crypto.getRandomValues(r);for(var i=0;i<len;i++)s+=a[r[i]%a.length];return s}
+/* === Panel Nav === */
+function showPanel(p){[authPanel,setupPanel,gamePanel,resultsPanel].forEach(x=>x.classList.add("hidden"));p.classList.remove("hidden");p.style.animation="none";p.offsetHeight;p.style.animation=""}
+function updateHeader(){if(state.currentUser){headerAuth.classList.remove("hidden");headerAuth.classList.add("visible");userGreetingName.textContent=state.currentUser}else{headerAuth.classList.add("hidden");headerAuth.classList.remove("visible")}}
+function goHome(){showPanel(state.currentUser||state.isGuest?setupPanel:authPanel)}
 
-    /* ====== SETTINGS ====== */
-    $("header-settings-btn").addEventListener("click",function(){
-      settingsDivCont.querySelectorAll("input").forEach(function(i){i.checked=state.selectedDivisors.indexOf(parseInt(i.value,10))>-1});
-      sf2Cdd.pick(currentFont);
-      settingsModal.classList.remove("hidden");
-    });
-    /* THIS WAS THE BUG: the old code had add("hidden") then remove("hidden") on same line */
-    $("settings-close-btn").addEventListener("click",function(){
-      state.selectedDivisors=readPills(settingsDivCont);
-      setupDivCont.querySelectorAll("input").forEach(function(i){i.checked=state.selectedDivisors.indexOf(parseInt(i.value,10))>-1});
-      applyFont(sf2Cdd.getValue());
-      sfCdd.pick(currentFont);
-      settingsModal.classList.add("hidden");
-    });
+/* === Auth === */
+ $("skip-auth-btn").addEventListener("click",()=>{state.isGuest=true;state.currentUser=null;updateHeader();showPanel(setupPanel)});
+ $("login-form").addEventListener("submit",async e=>{
+  e.preventDefault();const le=$("login-error");le.classList.add("hidden");
+  const email=$("login-email").value.trim().toLowerCase(),pw=$("login-password").value;
+  if(!email||!pw){le.textContent="Please fill in all fields.";le.classList.remove("hidden");return}
+  const user=getUser(email);
+  if(!user){le.textContent="No account found.";le.classList.remove("hidden");return}
+  if(user.password!==pw){le.textContent="Incorrect password.";le.classList.remove("hidden");return}
+  if(user.totpSecret){state.pendingAuthCallback=()=>{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)};showTotpVerify(user.totpSecret)}
+  else{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)}
+});
+ $("signup-form").addEventListener("submit",e=>{
+  e.preventDefault();const se=$("signup-error");se.classList.add("hidden");
+  const email=$("signup-email").value.trim().toLowerCase(),pw=$("signup-password").value,cf=$("signup-confirm").value;
+  if(!email||!pw||!cf){se.textContent="Please fill in all fields.";se.classList.remove("hidden");return}
+  if(pw.length<6){se.textContent="Password must be at least 6 characters.";se.classList.remove("hidden");return}
+  if(pw!==cf){se.textContent="Passwords do not match.";se.classList.remove("hidden");return}
+  if(email===ADMIN_EMAIL){se.textContent="That email is reserved.";se.classList.remove("hidden");return}
+  const users=getUsers();if(users[email]){se.textContent="Account already exists.";se.classList.remove("hidden");return}
+  users[email]={password:pw,totpSecret:null,createdAt:Date.now()};saveUsers(users);state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)
+});
+ $("header-auth-btn").addEventListener("click",()=>{state.currentUser=null;state.isGuest=false;updateHeader();showPanel(authPanel)});
 
-    /* ====== LEADERBOARD ====== */
-    $("header-leaderboard-btn").addEventListener("click",renderLeaderboard);
-    function escH(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
-    function renderLeaderboard(){
-      var scores=getScores().sort(function(a,b){return b.score-a.score}).slice(0,20);
-      leaderboardBody.innerHTML=scores.length?scores.map(function(s,i){return"<tr><td>"+(i+1)+"</td><td>"+escH(s.player)+"</td><td><strong>"+s.score+"</strong></td><td>"+escH(s.difficulty)+"</td><td>"+new Date(s.date).toLocaleDateString()+"</td></tr>"}).join(""):"<tr><td colspan='5' class='text-center py-4 text-gray-500'>No scores yet.</td></tr>";
-      leaderboardModal.classList.remove("hidden");
-    }
-    leaderboardCloseBtn.addEventListener("click",function(){leaderboardModal.classList.add("hidden")});
-    clearScoresBtn.addEventListener("click",function(){
-      confirmModalDesc.textContent="Clear all saved scores? Admin scores are protected and will be kept.";
-      confirmOkBtn.onclick=function(){clearScoresProtected();renderLeaderboard();confirmModal.classList.add("hidden")};
-      confirmModal.classList.remove("hidden");
-    });
-    confirmCancelBtn.addEventListener("click",function(){confirmModal.classList.add("hidden")});
+/* === TOTP Helpers === */
+function setupAutoAdvance(inputs){inputs.forEach((inp,i)=>{inp.value="";inp.addEventListener("input",()=>{if(inp.value.length===1&&i<inputs.length-1)inputs[i+1].focus()});inp.addEventListener("keydown",e=>{if(e.key==="Backspace"&&!inp.value&&i>0)inputs[i-1].focus()});inp.addEventListener("paste",e=>{e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData("text").trim();for(let j=0;j<Math.min(t.length,inputs.length);j++)inputs[j].value=t[j]||"";inputs[Math.min(t.length,inputs.length-1)].focus()})})}
+setupAutoAdvance(totpInputs);setupAutoAdvance(totpSetupInputs);
+function getCode(inp){return Array.from(inp).map(i=>i.value).join("")}
+function clearCode(inp){inp.forEach(i=>i.value="")}
+function showTotpVerify(secret){$("totp-error").classList.add("hidden");clearCode(totpInputs);totpModal.classList.remove("hidden");setTimeout(()=>totpInputs[0].focus(),100)}
+ $("totp-cancel-btn").addEventListener("click",()=>{totpModal.classList.add("hidden");state.pendingAuthCallback=null});
+ $("totp-verify-btn").addEventListener("click",async()=>{
+  const code=getCode(totpInputs);if(code.length!==6){$("totp-error").textContent="Enter all 6 digits.";$("totp-error").classList.remove("hidden");return}
+  const user=getUser(state.currentUser||ADMIN_EMAIL);
+  if(await verifyTotp(user.totpSecret,code)){totpModal.classList.add("hidden");if(state.pendingAuthCallback){state.pendingAuthCallback();state.pendingAuthCallback=null}}
+  else{$("totp-error").textContent="Invalid code.";$("totp-error").classList.remove("hidden");clearCode(totpInputs);totpInputs[0].focus()}
+});
+ $("setup-security-btn").addEventListener("click",()=>{
+  if(!state.currentUser){alert("Please log in first.");return}
+  if(state.currentUser===ADMIN_EMAIL){alert("2FA is permanently enabled for this account.");return}
+  const users=getUsers(),user=users[state.currentUser];if(!user)return;
+  const secret=function(l){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let s="";const r=new Uint8Array(l);crypto.getRandomValues(r);for(let i=0;i<l;i++)s+=a[r[i]%a.length];return s}(),url="otpauth://totp/DivideAndConquer:"+encodeURIComponent(state.currentUser)+"?secret="+secret+"&issuer=DivideAndConquer&algorithm=SHA1&digits=6&period=30";
+  const qr=$("qr-code-box");qr.innerHTML="";
+  try{const q=qrcode(0,"M");q.addData(url);q.make();qr.innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){qr.innerHTML="<p style='color:var(--error)'>QR failed. Use the secret key.</p>"}
+  $("totp-secret-display").textContent=secret;$("totp-setup-error").classList.add("hidden");clearCode(totpSetupInputs);
+  totpSetupModal.classList.remove("hidden");totpSetupModal._secret=secret;setTimeout(()=>totpSetupInputs[0].focus(),100);
+});
+ $("totp-setup-close-btn").addEventListener("click",()=>{totpSetupModal.classList.add("hidden")});
+ $("totp-setup-confirm-btn").addEventListener("click",async()=>{
+  const code=getCode(totpSetupInputs);if(code.length!==6){$("totp-setup-error").textContent="Enter all 6 digits.";$("totp-setup-error").classList.remove("hidden");return}
+  if(await verifyTotp(totpSetupModal._secret,code)){const users=getUsers();if(users[state.currentUser]){users[state.currentUser].totpSecret=totpSetupModal._secret;saveUsers(users)}totpSetupModal.classList.add("hidden");alert("2FA is now enabled.")}
+  else{$("totp-setup-error").textContent="Invalid code.";$("totp-setup-error").classList.remove("hidden");clearCode(totpSetupInputs);totpSetupInputs[0].focus()}
+});
 
-    /* ====== WORKSHEETS ====== */
-    $("header-worksheet-btn").addEventListener("click",function(){worksheetModal.classList.remove("hidden")});
-    worksheetCloseBtn.addEventListener("click",function(){worksheetModal.classList.add("hidden")});
-    function genProblems(diff,count){var r={easy:{d:[2,3,4,5,6,7,8,9],m:81},medium:{d:[2,3,4,5,6,7,8,9,10,11,12],m:144},hard:{d:[5,6,7,8,9,10,11,12,13,14,15],m:225}},c=r[diff]||r.medium,p=[];for(var i=0;i<count;i++){var dv=c.d[Math.floor(Math.random()*c.d.length)],mq=Math.max(Math.floor(c.m/dv),1),q=Math.floor(Math.random()*mq)+1;p.push({divisor:dv,dividend:dv*q,quotient:q,remainder:0})}return p}
-    function buildWSHtml(problems,ans){var h='<div style="font-family:Georgia,serif;padding:1rem"><h2 style="text-align:center;margin-bottom:.25rem">Divide and Conquer -- Worksheet</h2><p style="text-align:center;color:#888;font-size:.85rem;margin-bottom:1.5rem">Name: _______________ Date: _______________</p><div class="worksheet-grid">';problems.forEach(function(p,i){h+='<div class="worksheet-problem"><div style="font-size:1.1rem;margin-bottom:.5rem;font-weight:600;color:#555">'+(i+1)+'.</div><div style="font-size:1.6rem;font-family:\'Patrick Hand\',cursive"><div style="text-align:right;border-bottom:2px solid #333;padding-bottom:2px;margin-bottom:4px;min-height:1.4em"></div><div style="display:flex;align-items:center;gap:.3rem"><span style="font-weight:700">'+p.divisor+'</span><svg width="12" height="36" viewBox="0 0 12 36"><path d="M12 0L12 36L0 36" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>'+p.dividend+'</span></div></div>'+(ans?'<div style="margin-top:.5rem;font-size:.85rem;color:var(--success);font-weight:600">Answer: '+p.quotient+'</div>':'')+'</div>'});h+='</div>';if(ans){h+='<div style="margin-top:2rem;padding-top:1rem;border-top:2px dashed #ccc"><h3 style="text-align:center;font-size:1rem">Answer Key</h3><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.5rem;font-size:.9rem">';problems.forEach(function(p,i){h+='<div>'+(i+1)+'. '+p.quotient+'</div>'});h+='</div></div>'}h+='</div>';return h}
-    function handleWS(action){var diff=wsDiffCdd.getValue(),count=parseInt(wsCntCdd.getValue(),10),ans=$("ws-include-answers").checked,problems=genProblems(diff,count),html=buildWSHtml(problems,ans),pa=$("worksheet-print-area");pa.innerHTML=html;pa.classList.remove("hidden");if(action==="print"){window.print();setTimeout(function(){pa.classList.add("hidden")},1000)}else{html2pdf().set({margin:.5,filename:"division-worksheet.pdf",image:{type:"jpeg",quality:.98},html2canvas:{scale:2},jsPDF:{unit:"in",format:"letter",orientation:"portrait"}}).from(pa).save().then(function(){pa.classList.add("hidden")})}worksheetModal.classList.add("hidden")}
-    worksheetPrintBtn.addEventListener("click",function(){handleWS("print")});
-    worksheetPdfBtn.addEventListener("click",function(){handleWS("pdf")});
+/* === Settings (FIXED: single classList.add to close) === */
+ $("header-settings-btn").addEventListener("click",()=>{
+  settingsDivCont.querySelectorAll("input").forEach(i=>{i.checked=state.selectedDivisors.includes(+i.value)});
+  sf2Cdd.pick(currentFont);
+  settingsModal.classList.remove("hidden");
+});
+ $("settings-close-btn").addEventListener("click",()=>{
+  /* Sync divisors from settings to setup */
+  state.selectedDivisors=readPills(settingsDivCont);
+  setupDivCont.querySelectorAll("input").forEach(i=>{i.checked=state.selectedDivisors.includes(+i.value)});
+  /* Sync font from settings to setup */
+  const chosenFont=sf2Cdd.getValue();
+  applyFont(chosenFont);
+  sfCdd.pick(chosenFont);
+  /* Close the modal */
+  settingsModal.classList.add("hidden");
+});
 
-    /* ====== GAME ====== */
-    function genProblem(){var ds=state.selectedDivisors.length?state.selectedDivisors:[2,3,4,5],dv=ds[Math.floor(Math.random()*ds.length)];var mq;if(state.difficulty==="easy")mq=Math.floor(80/dv);else if(state.difficulty==="medium")mq=Math.floor(140/dv);else mq=Math.floor(220/dv);mq=Math.max(mq,2);var q=Math.floor(Math.random()*mq)+1;return{divisor:dv,dividend:dv*q,quotient:q,remainder:0}}
+/* === Leaderboard === */
+function escH(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function renderLeaderboard(){const scores=getScores().sort((a,b)=>b.score-a.score).slice(0,20);$("leaderboard-body").innerHTML=scores.length?scores.map((s,i)=>"<tr><td>"+(i+1)+"</td><td>"+escH(s.player)+"</td><td><strong>"+s.score+"</strong></td><td>"+escH(s.difficulty)+"</td><td>"+new Date(s.date).toLocaleDateString()+"</td></tr>").join(""):"<tr><td colspan='5' class='text-center py-4 text-gray-500'>No scores yet.</td></tr>";leaderboardModal.classList.remove("hidden")}
+ $("header-leaderboard-btn").addEventListener("click",renderLeaderboard);
+ $("leaderboard-close-btn").addEventListener("click",()=>leaderboardModal.classList.add("hidden"));
+ $("clear-scores-btn").addEventListener("click",()=>{$("confirm-modal-desc").textContent="Clear all saved scores? Admin scores are protected and will be kept.";$("confirm-ok-btn").onclick=()=>{clearScoresProtected();renderLeaderboard();confirmModal.classList.add("hidden")};confirmModal.classList.remove("hidden")});
+ $("confirm-cancel-btn").addEventListener("click",()=>confirmModal.classList.add("hidden"));
 
-    function startGame(){
-      state.sessionLength=window.getSessionLength();state.difficulty=document.querySelector('input[name="difficulty"]:checked').value;
-      state.currentProblemIndex=0;state.score=0;state.streak=0;state.bestStreak=0;
-      scoreEl.textContent="0";streakEl.textContent="0";showPanel(gamePanel);loadProblem();
-    }
+/* === Worksheets === */
+ $("header-worksheet-btn").addEventListener("click",()=>worksheetModal.classList.remove("hidden"));
+ $("worksheet-close-btn").addEventListener("click",()=>worksheetModal.classList.add("hidden"));
+function genProblems(d,n){const r={easy:{d:[2,3,4,5,6,7,8,9],m:81},medium:{d:[2,3,4,5,6,7,8,9,10,11,12],m:144},hard:{d:[5,6,7,8,9,10,11,12,13,14,15],m:225}},c=r[d]||r.medium,p=[];for(let i=0;i<n;i++){const dv=c.d[Math.floor(Math.random()*c.d.length)],mq=Math.max(Math.floor(c.m/dv),1),q=Math.floor(Math.random()*mq)+1;p.push({divisor:dv,dividend:dv*q,quotient:q,remainder:0})}return p}
+function buildWSHtml(problems,ans){let h='<div style="font-family:Georgia,serif;padding:1rem"><h2 style="text-align:center;margin-bottom:.25rem">Divide and Conquer -- Worksheet</h2><p style="text-align:center;color:#888;font-size:.85rem;margin-bottom:1.5rem">Name: _______________ Date: _______________</p><div class="worksheet-grid">';problems.forEach((p,i)=>{h+='<div class="worksheet-problem"><div style="font-size:1.1rem;margin-bottom:.5rem;font-weight:600;color:#555">'+(i+1)+'</div><div style="font-size:1.6rem;font-family:Patrick Hand,cursive"><div style="text-align:right;border-bottom:2px solid #333;padding-bottom:2px;margin-bottom:4px;min-height:1.4em"></div><div style="display:flex;align-items:center;gap:.3rem"><span style="font-weight:700">'+p.divisor+'</span><svg width="12" height="36" viewBox="0 0 12 36"><path d="M12 0L12 36L0 36" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>'+p.dividend+'</span></div></div>'+(ans?'<div style="margin-top:.5rem;font-size:.85rem;color:var(--success);font-weight:600">Answer: '+p.quotient+'</div>':'')+'</div>'});h+='</div>';if(ans){h+='<div style="margin-top:2rem;padding-top:1rem;border-top:2px dashed #ccc"><h3 style="text-align:center;font-size:1rem">Answer Key</h3><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.5rem;font-size:.9rem">';problems.forEach((p,i)=>{h+='<div>'+(i+1)+'. '+p.quotient+'</div>'});h+='</div></div>'}h+='</div>';return h}
+function handleWS(action){const diff=wsDiffCdd.getValue(),count=+wsCntCdd.getValue(),ans=$("ws-include-answers").checked,problems=genProblems(diff,count),html=buildWSHtml(problems,ans),pa=$("worksheet-print-area");pa.innerHTML=html;pa.classList.remove("hidden");if(action==="print"){window.print();setTimeout(()=>pa.classList.add("hidden"),1000)}else{html2pdf().set({margin:.5,filename:"division-worksheet.pdf",image:{type:"jpeg",quality:.98},html2canvas:{scale:2},jsPDF:{unit:"in",format:"letter",orientation:"portrait"}}).from(pa).save().then(()=>pa.classList.add("hidden"))}worksheetModal.classList.add("hidden")}
+ $("worksheet-print-btn").addEventListener("click",()=>handleWS("print"));
+ $("worksheet-pdf-btn").addEventListener("click",()=>handleWS("pdf"));
 
-    function loadProblem(){
-      state.currentProblem=genProblem();var p=state.currentProblem;
-      divisorDisplay.textContent=p.divisor;dividendDisplay.textContent=p.dividend;
-      quotientInput.value="";subtractionInput.value="";remainderInput.value="";
-      quotientInput.readOnly=false;subtractionInput.readOnly=false;remainderInput.readOnly=false;
-      [quotientInput,subtractionInput,remainderInput].forEach(function(i){i.classList.remove("locked","answer-correct")});
-      submitBtn.disabled=false;nextBtn.disabled=true;feedbackEl.classList.add("hidden");
-      var total=state.sessionLength==="endless"?"infinity":state.sessionLength;
-      progressQuestion.textContent="Question "+(state.currentProblemIndex+1)+" of "+total;
-      if(state.sessionLength!=="endless"){var pct=(state.currentProblemIndex/state.sessionLength)*100;progressFill.style.width=pct+"%";progressTrack.setAttribute("aria-valuenow",Math.round(pct))}else{progressFill.style.width="0%";progressTrack.setAttribute("aria-valuenow",0)}
-      setTimeout(function(){quotientInput.focus()},100);
-    }
+/* === Game === */
+function genProblem(){const ds=state.selectedDivisors.length?state.selectedDivisors:[2,3,4,5],dv=ds[Math.floor(Math.random()*ds.length)];let mq;if(state.difficulty==="easy")mq=Math.floor(80/dv);else if(state.difficulty==="medium")mq=Math.floor(140/dv);else mq=Math.floor(220/dv);mq=Math.max(mq,2);const q=Math.floor(Math.random()*mq)+1;return{divisor:dv,dividend:dv*q,quotient:q,remainder:0}}
+function startGame(){state.sessionLength=window.getSessionLength();state.difficulty=document.querySelector('input[name="difficulty"]:checked').value;state.currentProblemIndex=0;state.score=0;state.streak=0;state.bestStreak=0;scoreEl.textContent="0";streakEl.textContent="0";showPanel(gamePanel);loadProblem()}
+function loadProblem(){state.currentProblem=genProblem();const p=state.currentProblem;divisorDisplay.textContent=p.divisor;dividendDisplay.textContent=p.dividend;quotientInput.value="";subtractionInput.value="";remainderInput.value="";quotientInput.readOnly=false;subtractionInput.readOnly=false;remainderInput.readOnly=false;[quotientInput,subtractionInput,remainderInput].forEach(i=>i.classList.remove("locked","answer-correct"));submitBtn.disabled=false;nextBtn.disabled=true;feedbackEl.classList.add("hidden");const total=state.sessionLength==="endless"?"infinity":state.sessionLength;progressQuestion.textContent="Question "+(state.currentProblemIndex+1)+" of "+total;if(state.sessionLength!=="endless"){const pct=(state.currentProblemIndex/state.sessionLength)*100;progressFill.style.width=pct+"%";progressTrack.setAttribute("aria-valuenow",Math.round(pct))}else{progressFill.style.width="0%";progressTrack.setAttribute("aria-valuenow",0)}setTimeout(()=>quotientInput.focus(),100)}
+function checkAnswer(){const p=state.currentProblem,qv=quotientInput.value.trim(),sv=subtractionInput.value.trim(),rv=remainderInput.value.trim();if(!qv){feedbackEl.className="feedback error";feedbackEl.innerHTML="Please enter a quotient.";feedbackEl.classList.remove("hidden");return}const uq=+qv,us=sv!==""?+sv:null,ur=rv!==""?+rv:0,es=p.divisor*p.quotient;let ok=uq===p.quotient;if(ok&&us!==null)ok=us===es;if(ok)ok=ur===p.remainder;quotientInput.readOnly=true;subtractionInput.readOnly=true;remainderInput.readOnly=true;submitBtn.disabled=true;if(ok){state.score++;state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;scoreEl.textContent=state.score;streakEl.textContent=state.streak;[quotientInput,subtractionInput,remainderInput].forEach(i=>i.classList.add("answer-correct"));feedbackEl.className="feedback success";feedbackEl.innerHTML="Correct! "+p.dividend+" / "+p.divisor+" = "+p.quotient;feedbackEl.classList.remove("hidden");spawnConfetti()}else{state.streak=0;streakEl.textContent="0";feedbackEl.className="feedback error";feedbackEl.innerHTML="Wrong. Answer: "+p.dividend+" / "+p.divisor+" = "+p.quotient+(es!==p.dividend?"<span class='feedback-hint'>Subtraction: "+p.divisor+" x "+p.quotient+" = "+es+"</span>":"");feedbackEl.classList.remove("hidden")}nextBtn.disabled=false;nextBtn.focus()}
+function nextProblem(){state.currentProblemIndex++;if(state.sessionLength!=="endless"&&state.currentProblemIndex>=state.sessionLength)showResults();else loadProblem()}
 
-    function checkAnswer(){
-      var p=state.currentProblem,qv=quotientInput.value.trim(),sv=subtractionInput.value.trim(),rv=remainderInput.value.trim();
-      if(!qv){feedbackEl.className="feedback error";feedbackEl.innerHTML="Please enter a quotient.";feedbackEl.classList.remove("hidden");return}
-      var uq=parseInt(qv,10),us=sv!==""?parseInt(sv,10):null,ur=rv!==""?parseInt(rv,10):0,es=p.divisor*p.quotient;
-      var ok=uq===p.quotient;if(ok&&us!==null)ok=us===es;if(ok)ok=ur===p.remainder;
-      quotientInput.readOnly=true;subtractionInput.readOnly=true;remainderInput.readOnly=true;submitBtn.disabled=true;
-      if(ok){
-        state.score++;state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;
-        scoreEl.textContent=state.score;streakEl.textContent=state.streak;
-        [quotientInput,subtractionInput,remainderInput].forEach(function(i){i.classList.add("answer-correct")});
-        feedbackEl.className="feedback success";feedbackEl.innerHTML="Correct! "+p.dividend+" / "+p.divisor+" = "+p.quotient;feedbackEl.classList.remove("hidden");spawnConfetti();
-      }else{
-        state.streak=0;streakEl.textContent="0";feedbackEl.className="feedback error";
-        feedbackEl.innerHTML="Wrong. Answer: "+p.dividend+" / "+p.divisor+" = "+p.quotient+(es!==p.dividend?"<span class='feedback-hint'>Subtraction: "+p.divisor+" x "+p.quotient+" = "+es+"</span>":"");feedbackEl.classList.remove("hidden");
-      }
-      nextBtn.disabled=false;nextBtn.focus();
-    }
+/* === Results === */
+function showResults(){const name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores);const total=state.currentProblemIndex,pct=total?Math.round(state.score/total*100):0;$("results-score").textContent=state.score;$("results-accuracy").textContent=pct+"%";$("results-streak").textContent=state.bestStreak;$("results-subtitle").textContent="You answered "+state.score+" out of "+total+" correctly ("+pct+"%)";$("results-title").textContent=pct===100?"Perfect Score!":pct>=80?"Great Job!":pct>=50?"Session Complete":"Keep Practicing!";showPanel(resultsPanel);if(pct>=80)for(let w=0;w<3;w++)setTimeout(spawnConfetti,w*200)}
+ $("results-home-btn").addEventListener("click",goHome);
+ $("results-again-btn").addEventListener("click",startGame);
+ $("end-session-link").addEventListener("click",e=>{e.preventDefault();$("confirm-modal-desc").textContent="End this session early? Progress will be saved.";$("confirm-ok-btn").onclick=()=>{confirmModal.classList.add("hidden");if(state.currentProblemIndex>0){const name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores)}goHome()};confirmModal.classList.remove("hidden")});
 
-    function nextProblem(){
-      state.currentProblemIndex++;
-      if(state.sessionLength!=="endless"&&state.currentProblemIndex>=state.sessionLength)showResults();else loadProblem();
-    }
+/* === Buttons === */
+ $("start-btn").addEventListener("click",startGame);
+submitBtn.addEventListener("click",checkAnswer);
+nextBtn.addEventListener("click",nextProblem);
+resetBtn.addEventListener("click",()=>{quotientInput.value="";subtractionInput.value="";remainderInput.value="";feedbackEl.classList.add("hidden");quotientInput.focus()});
+[quotientInput,subtractionInput,remainderInput].forEach(inp=>{inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(!submitBtn.disabled)checkAnswer();else if(!nextBtn.disabled)nextProblem()}})});
 
-    /* ====== RESULTS ====== */
-    function showResults(){
-      var name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();
-      scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores);
-      var total=state.currentProblemIndex,pct=total?Math.round(state.score/total*100):0;
-      $("results-score").textContent=state.score;$("results-accuracy").textContent=pct+"%";$("results-streak").textContent=state.bestStreak;
-      $("results-subtitle").textContent="You answered "+state.score+" out of "+total+" correctly ("+pct+"%)";
-      $("results-title").textContent=pct===100?"Perfect Score!":pct>=80?"Great Job!":pct>=50?"Session Complete":"Keep Practicing!";
-      showPanel(resultsPanel);if(pct>=80)for(var w=0;w<3;w++)setTimeout(spawnConfetti,w*200);
-    }
-    $("results-home-btn").addEventListener("click",goHome);
-    $("results-again-btn").addEventListener("click",startGame);
+/* === Confetti === */
+function spawnConfetti(){const r=$("paper-sheet").getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cols=["#b07d10","#2d6a4f","#9b2226","#457b9d","#e9c46a","#f4a261"];for(let i=0;i<18;i++){const d=document.createElement("div");d.className="confetti-dot";const a=Math.PI*2*i/18+(Math.random()-.5)*.5,dist=60+Math.random()*100;d.style.cssText="left:"+cx+"px;top:"+cy+"px;width:"+(6+Math.random()*6)+"px;height:"+(6+Math.random()*6)+"px;background:"+cols[i%cols.length]+";--cx:"+(Math.cos(a)*dist)+"px;--cy:"+(Math.sin(a)*dist-40)+"px;";confettiContainer.appendChild(d);setTimeout(()=>d.remove(),900)}}
 
-    /* End session early */
-    endSessionLink.addEventListener("click",function(e){
-      e.preventDefault();confirmModalDesc.textContent="End this session early? Progress will be saved.";
-      confirmOkBtn.onclick=function(){
-        confirmModal.classList.add("hidden");
-        if(state.currentProblemIndex>0){var name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores)}
-        goHome();
-      };confirmModal.classList.remove("hidden");
-    });
-
-    /* ====== BUTTONS ====== */
-    $("start-btn").addEventListener("click",startGame);
-    submitBtn.addEventListener("click",checkAnswer);
-    nextBtn.addEventListener("click",nextProblem);
-    resetBtn.addEventListener("click",function(){quotientInput.value="";subtractionInput.value="";remainderInput.value="";feedbackEl.classList.add("hidden");quotientInput.focus()});
-    [quotientInput,subtractionInput,remainderInput].forEach(function(inp){inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();if(!submitBtn.disabled)checkAnswer();else if(!nextBtn.disabled)nextProblem()}})});
-
-    /* ====== CONFETTI ====== */
-    function spawnConfetti(){var r=document.getElementById("paper-sheet").getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cols=["#b07d10","#2d6a4f","#9b2226","#457b9d","#e9c46a","#f4a261"];for(var i=0;i<18;i++){var d=document.createElement("div");d.className="confetti-dot";var a=Math.PI*2*i/18+(Math.random()-.5)*.5,dist=60+Math.random()*100;d.style.cssText="left:"+cx+"px;top:"+cy+"px;width:"+(6+Math.random()*6)+"px;height:"+(6+Math.random()*6)+"px;background:"+cols[i%cols.length]+";--cx:"+(Math.cos(a)*dist)+"px;--cy:"+(Math.sin(a)*dist-40)+"px;";confettiContainer.appendChild(d);setTimeout(function(){d.remove()},900)}}
-
-    /* ====== INIT ====== */
-    updateHeader();
-    </script>
-  </body>
+/* === Init === */
+updateHeader();
+</script>
+</body>
 </html>
