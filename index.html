@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Divide & Conquer — Division Practice with Custom Divisors & 2FA Security</title>
-    <meta name="description" content="Practice long division on digital notebook paper with customizable divisors (2, 4, 5, 8, 9, 10, etc.), full TOTP 2FA security, streaks, and PDF worksheets." />
+    <title>Divide & Conquer — Division Practice</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23d46a32%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%239a4518%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M14%2010%20L14%2022%20L10%2022%22%20fill%3D%22none%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%20%20%3Cline%20x1%3D%2214%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2222%22%20cy%3D%228%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2222%22%20cy%3D%2224%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%0A%20%20%3Cline%20x1%3D%2219%22%20y1%3D%2216%22%20x2%3D%2225%22%20y2%3D%2216%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,519 +12,273 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-      :root {
-        --bg: #e8e4dc;
-        --surface: #fffef9;
-        --ink: #1a1f24;
-        --muted: #5c656d;
-        --accent: #b07d10;
-        --accent-dark: #8c600b;
-        --success: #2d6a4f;
-        --error: #9b2226;
-        --border: #ddd5c8;
-        --paper-line: #b8cce8;
-        --paper-margin: #e8a0a0;
-        --shadow: 0 12px 40px rgba(26,31,36,0.08);
-        --radius: 16px;
-        --font-display: "Fraunces", Georgia, serif;
-        --font-body: "Source Sans 3", system-ui, sans-serif;
-        --font-hand: "Patrick Hand", "Segoe Print", cursive;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-      *, *::before, *::after { box-sizing: border-box; }
-      body {
-        margin: 0; min-height: 100vh; font-family: var(--font-body);
-        font-size: 1.05rem; color: var(--ink); background: var(--bg);
-        background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(176,125,16,0.08), transparent), linear-gradient(180deg, var(--bg) 0%, #ddd8cf 100%);
-        transition: background-image 0.5s ease; overflow-x: hidden;
-      }
-      .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-      .bg-shape {
-        position: absolute; border-radius: 50%; opacity: 0.04;
-        background: var(--accent); animation: float-blob linear infinite;
-      }
-      @keyframes float-blob {
-        0%   { transform: translateY(105vh) rotate(0deg) scale(1); }
-        50%  { transform: translateY(50vh) rotate(180deg) scale(1.12); }
-        100% { transform: translateY(-12vh) rotate(360deg) scale(1); }
-      }
-      .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden; }
-      .confetti-dot { position: absolute; border-radius: 50%; animation: confetti-fly 0.85s ease-out forwards; }
-      @keyframes confetti-fly {
-        0%   { opacity: 1; transform: translate(0,0) scale(1) rotate(0deg); }
-        100% { opacity: 0; transform: translate(var(--cx), var(--cy)) scale(0.2) rotate(400deg); }
-      }
-      .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
-      .header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
-      .header-brand { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; min-width: 0; }
-      .header-brand h1 { white-space: nowrap; }
-      .header-auth { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; font-size: 0.92rem; }
-      @keyframes hdr-in {
-        0%   { opacity: 0; transform: translateX(12px); }
-        100% { opacity: 1; transform: translateX(0); }
-      }
-      .header-auth.visible { animation: hdr-in 0.3s ease forwards; }
-      .user-greeting { color: var(--muted); }
-      .user-greeting strong { color: var(--ink); }
-      .logout-link { color: var(--ink); font-weight: 600; text-decoration: underline; cursor: pointer; background: none; border: none; font-family: inherit; font-size: inherit; padding: 0; }
-      .logout-link:hover { color: var(--accent-dark); }
-      .panel {
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);
-        opacity: 0; transform: translateY(20px); animation: panel-in 0.45s ease forwards;
-      }
-      @keyframes panel-in { to { opacity: 1; transform: translateY(0); } }
-      .panel h2 { margin: 0 0 1.25rem; font-family: var(--font-display); font-size: 1.35rem; }
-      .auth-tabs {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
-        margin-bottom: 1.25rem; padding: 0.35rem; background: var(--bg); border-radius: 12px;
-      }
-      .auth-tab {
-        font-family: inherit; font-size: 0.95rem; font-weight: 600;
-        padding: 0.65rem 1rem; border: none; border-radius: 9px;
-        background: transparent; color: var(--muted); cursor: pointer;
-        transition: background 0.2s, color 0.2s;
-      }
-      .auth-tab:hover { color: var(--ink); }
-      .auth-tab.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 4px rgba(26,31,36,0.08); }
-      .auth-lead { margin: 0 0 1.25rem; color: var(--muted); font-size: 0.95rem; }
-      .auth-form { display: grid; gap: 1rem; }
-      .field { display: grid; gap: 0.35rem; }
-      .field-label { font-weight: 600; font-size: 0.92rem; }
-      .field input {
-        width: 100%; padding: 0.65rem 0.85rem; font-family: inherit; font-size: 1rem;
-        border: 2px solid var(--border); border-radius: 10px; background: var(--surface);
-        transition: border-color 0.2s, box-shadow 0.2s;
-      }
-      .field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(176,125,16,0.12); }
-      .field-hint { color: var(--muted); font-size: 0.82rem; }
-      .auth-error { margin: 0; padding: 0.65rem 0.85rem; border-radius: 10px; background: rgba(155,34,38,0.1); color: var(--error); font-size: 0.92rem; font-weight: 600; }
-      .auth-submit { width: 100%; margin-top: 0.25rem; }
-      .skip-auth {
-        display: block; width: 100%; text-align: center; margin-bottom: 1.25rem; padding: 0.6rem;
-        font-family: inherit; font-size: 0.92rem; font-weight: 600; color: var(--muted);
-        background: transparent; border: 2px dashed var(--border); border-radius: 10px;
-        cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.15s;
-      }
-      .skip-auth:hover { color: var(--accent); border-color: var(--accent); background: rgba(176,125,16,0.04); }
-      .skip-auth:active { transform: scale(0.98); }
-      .logo-link {
-        flex-shrink: 0; display: block; border-radius: 14px; line-height: 0;
-        transition: transform 0.25s, box-shadow 0.25s;
-      }
-      .logo-link:hover { transform: translateY(-2px) rotate(-2deg); box-shadow: 0 6px 20px rgba(176,125,16,0.2); }
-      .logo { width: 44px; height: 44px; display: block; border-radius: 12px; box-shadow: var(--shadow); }
-      .header h1 { margin: 0; font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; }
-      .tagline { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.9rem; }
-      .main { display: grid; gap: 1.25rem; }
-      .field-group { border: none; margin: 0 0 1.5rem; padding: 0; }
-      .field-group legend { font-weight: 700; margin-bottom: 0.75rem; font-size: 1rem; color: var(--ink); }
-      .radio-grid { display: grid; gap: 0.75rem; }
-      .radio-card { cursor: pointer; display: block; }
-      .radio-card input { position: absolute; opacity: 0; pointer-events: none; }
-      .radio-card-inner {
-        display: block; padding: 1rem 1.25rem; border: 2px solid var(--border); border-radius: 12px; background: var(--surface);
-        transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
-      }
-      .radio-card-inner:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
-      .radio-card input:checked + .radio-card-inner {
-        border-color: var(--accent); background: #fffefb;
-        box-shadow: 0 0 0 1px var(--accent);
-      }
-      .radio-card-inner strong { display: block; margin-bottom: 0.2rem; font-size: 1.05rem; }
-      .radio-card-inner small { color: var(--muted); font-size: 0.9rem; }
-      .divisor-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-      .divisor-pill {
-        display: inline-flex; align-items: center; justify-content: center;
-        min-width: 44px; height: 40px; padding: 0 0.75rem; border: 2px solid var(--border);
-        border-radius: 10px; background: var(--surface); font-weight: 700;
-        cursor: pointer; user-select: none; transition: border-color 0.2s, background 0.2s, color 0.2s;
-      }
-      .divisor-pill input { position: absolute; opacity: 0; pointer-events: none; }
-      .divisor-pill:has(input:checked) { border-color: var(--accent); background: var(--accent); color: #fff; }
-      select {
-        width: 100%; padding: 0.75rem 1rem; font-family: inherit; font-size: 1rem;
-        border: 2px solid var(--border); border-radius: 12px; background: var(--surface); cursor: pointer;
-      }
-      select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-      .session-length-wrap { position: relative; }
-      .session-length-trigger {
-        width: 100%; padding: 0.75rem 1rem; font-family: inherit; font-size: 1rem;
-        border: 2px solid var(--border); border-radius: 12px; background: var(--surface);
-        cursor: pointer; text-align: left; color: var(--ink); font-weight: 400;
-        display: flex; align-items: center; justify-content: space-between;
-        transition: border-color 0.2s, box-shadow 0.2s;
-      }
-      .session-length-trigger:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
-      .session-length-trigger.open {
-        border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent);
-        border-bottom-left-radius: 0; border-bottom-right-radius: 0;
-      }
-      .session-length-trigger .trigger-arrow {
-        display: inline-block; width: 0; height: 0;
-        border-left: 5px solid transparent; border-right: 5px solid transparent;
-        border-top: 6px solid var(--muted); transition: transform 0.2s;
-        flex-shrink: 0; margin-left: 0.5rem;
-      }
-      .session-length-trigger.open .trigger-arrow { transform: rotate(180deg); }
-      .session-length-dropdown {
-        position: absolute; top: 100%; left: 0; right: 0; z-index: 50;
-        background: var(--surface); border: 2px solid var(--accent); border-top: none;
-        border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
-        box-shadow: 0 8px 24px rgba(26,31,36,0.12);
-        max-height: 0; overflow: hidden; opacity: 0;
-        transition: max-height 0.25s ease, opacity 0.2s ease;
-      }
-      .session-length-dropdown.open { max-height: 320px; opacity: 1; overflow-y: auto; }
-      .session-length-option {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 0.7rem 1rem; cursor: pointer; font-size: 1rem;
-        transition: background 0.15s; color: var(--ink);
-      }
-      .session-length-option:hover { background: rgba(176,125,16,0.06); }
-      .session-length-option.selected { background: rgba(176,125,16,0.1); font-weight: 700; color: var(--accent-dark); }
-      .session-length-option .check-icon {
-        width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 0.7rem; color: transparent; transition: border-color 0.15s, color 0.15s, background 0.15s;
-        flex-shrink: 0;
-      }
-      .session-length-option.selected .check-icon { background: var(--accent); border-color: var(--accent); color: #fff; }
-      .custom-input-row {
-        padding: 0.6rem 1rem 0.85rem; border-top: 1px solid var(--border);
-        display: flex; align-items: center; gap: 0.5rem;
-        max-height: 0; overflow: hidden; opacity: 0;
-        transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.25s ease;
-      }
-      .custom-input-row.visible { max-height: 80px; opacity: 1; padding: 0.75rem 1rem 0.85rem; }
-      .custom-input-row label { font-size: 0.9rem; font-weight: 600; white-space: nowrap; color: var(--ink); }
-      .custom-input-row input {
-        width: 90px; padding: 0.5rem 0.65rem; font-family: inherit; font-size: 1rem;
-        border: 2px solid var(--border); border-radius: 10px; background: var(--surface);
-        text-align: center; font-weight: 700; transition: border-color 0.2s, box-shadow 0.2s;
-      }
-      .custom-input-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(176,125,16,0.12); }
-      .custom-input-row .custom-hint { font-size: 0.78rem; color: var(--muted); }
-      body.font-handwriting .division-house, body.font-handwriting .house-input { font-family: var(--font-hand); }
-      body.font-sans .division-house, body.font-sans .house-input { font-family: var(--font-body); }
-      body.font-serif .division-house, body.font-serif .house-input { font-family: var(--font-display); }
-      .btn {
-        font-family: inherit; font-size: 1rem; font-weight: 700; padding: 0.85rem 1.25rem;
-        border-radius: 12px; border: none; cursor: pointer; position: relative; overflow: hidden;
-        transition: transform 0.12s, background 0.2s, opacity 0.2s, box-shadow 0.2s;
-      }
-      .btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none !important; transform: none !important; }
-      .btn-primary { background: #b07d10; color: #fff; box-shadow: 0 4px 12px rgba(176,125,16,0.25); }
-      .btn-primary:hover:not(:disabled) { background: #8c600b; box-shadow: 0 6px 16px rgba(176,125,16,0.3); transform: translateY(-1px); }
-      .btn-secondary { background: var(--bg); color: var(--ink); border: 2px solid var(--border); }
-      .btn-secondary:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-1px); }
-      #start-btn { width: 100%; }
-      .hidden { display: none !important; }
-      .stats-bar { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.75rem; margin-bottom: 0.85rem; }
-      .progress-wrap { margin-bottom: 1.5rem; }
-      .progress-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.45rem; }
-      .progress-question { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
-      .progress-track {
-        height: 10px; background: var(--bg); border-radius: 999px;
-        overflow: hidden; border: 1px solid var(--border); position: relative;
-      }
-      .progress-fill {
-        height: 100%; width: 0%; position: relative;
-        background: linear-gradient(90deg, var(--accent), var(--accent-dark));
-        border-radius: 999px; transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
-      }
-      .stat { text-align: center; padding: 0.65rem; background: var(--bg); border-radius: 10px; }
-      .stat-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
-      .stat-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; display: inline-block; }
-      .problem-card { text-align: center; }
-      .problem-label { margin: 0 0 1rem; color: var(--muted); font-size: 0.9rem; }
-      .paper-wrap { max-width: 480px; margin: 0 auto 1.25rem; }
-      .paper-sheet {
-        position: relative; background: #fff; border: 1px solid #ccc; border-radius: 4px;
-        padding: 2rem 1.5rem 2rem 2.75rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.04);
-        background-image: repeating-linear-gradient(transparent, transparent 31px, var(--paper-line) 31px, var(--paper-line) 32px);
-        background-size: 100% 32px; background-position: 0 1.5rem;
-      }
-      .paper-sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 2rem; width: 2px; background: var(--paper-margin); opacity: 0.55; }
-      .division-house {
-        --work-width: 10ch; --side-width: 2.5rem; --bracket-width: 1.2rem;
-        position: relative; z-index: 1; font-family: var(--font-hand);
-        font-size: 2.25rem; line-height: 1.15; color: var(--ink);
-      }
-      .house-row { display: grid; grid-template-columns: var(--side-width) var(--bracket-width) var(--work-width); align-items: end; min-height: 2.5rem; }
-      .house-side { display: flex; align-items: flex-end; justify-content: flex-end; padding-right: 0.35rem; padding-bottom: 0.1rem; }
-      .house-bracket { position: relative; align-self: stretch; color: var(--ink); }
-      .bracket-svg { width: 100%; height: 100%; min-height: 2.5rem; display: block; }
-      .house-work { position: relative; width: var(--work-width); display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; }
-      .house-divisor, .house-dividend { font-variant-numeric: tabular-nums; letter-spacing: 0.05em; text-align: right; width: 100%; padding-right: 0.1rem; }
-      .house-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-      .house-input {
-        width: 100%; border: none; border-bottom: 2px dashed rgba(176,125,16,0.45); background: transparent;
-        font-family: var(--font-hand); font-size: 2.25rem; font-weight: 400; color: var(--accent-dark);
-        text-align: right; padding: 0 0.1rem 0.05rem; font-variant-numeric: tabular-nums;
-        letter-spacing: 0.05em; outline: none;
-      }
-      .house-input:focus { border-bottom-color: var(--accent); background: rgba(176,125,16,0.06); }
-      .house-input.locked, .house-input:read-only { border-bottom-style: solid; border-bottom-color: transparent; background: transparent; color: var(--ink); cursor: default; }
-      .house-input.answer-correct { color: var(--success); }
-      .house-line { width: 100%; height: 2px; background: var(--ink); border-radius: 1px; }
-      .house-line-top { margin-top: 0.1rem; }
-      .house-line-sub { width: 80%; margin-left: auto; border-bottom: 1.5px solid var(--ink); margin-bottom: 0.2rem; }
-      .quotient-row { margin-bottom: 0.1rem; }
-      .subtraction-row { font-size: 1.8rem; min-height: 2rem; color: var(--muted); }
-      .sub-input { font-size: 1.8rem; border-bottom-style: dotted; text-align: right; }
-      .action-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; max-width: 480px; margin: 0 auto 1rem; }
-      .feedback {
-        margin: 0; font-weight: 600; padding: 0.75rem 1rem; border-radius: 10px;
-        text-align: left; max-width: 480px; margin-inline: auto; font-size: 0.95rem; line-height: 1.5;
-      }
-      .feedback.success { background: rgba(45,106,79,0.12); color: var(--success); }
-      .feedback.error { background: rgba(155,34,38,0.1); color: var(--error); }
-      .feedback-hint { display: block; margin-top: 0.35rem; font-weight: 400; color: var(--muted); font-size: 0.88rem; }
-      .instructions-legend {
-        max-width: 480px; margin: 1rem auto 0; text-align: left; font-size: 0.85rem; color: var(--muted); display: grid; gap: 0.25rem;
-      }
-      .instructions-legend strong { color: var(--ink); }
-      .modal-overlay {
-        position: fixed; inset: 0; background: rgba(26,31,36,0.6); backdrop-filter: blur(4px);
-        display: flex; align-items: center; justify-content: center; padding: 1.25rem; z-index: 1000;
-      }
-      .modal-box {
-        background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-        padding: 1.75rem; max-width: 480px; width: 100%; box-shadow: var(--shadow);
-        animation: dialog-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; max-height: 90vh; overflow-y: auto;
-      }
-      @keyframes dialog-pop { 0% { transform: scale(0.92) translateY(10px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
-      .totp-digits { display: flex; justify-content: center; gap: 0.5rem; margin: 1.25rem 0; }
-      .totp-digit-input {
-        width: 45px; height: 52px; text-align: center; font-size: 1.75rem; font-weight: 700;
-        font-family: var(--font-display); border: 2px solid var(--border); border-radius: 10px;
-        background: var(--surface); transition: border-color 0.2s, box-shadow 0.2s;
-      }
-      .totp-digit-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(176,125,16,0.15); }
-      .qr-container {
-        display: flex; justify-content: center; margin: 1rem 0; padding: 1rem; background: #fff;
-        border: 1px solid var(--border); border-radius: 12px;
-      }
-      @media print {
-        body * { visibility: hidden !important; }
-        #worksheet-print-area, #worksheet-print-area * { visibility: visible !important; }
-        #worksheet-print-area {
-          position: absolute !important; left: 0 !important; top: 0 !important;
-          width: 100% !important; background: #fff !important; color: #000 !important;
-          padding: 1.5rem !important; margin: 0 !important; box-shadow: none !important;
-        }
-        .page-break { page-break-after: always; }
-      }
-      .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.92rem; }
-      .leaderboard-table th, .leaderboard-table td { padding: 0.5rem 0.65rem; text-align: left; border-bottom: 1px solid var(--border); }
-      .leaderboard-table th { background: var(--bg); font-weight: 700; color: var(--ink); }
-      .worksheet-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem 1.5rem; margin-top: 1.5rem; }
-      .worksheet-problem { border: 1px dashed #ccc; padding: 1rem; border-radius: 8px; page-break-inside: avoid; }
-
-      /* Results panel styles */
-      .results-hero { text-align: center; padding: 1.5rem 0 0.5rem; }
-      .results-hero h2 { font-family: var(--font-display); font-size: 1.9rem; margin: 0 0 0.4rem; }
-      .results-hero p { color: var(--muted); font-size: 1rem; margin: 0; }
-      .results-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; max-width: 420px; margin: 1.5rem auto; }
-      .results-actions { display: flex; gap: 0.75rem; max-width: 360px; margin: 1rem auto 0; }
+      :root{--bg:#e8e4dc;--surface:#fffef9;--ink:#1a1f24;--muted:#5c656d;--accent:#b07d10;--accent-dark:#8c600b;--success:#2d6a4f;--error:#9b2226;--border:#ddd5c8;--paper-line:#b8cce8;--paper-margin:#e8a0a0;--shadow:0 12px 40px rgba(26,31,36,0.08);--radius:16px;--font-display:"Fraunces",Georgia,serif;--font-body:"Source Sans 3",system-ui,sans-serif;--font-hand:"Patrick Hand","Segoe Print",cursive}
+      @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+      *,*::before,*::after{box-sizing:border-box}
+      body{margin:0;min-height:100vh;font-family:var(--font-body);font-size:1.05rem;color:var(--ink);background:var(--bg);background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(176,125,16,0.08),transparent),linear-gradient(180deg,var(--bg) 0%,#ddd8cf 100%);overflow-x:hidden}
+      .bg-shapes{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+      .bg-shape{position:absolute;border-radius:50%;opacity:.04;background:var(--accent);animation:fb linear infinite}
+      @keyframes fb{0%{transform:translateY(105vh) rotate(0) scale(1)}50%{transform:translateY(50vh) rotate(180deg) scale(1.12)}100%{transform:translateY(-12vh) rotate(360deg) scale(1)}}
+      .confetti-container{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
+      .confetti-dot{position:absolute;border-radius:50%;animation:cf .85s ease-out forwards}
+      @keyframes cf{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0)}100%{opacity:0;transform:translate(var(--cx),var(--cy)) scale(.2) rotate(400deg)}}
+      .page{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:2rem 1.25rem 3rem}
+      .header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+      .header-brand{display:flex;align-items:center;gap:1rem;flex-shrink:0;min-width:0}
+      .header-brand h1{white-space:nowrap}
+      .header-auth{display:flex;align-items:center;gap:.75rem;flex-shrink:0;font-size:.92rem}
+      @keyframes hi{0%{opacity:0;transform:translateX(12px)}100%{opacity:1;transform:translateX(0)}}
+      .header-auth.visible{animation:hi .3s ease forwards}
+      .user-greeting{color:var(--muted)}.user-greeting strong{color:var(--ink)}
+      .logout-link{color:var(--ink);font-weight:600;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit;font-size:inherit;padding:0}
+      .logout-link:hover{color:var(--accent-dark)}
+      .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);opacity:0;transform:translateY(20px);animation:pi .45s ease forwards}
+      @keyframes pi{to{opacity:1;transform:translateY(0)}}
+      .panel h2{margin:0 0 1.25rem;font-family:var(--font-display);font-size:1.35rem}
+      .auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem;padding:.35rem;background:var(--bg);border-radius:12px}
+      .auth-tab{font-family:inherit;font-size:.95rem;font-weight:600;padding:.65rem 1rem;border:none;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
+      .auth-tab:hover{color:var(--ink)}.auth-tab.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(26,31,36,.08)}
+      .auth-lead{margin:0 0 1.25rem;color:var(--muted);font-size:.95rem}
+      .auth-form{display:grid;gap:1rem}
+      .field{display:grid;gap:.35rem}.field-label{font-weight:600;font-size:.92rem}
+      .field input[type="text"],.field input[type="email"],.field input[type="password"]{width:100%;padding:.65rem .85rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);transition:border-color .2s,box-shadow .2s}
+      .field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.12)}
+      .field-hint{color:var(--muted);font-size:.82rem}
+      .auth-error{margin:0;padding:.65rem .85rem;border-radius:10px;background:rgba(155,34,38,.1);color:var(--error);font-size:.92rem;font-weight:600}
+      .auth-submit{width:100%;margin-top:.25rem}
+      .skip-auth{display:block;width:100%;text-align:center;margin-bottom:1.25rem;padding:.6rem;font-family:inherit;font-size:.92rem;font-weight:600;color:var(--muted);background:transparent;border:2px dashed var(--border);border-radius:10px;cursor:pointer;transition:color .2s,border-color .2s,background .2s,transform .15s}
+      .skip-auth:hover{color:var(--accent);border-color:var(--accent);background:rgba(176,125,16,.04)}.skip-auth:active{transform:scale(.98)}
+      .logo-link{flex-shrink:0;display:block;border-radius:14px;line-height:0;transition:transform .25s,box-shadow .25s}
+      .logo-link:hover{transform:translateY(-2px) rotate(-2deg);box-shadow:0 6px 20px rgba(176,125,16,.2)}
+      .logo{width:44px;height:44px;display:block;border-radius:12px;box-shadow:var(--shadow)}
+      .header h1{margin:0;font-family:var(--font-display);font-size:1.6rem;font-weight:700}
+      .tagline{margin:.15rem 0 0;color:var(--muted);font-size:.9rem}
+      .main{display:grid;gap:1.25rem}
+      .field-group{border:none;margin:0 0 1.5rem;padding:0}
+      .field-group legend{font-weight:700;margin-bottom:.75rem;font-size:1rem;color:var(--ink)}
+      .radio-grid{display:grid;gap:.75rem}
+      .radio-card{cursor:pointer;display:block}.radio-card input{position:absolute;opacity:0;pointer-events:none}
+      .radio-card-inner{display:block;padding:1rem 1.25rem;border:2px solid var(--border);border-radius:12px;background:var(--surface);transition:border-color .2s,background .2s,box-shadow .2s}
+      .radio-card-inner:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
+      .radio-card input:checked+.radio-card-inner{border-color:var(--accent);background:#fffefb;box-shadow:0 0 0 1px var(--accent)}
+      .radio-card-inner strong{display:block;margin-bottom:.2rem;font-size:1.05rem}
+      .radio-card-inner small{color:var(--muted);font-size:.9rem}
+      .divisor-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+      .divisor-pill{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:40px;padding:0 .75rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);font-weight:700;cursor:pointer;user-select:none;transition:border-color .2s,background .2s,color .2s}
+      .divisor-pill input{position:absolute;opacity:0;pointer-events:none}
+      .divisor-pill:has(input:checked){border-color:var(--accent);background:var(--accent);color:#fff}
+      .cdd-wrap{position:relative}
+      .cdd-trigger{width:100%;padding:.75rem 1rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:12px;background:var(--surface);cursor:pointer;text-align:left;color:var(--ink);font-weight:400;display:flex;align-items:center;justify-content:space-between;gap:.5rem;transition:border-color .2s,box-shadow .2s}
+      .cdd-trigger:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
+      .cdd-trigger.open{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);border-bottom-left-radius:0;border-bottom-right-radius:0}
+      .cdd-arrow{display:inline-block;width:0;height:0;flex-shrink:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--muted);transition:transform .2s}
+      .cdd-trigger.open .cdd-arrow{transform:rotate(180deg)}
+      .cdd-list{position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--surface);border:2px solid var(--accent);border-top:none;border-bottom-left-radius:12px;border-bottom-right-radius:12px;box-shadow:0 8px 24px rgba(26,31,36,.12);max-height:0;overflow:hidden;opacity:0;transition:max-height .25s ease,opacity .2s ease}
+      .cdd-list.open{max-height:280px;opacity:1;overflow-y:auto}
+      .cdd-opt{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;cursor:pointer;font-size:.95rem;transition:background .15s;color:var(--ink)}
+      .cdd-opt:hover{background:rgba(176,125,16,.06)}
+      .cdd-opt.selected{background:rgba(176,125,16,.1);font-weight:700;color:var(--accent-dark)}
+      .cdd-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:transparent;flex-shrink:0;transition:border-color .15s,color .15s,background .15s}
+      .cdd-opt.selected .cdd-check{background:var(--accent);border-color:var(--accent);color:#fff}
+      .cdd-custom-row{padding:.6rem 1rem .85rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.5rem;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .25s ease,padding .25s ease}
+      .cdd-custom-row.visible{max-height:80px;opacity:1;padding:.75rem 1rem .85rem}
+      .cdd-custom-row label{font-size:.9rem;font-weight:600;white-space:nowrap;color:var(--ink)}
+      .cdd-custom-row input[type="number"]{width:90px;padding:.5rem .65rem;font-family:inherit;font-size:1rem;border:2px solid var(--border);border-radius:10px;background:var(--surface);text-align:center;font-weight:700;transition:border-color .2s,box-shadow .2s}
+      .cdd-custom-row input[type="number"]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.12)}
+      .cdd-custom-row .cdd-hint{font-size:.78rem;color:var(--muted)}
+      body.font-handwriting .division-house,body.font-handwriting .house-input{font-family:var(--font-hand)}
+      body.font-sans .division-house,body.font-sans .house-input{font-family:var(--font-body)}
+      body.font-serif .division-house,body.font-serif .house-input{font-family:var(--font-display)}
+      .btn{font-family:inherit;font-size:1rem;font-weight:700;padding:.85rem 1.25rem;border-radius:12px;border:none;cursor:pointer;position:relative;overflow:hidden;transition:transform .12s,background .2s,opacity .2s,box-shadow .2s}
+      .btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none!important;transform:none!important}
+      .btn-primary{background:#b07d10;color:#fff;box-shadow:0 4px 12px rgba(176,125,16,.25)}
+      .btn-primary:hover:not(:disabled){background:#8c600b;box-shadow:0 6px 16px rgba(176,125,16,.3);transform:translateY(-1px)}
+      .btn-secondary{background:var(--bg);color:var(--ink);border:2px solid var(--border)}
+      .btn-secondary:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px)}
+      #start-btn{width:100%}
+      .hidden{display:none!important}
+      .stats-bar{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:.85rem}
+      .progress-wrap{margin-bottom:1.5rem}
+      .progress-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.45rem}
+      .progress-question{font-size:.9rem;font-weight:600;color:var(--ink)}
+      .progress-track{height:10px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);position:relative}
+      .progress-fill{height:100%;width:0%;position:relative;background:linear-gradient(90deg,var(--accent),var(--accent-dark));border-radius:999px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+      .stat{text-align:center;padding:.65rem;background:var(--bg);border-radius:10px}
+      .stat-label{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+      .stat-value{font-family:var(--font-display);font-size:1.5rem;font-weight:700;display:inline-block}
+      .problem-card{text-align:center}
+      .problem-label{margin:0 0 1rem;color:var(--muted);font-size:.9rem}
+      .paper-wrap{max-width:480px;margin:0 auto 1.25rem}
+      .paper-sheet{position:relative;background:#fff;border:1px solid #ccc;border-radius:4px;padding:2rem 1.5rem 2rem 2.75rem;box-shadow:0 2px 8px rgba(0,0,0,.06),inset 0 0 0 1px rgba(0,0,0,.04);background-image:repeating-linear-gradient(transparent,transparent 31px,var(--paper-line) 31px,var(--paper-line) 32px);background-size:100% 32px;background-position:0 1.5rem}
+      .paper-sheet::before{content:"";position:absolute;top:0;bottom:0;left:2rem;width:2px;background:var(--paper-margin);opacity:.55}
+      .division-house{--work-width:10ch;--side-width:2.5rem;--bracket-width:1.2rem;position:relative;z-index:1;font-family:var(--font-hand);font-size:2.25rem;line-height:1.15;color:var(--ink)}
+      .house-row{display:grid;grid-template-columns:var(--side-width) var(--bracket-width) var(--work-width);align-items:end;min-height:2.5rem}
+      .house-side{display:flex;align-items:flex-end;justify-content:flex-end;padding-right:.35rem;padding-bottom:.1rem}
+      .house-bracket{position:relative;align-self:stretch;color:var(--ink)}
+      .bracket-svg{width:100%;height:100%;min-height:2.5rem;display:block}
+      .house-work{position:relative;width:var(--work-width);display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end}
+      .house-divisor,.house-dividend{font-variant-numeric:tabular-nums;letter-spacing:.05em;text-align:right;width:100%;padding-right:.1rem}
+      .house-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+      .house-input{width:100%;border:none;border-bottom:2px dashed rgba(176,125,16,.45);background:transparent;font-family:var(--font-hand);font-size:2.25rem;font-weight:400;color:var(--accent-dark);text-align:right;padding:0 .1rem .05rem;font-variant-numeric:tabular-nums;letter-spacing:.05em;outline:none}
+      .house-input:focus{border-bottom-color:var(--accent);background:rgba(176,125,16,.06)}
+      .house-input.locked,.house-input:read-only{border-bottom-style:solid;border-bottom-color:transparent;background:transparent;color:var(--ink);cursor:default}
+      .house-input.answer-correct{color:var(--success)}
+      .house-line{width:100%;height:2px;background:var(--ink);border-radius:1px}
+      .house-line-top{margin-top:.1rem}
+      .house-line-sub{width:80%;margin-left:auto;border-bottom:1.5px solid var(--ink);margin-bottom:.2rem}
+      .quotient-row{margin-bottom:.1rem}
+      .subtraction-row{font-size:1.8rem;min-height:2rem;color:var(--muted)}
+      .sub-input{font-size:1.8rem;border-bottom-style:dotted;text-align:right}
+      .action-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;max-width:480px;margin:0 auto 1rem}
+      .feedback{margin:0;font-weight:600;padding:.75rem 1rem;border-radius:10px;text-align:left;max-width:480px;margin-inline:auto;font-size:.95rem;line-height:1.5}
+      .feedback.success{background:rgba(45,106,79,.12);color:var(--success)}
+      .feedback.error{background:rgba(155,34,38,.1);color:var(--error)}
+      .feedback-hint{display:block;margin-top:.35rem;font-weight:400;color:var(--muted);font-size:.88rem}
+      .instructions-legend{max-width:480px;margin:1rem auto 0;text-align:left;font-size:.85rem;color:var(--muted);display:grid;gap:.25rem}
+      .instructions-legend strong{color:var(--ink)}
+      .modal-overlay{position:fixed;inset:0;background:rgba(26,31,36,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1.25rem;z-index:1000}
+      .modal-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;max-width:480px;width:100%;box-shadow:var(--shadow);animation:dp .3s cubic-bezier(.16,1,.3,1) forwards;max-height:90vh;overflow-y:auto}
+      @keyframes dp{0%{transform:scale(.92) translateY(10px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+      .totp-digits{display:flex;justify-content:center;gap:.5rem;margin:1.25rem 0}
+      .totp-digit-input{width:45px;height:52px;text-align:center;font-size:1.75rem;font-weight:700;font-family:var(--font-display);border:2px solid var(--border);border-radius:10px;background:var(--surface);transition:border-color .2s,box-shadow .2s}
+      .totp-digit-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,125,16,.15)}
+      .qr-container{display:flex;justify-content:center;margin:1rem 0;padding:1rem;background:#fff;border:1px solid var(--border);border-radius:12px}
+      @media print{body *{visibility:hidden!important}#worksheet-print-area,#worksheet-print-area *{visibility:visible!important}#worksheet-print-area{position:absolute!important;left:0!important;top:0!important;width:100%!important;background:#fff!important;color:#000!important;padding:1.5rem!important;margin:0!important;box-shadow:none!important}.page-break{page-break-after:always}}
+      .leaderboard-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.92rem}
+      .leaderboard-table th,.leaderboard-table td{padding:.5rem .65rem;text-align:left;border-bottom:1px solid var(--border)}
+      .leaderboard-table th{background:var(--bg);font-weight:700;color:var(--ink)}
+      .worksheet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem 1.5rem;margin-top:1.5rem}
+      .worksheet-problem{border:1px dashed #ccc;padding:1rem;border-radius:8px;page-break-inside:avoid}
+      .results-hero{text-align:center;padding:1.5rem 0 .5rem}
+      .results-hero h2{font-family:var(--font-display);font-size:1.9rem;margin:0 0 .4rem}
+      .results-hero p{color:var(--muted);font-size:1rem;margin:0}
+      .results-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;max-width:420px;margin:1.5rem auto}
+      .results-actions{display:flex;gap:.75rem;max-width:360px;margin:1rem auto 0}
     </style>
   </head>
   <body>
     <div class="bg-shapes" aria-hidden="true">
-      <div class="bg-shape" style="width: 320px; height: 320px; top: -100px; left: -80px;"></div>
-      <div class="bg-shape" style="width: 400px; height: 400px; bottom: -150px; right: -100px; animation-delay: -7s;"></div>
+      <div class="bg-shape" style="width:320px;height:320px;top:-100px;left:-80px"></div>
+      <div class="bg-shape" style="width:400px;height:400px;bottom:-150px;right:-100px;animation-delay:-7s"></div>
     </div>
     <div class="confetti-container" id="confetti-container" aria-hidden="true"></div>
-
     <div class="page">
       <header class="header">
         <div class="header-brand">
-          <a class="logo-link" href="#" aria-label="Divide & Conquer home">
-            <svg class="logo" width="44" height="44" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Divide and Conquer logo">
-              <defs>
-                <linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b07d10"/><stop offset="100%" stop-color="#8c600b"/></linearGradient>
-                <linearGradient id="lpaper" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fffef9"/><stop offset="100%" stop-color="#f5f0e6"/></linearGradient>
-              </defs>
-              <rect width="64" height="64" rx="14" fill="url(#lbg)"/>
-              <rect x="14" y="13" width="36" height="38" rx="3" fill="url(#lpaper)" opacity="0.95"/>
-              <line x1="22" y1="13" x2="22" y2="51" stroke="#e8a0a0" stroke-width="1.2" opacity="0.7"/>
-              <line x1="14" y1="22" x2="50" y2="22" stroke="#b8cce8" stroke-width="0.8" opacity="0.55"/>
-              <line x1="14" y1="30" x2="50" y2="30" stroke="#b8cce8" stroke-width="0.8" opacity="0.55"/>
-              <line x1="14" y1="38" x2="50" y2="38" stroke="#b8cce8" stroke-width="0.8" opacity="0.55"/>
-              <line x1="14" y1="46" x2="50" y2="46" stroke="#b8cce8" stroke-width="0.8" opacity="0.55"/>
-              <path d="M30 24 L30 44 L24 44" fill="none" stroke="#1a1f24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              <line x1="30" y1="28" x2="44" y2="28" stroke="#1a1f24" stroke-width="2" stroke-linecap="round"/>
-              <text x="24" y="27" font-family="Georgia,serif" font-size="9" font-weight="700" fill="#8c600b" text-anchor="middle">3</text>
-              <text x="38" y="41" font-family="Georgia,serif" font-size="10" font-weight="700" fill="#1a1f24" text-anchor="middle">12</text>
-              <circle cx="44" cy="20" r="2.2" fill="#b07d10"/>
-              <circle cx="44" cy="48" r="2.2" fill="#b07d10"/>
-              <line x1="40" y1="34" x2="48" y2="34" stroke="#b07d10" stroke-width="2.2" stroke-linecap="round"/>
-            </svg>
+          <a class="logo-link" href="#" aria-label="Home">
+            <svg class="logo" width="44" height="44" viewBox="0 0 64 64"><defs><linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b07d10"/><stop offset="100%" stop-color="#8c600b"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#lbg)"/><path d="M30 24L30 44L24 44" fill="none" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="30" y1="28" x2="44" y2="28" stroke="#fffef9" stroke-width="2" stroke-linecap="round"/><circle cx="44" cy="20" r="2.2" fill="#fffef9"/><circle cx="44" cy="48" r="2.2" fill="#fffef9"/><line x1="40" y1="34" x2="48" y2="34" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round"/></svg>
           </a>
-          <div>
-            <h1 class="whitespace-nowrap">Divide & Conquer</h1>
-            <p class="tagline">Practice long division the way you write it on paper.</p>
-          </div>
+          <div><h1>Divide &amp; Conquer</h1><p class="tagline">Practice long division the way you write it on paper.</p></div>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-leaderboard-btn" style="border-radius: 10px;">🏆 Leaderboard</button>
-          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-worksheet-btn" style="border-radius: 10px;">🖨️ Worksheets</button>
-          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-settings-btn" style="border-radius: 10px;">⚙️ Settings</button>
+          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-leaderboard-btn" style="border-radius:10px">Leaderboard</button>
+          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-worksheet-btn" style="border-radius:10px">Worksheets</button>
+          <button type="button" class="btn btn-secondary text-xs md:text-sm py-2 px-3" id="header-settings-btn" style="border-radius:10px">Settings</button>
           <div class="header-auth hidden" id="header-auth">
-            <span class="user-greeting">Hi, <strong id="user-greeting-name" class="inline-block max-w-[130px] sm:max-w-[180px] truncate align-bottom"></strong></span>
+            <span class="user-greeting">Hi, <strong id="user-greeting-name"></strong></span>
             <button type="button" class="logout-link" id="header-auth-btn">Log out</button>
           </div>
         </div>
       </header>
-
       <main class="main">
-        <!-- Auth Panel -->
+        <!-- AUTH -->
         <section class="panel auth" id="auth-panel">
-          <div class="auth-tabs" role="tablist" aria-label="Account">
-            <button type="button" class="auth-tab active" id="login-tab" role="tab" aria-selected="true" aria-controls="login-form-panel">Log in</button>
-            <button type="button" class="auth-tab" id="signup-tab" role="tab" aria-selected="false" aria-controls="signup-form-panel">Sign up</button>
+          <div class="auth-tabs" role="tablist">
+            <button type="button" class="auth-tab active" id="login-tab" role="tab" aria-selected="true">Log in</button>
+            <button type="button" class="auth-tab" id="signup-tab" role="tab" aria-selected="false">Sign up</button>
           </div>
           <button type="button" class="skip-auth" id="skip-auth-btn">Play as guest &rarr;</button>
-          <div id="login-form-panel" role="tabpanel" aria-labelledby="login-tab">
+          <div id="login-form-panel">
             <h2>Welcome back</h2>
             <p class="auth-lead">Log in to save scores and practice with security.</p>
             <form class="auth-form" id="login-form" autocomplete="off" novalidate>
-              <label class="field"><span class="field-label">Email</span><input type="email" id="login-email" autocomplete="off" required placeholder="you@example.com" /></label>
-              <label class="field"><span class="field-label">Password</span><input type="password" id="login-password" autocomplete="new-password" required placeholder="••••••••" /></label>
+              <label class="field"><span class="field-label">Email</span><input type="email" id="login-email" required placeholder="you@example.com" /></label>
+              <label class="field"><span class="field-label">Password</span><input type="password" id="login-password" required placeholder="--------" /></label>
               <p class="auth-error hidden" id="login-error" role="alert"></p>
               <button type="submit" class="btn btn-primary auth-submit">Log in</button>
             </form>
           </div>
-          <div class="hidden" id="signup-form-panel" role="tabpanel" aria-labelledby="signup-tab">
+          <div class="hidden" id="signup-form-panel">
             <h2>Create an account</h2>
             <p class="auth-lead">Sign up to track your division progress.</p>
             <form class="auth-form" id="signup-form" autocomplete="off" novalidate>
-              <label class="field"><span class="field-label">Email</span><input type="email" id="signup-email" autocomplete="off" required placeholder="you@example.com" /></label>
-              <label class="field"><span class="field-label">Password</span><input type="password" id="signup-password" autocomplete="new-password" required placeholder="••••••••" /><small class="field-hint">At least 6 characters</small></label>
-              <label class="field"><span class="field-label">Confirm password</span><input type="password" id="signup-confirm" autocomplete="new-password" required placeholder="••••••••" /></label>
+              <label class="field"><span class="field-label">Email</span><input type="email" id="signup-email" required placeholder="you@example.com" /></label>
+              <label class="field"><span class="field-label">Password</span><input type="password" id="signup-password" required placeholder="--------" /><small class="field-hint">At least 6 characters</small></label>
+              <label class="field"><span class="field-label">Confirm password</span><input type="password" id="signup-confirm" required placeholder="--------" /></label>
               <p class="auth-error hidden" id="signup-error" role="alert"></p>
               <button type="submit" class="btn btn-primary auth-submit">Create account</button>
             </form>
           </div>
         </section>
-
-        <!-- Setup Panel -->
+        <!-- SETUP -->
         <section class="panel setup hidden" id="setup-panel">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="m-0">Practice setup</h2>
-          </div>
-          <fieldset class="field-group">
-            <legend>Difficulty Level</legend>
+          <h2 class="m-0 mb-6">Practice setup</h2>
+          <fieldset class="field-group"><legend>Difficulty Level</legend>
             <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="difficulty" value="easy" checked /><span class="radio-card-inner"><strong>Easy</strong><small>Divisors 2&ndash;9, standard dividends</small></span></label>
-              <label class="radio-card"><input type="radio" name="difficulty" value="medium" /><span class="radio-card-inner"><strong>Medium</strong><small>Divisors 2&ndash;12, larger dividends</small></span></label>
-              <label class="radio-card"><input type="radio" name="difficulty" value="hard" /><span class="radio-card-inner"><strong>Hard</strong><small>Divisors 5&ndash;15, extended long division</small></span></label>
+              <label class="radio-card"><input type="radio" name="difficulty" value="easy" checked /><span class="radio-card-inner"><strong>Easy</strong><small>Divisors 2 - 9, standard dividends</small></span></label>
+              <label class="radio-card"><input type="radio" name="difficulty" value="medium" /><span class="radio-card-inner"><strong>Medium</strong><small>Divisors 2 - 12, larger dividends</small></span></label>
+              <label class="radio-card"><input type="radio" name="difficulty" value="hard" /><span class="radio-card-inner"><strong>Hard</strong><small>Divisors 5 - 15, extended long division</small></span></label>
             </div>
           </fieldset>
-          <fieldset class="field-group">
-            <legend>Specific Divisors to Practice</legend>
-            <p class="text-xs text-gray-600 mb-2">Select which numbers (e.g., 2, 4, 5, 8, 9, 10) to include in problems. (Change anytime in settings)</p>
+          <fieldset class="field-group"><legend>Specific Divisors to Practice</legend>
+            <p class="text-xs text-gray-600 mb-2">Select which numbers to include in problems.</p>
             <div class="divisor-grid" id="setup-divisor-container"></div>
             <div class="flex gap-2 mt-2 text-xs">
-              <button type="button" class="text-amber-700 hover:underline font-semibold" id="setup-divisors-preset-2-4-5-8-9-10">Preset: 2, 4, 5, 8, 9, 10</button>
-              <span>•</span>
-              <button type="button" class="text-amber-700 hover:underline font-semibold" id="setup-divisors-select-all">Select All</button>
+              <button type="button" class="text-amber-700 hover:underline font-semibold" id="setup-divisors-preset">Preset: 2, 4, 5, 8, 9, 10</button>
+              <span class="text-gray-400">|</span>
+              <button type="button" class="text-amber-700 hover:underline font-semibold" id="setup-divisors-all">Select All</button>
             </div>
           </fieldset>
-          <fieldset class="field-group">
-            <legend>Session length</legend>
-            <div class="session-length-wrap" id="session-length-wrap">
-              <button type="button" class="session-length-trigger" id="session-length-trigger" aria-haspopup="listbox" aria-expanded="false">
-                <span id="session-length-label">20 problems</span>
-                <span class="trigger-arrow"></span>
-              </button>
-              <div class="session-length-dropdown" id="session-length-dropdown" role="listbox" aria-label="Session length options">
-                <div class="session-length-option" role="option" data-value="10"><span>10 problems</span><span class="check-icon">&#10003;</span></div>
-                <div class="session-length-option selected" role="option" data-value="20"><span>20 problems</span><span class="check-icon">&#10003;</span></div>
-                <div class="session-length-option" role="option" data-value="30"><span>30 problems</span><span class="check-icon">&#10003;</span></div>
-                <div class="session-length-option" role="option" data-value="50"><span>50 problems</span><span class="check-icon">&#10003;</span></div>
-                <div class="session-length-option" role="option" data-value="endless"><span>Endless</span><span class="check-icon">&#10003;</span></div>
-                <div class="session-length-option" role="option" data-value="custom"><span>Custom</span><span class="check-icon">&#10003;</span></div>
-                <div class="custom-input-row" id="custom-input-row">
-                  <label for="custom-session-input">Enter count:</label>
-                  <input type="number" id="custom-session-input" min="1" max="999" placeholder="5" inputmode="numeric" />
-                  <span class="custom-hint">questions</span>
+          <fieldset class="field-group"><legend>Session length</legend>
+            <div class="cdd-wrap" id="sl-wrap">
+              <button type="button" class="cdd-trigger" id="sl-trigger" aria-expanded="false"><span id="sl-label">20 problems</span><span class="cdd-arrow"></span></button>
+              <div class="cdd-list" id="sl-list" role="listbox">
+                <div class="cdd-opt" data-value="10"><span>10 problems</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt selected" data-value="20"><span>20 problems</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="30"><span>30 problems</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="50"><span>50 problems</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="endless"><span>Endless</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="custom"><span>Custom</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-custom-row" id="sl-custom">
+                  <label for="sl-custom-input">Enter count:</label>
+                  <input type="number" id="sl-custom-input" min="1" max="999" placeholder="5" inputmode="numeric" />
+                  <span class="cdd-hint">questions</span>
                 </div>
               </div>
             </div>
           </fieldset>
-          <fieldset class="field-group">
-            <legend>Worksheet Font Style</legend>
-            <select id="setup-font-style-select" aria-label="Worksheet Font Style">
-              <option value="handwriting" selected>Notebook Handwriting (Patrick Hand)</option>
-              <option value="sans">Clean Modern (Source Sans)</option>
-              <option value="serif">Classic Serif (Fraunces)</option>
-            </select>
+          <fieldset class="field-group"><legend>Worksheet Font Style</legend>
+            <div class="cdd-wrap" id="sf-wrap">
+              <button type="button" class="cdd-trigger" id="sf-trigger" aria-expanded="false"><span id="sf-label">Notebook Handwriting</span><span class="cdd-arrow"></span></button>
+              <div class="cdd-list" id="sf-list" role="listbox">
+                <div class="cdd-opt selected" data-value="handwriting"><span>Notebook Handwriting</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="sans"><span>Clean Modern</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="serif"><span>Classic Serif</span><span class="cdd-check">&#10003;</span></div>
+              </div>
+            </div>
           </fieldset>
           <button type="button" class="btn btn-primary" id="start-btn">Start practice</button>
         </section>
-
-        <!-- Game Panel -->
+        <!-- GAME -->
         <section class="panel game hidden" id="game-panel" aria-live="polite">
           <div class="stats-bar">
             <div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="score">0</span></div>
             <div class="stat"><span class="stat-label">Streak</span><span class="stat-value" id="streak">0</span></div>
           </div>
           <div class="progress-wrap">
-            <div class="progress-meta">
-              <span class="progress-question" id="progress-question">Question 1 of 20</span>
-            </div>
-            <div class="progress-track" id="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Session progress">
-              <div class="progress-fill" id="progress-fill"></div>
-            </div>
+            <div class="progress-meta"><span class="progress-question" id="progress-question">Question 1 of 20</span></div>
+            <div class="progress-track" id="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
           </div>
           <div class="problem-card" id="problem-card">
             <p class="problem-label">Write your work like on notebook paper</p>
-            <div class="paper-wrap">
-              <div class="paper-sheet" id="paper-sheet" aria-label="Long division workspace">
-                <div class="division-house" id="division-house">
-                  <div class="house-row quotient-row">
-                    <div class="house-side"></div>
-                    <div class="house-bracket"></div>
-                    <div class="house-work">
-                      <label class="house-label" for="quotient-input">Quotient</label>
-                      <input type="text" id="quotient-input" class="house-input house-input-quotient" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" aria-label="Quotient" />
-                      <div class="house-line house-line-top"></div>
-                    </div>
-                  </div>
-                  <div class="house-row dividend-row">
-                    <div class="house-side"><span class="house-divisor" id="divisor-display">&mdash;</span></div>
-                    <div class="house-bracket" aria-hidden="true">
-                      <svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none"><path d="M12 0 L12 48 L0 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <div class="house-work"><span class="house-dividend" id="dividend-display">&mdash;</span></div>
-                  </div>
-                  <div class="house-row subtraction-row">
-                    <div class="house-side"></div>
-                    <div class="house-bracket"></div>
-                    <div class="house-work">
-                      <input type="text" id="subtraction-input" class="house-input sub-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" placeholder="" aria-label="Subtraction step" />
-                      <div class="house-line-sub"></div>
-                    </div>
-                  </div>
-                  <div class="house-row remainder-row" style="margin-top: 0.5rem;">
-                    <div class="house-side"><span style="font-size: 1.1rem; color: var(--muted); font-weight: 600;">Rem:</span></div>
-                    <div class="house-bracket"></div>
-                    <div class="house-work">
-                      <input type="text" id="remainder-input" class="house-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="3" placeholder="0" aria-label="Remainder input" />
-                    </div>
-                  </div>
-                </div>
+            <div class="paper-wrap"><div class="paper-sheet" id="paper-sheet">
+              <div class="division-house" id="division-house">
+                <div class="house-row quotient-row"><div class="house-side"></div><div class="house-bracket"></div><div class="house-work"><label class="house-label" for="quotient-input">Quotient</label><input type="text" id="quotient-input" class="house-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" aria-label="Quotient" /><div class="house-line house-line-top"></div></div></div>
+                <div class="house-row dividend-row"><div class="house-side"><span class="house-divisor" id="divisor-display">&mdash;</span></div><div class="house-bracket" aria-hidden="true"><svg class="bracket-svg" viewBox="0 0 12 48" preserveAspectRatio="none"><path d="M12 0L12 48L0 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="house-work"><span class="house-dividend" id="dividend-display">&mdash;</span></div></div>
+                <div class="house-row subtraction-row"><div class="house-side"></div><div class="house-bracket"></div><div class="house-work"><input type="text" id="subtraction-input" class="house-input sub-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" aria-label="Subtraction step" /><div class="house-line-sub"></div></div></div>
+                <div class="house-row remainder-row" style="margin-top:.5rem"><div class="house-side"><span style="font-size:1.1rem;color:var(--muted);font-weight:600">Rem:</span></div><div class="house-bracket"></div><div class="house-work"><input type="text" id="remainder-input" class="house-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="3" placeholder="0" aria-label="Remainder" /></div></div>
               </div>
-            </div>
+            </div></div>
             <div class="action-row">
               <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
               <button type="button" class="btn btn-primary" id="submit-btn">Submit answer</button>
@@ -534,21 +287,15 @@
             <p class="feedback hidden" id="feedback" role="alert"></p>
             <div class="instructions-legend">
               <div><strong>Quotient</strong> — on top, above the line</div>
-              <div><strong>Subtraction</strong> — write the number you subtract (divisor &times; quotient)</div>
+              <div><strong>Subtraction</strong> — write the number you subtract (divisor x quotient)</div>
               <div><strong>Remainder</strong> — what is left at the bottom</div>
             </div>
-            <div class="mt-4">
-              <a href="#" id="end-session-link" class="text-xs text-gray-500 hover:underline">End session</a>
-            </div>
+            <div class="mt-4"><a href="#" id="end-session-link" class="text-xs text-gray-500 hover:underline">End session</a></div>
           </div>
         </section>
-
-        <!-- Results Panel (separate, not injected) -->
+        <!-- RESULTS -->
         <section class="panel results hidden" id="results-panel">
-          <div class="results-hero">
-            <h2 id="results-title">Session Complete</h2>
-            <p id="results-subtitle">You answered 0 out of 0 correctly (0%)</p>
-          </div>
+          <div class="results-hero"><h2 id="results-title">Session Complete</h2><p id="results-subtitle"></p></div>
           <div class="results-stats">
             <div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="results-score">0</span></div>
             <div class="stat"><span class="stat-label">Accuracy</span><span class="stat-value" id="results-accuracy">0%</span></div>
@@ -561,61 +308,46 @@
         </section>
       </main>
     </div>
-
-    <!-- Settings Modal -->
-    <div class="modal-overlay hidden" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <!-- MODALS -->
+    <div class="modal-overlay hidden" id="settings-modal" role="dialog" aria-modal="true">
       <div class="modal-box">
-        <h3 id="settings-title" class="text-xl font-bold mb-4 text-center">⚙️ Practice Settings</h3>
+        <h3 class="text-xl font-bold mb-4 text-center">Practice Settings</h3>
         <div class="space-y-4">
-          <div class="field">
-            <span class="field-label" style="display: block; margin-bottom: 0.35rem;">Divisors Allowed for Practice</span>
-            <p class="text-xs text-gray-500 mb-2">Check the numbers you want to include (e.g., 2, 4, 5, 8, 9, 10):</p>
-            <div class="divisor-grid" id="settings-divisor-container"></div>
-            <div class="flex gap-2 mt-2 text-xs">
-              <button type="button" class="text-amber-700 hover:underline font-semibold" id="settings-divisors-preset-2-4-5-8-9-10">Preset: 2, 4, 5, 8, 9, 10</button>
-              <span>•</span>
-              <button type="button" class="text-amber-700 hover:underline font-semibold" id="settings-divisors-select-all">Select All</button>
+          <div class="field"><span class="field-label" style="display:block;margin-bottom:.35rem">Divisors Allowed</span><p class="text-xs text-gray-500 mb-2">Check the numbers to include:</p><div class="divisor-grid" id="settings-divisor-container"></div>
+            <div class="flex gap-2 mt-2 text-xs"><button type="button" class="text-amber-700 hover:underline font-semibold" id="settings-divisors-preset">Preset: 2, 4, 5, 8, 9, 10</button><span class="text-gray-400">|</span><button type="button" class="text-amber-700 hover:underline font-semibold" id="settings-divisors-all">Select All</button></div>
+          </div>
+          <div class="field"><span class="field-label" style="display:block;margin-bottom:.35rem">Worksheet Font Style</span>
+            <div class="cdd-wrap" id="sf2-wrap">
+              <button type="button" class="cdd-trigger" id="sf2-trigger" aria-expanded="false"><span id="sf2-label">Notebook Handwriting</span><span class="cdd-arrow"></span></button>
+              <div class="cdd-list" id="sf2-list" role="listbox">
+                <div class="cdd-opt selected" data-value="handwriting"><span>Notebook Handwriting</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="sans"><span>Clean Modern</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="serif"><span>Classic Serif</span><span class="cdd-check">&#10003;</span></div>
+              </div>
             </div>
           </div>
-          <div class="field">
-            <span class="field-label" style="display: block; margin-bottom: 0.35rem;">Worksheet Font Style</span>
-            <select id="font-style-select" aria-label="Worksheet Font Style">
-              <option value="handwriting" selected>Notebook Handwriting (Patrick Hand)</option>
-              <option value="sans">Clean Modern (Source Sans)</option>
-              <option value="serif">Classic Serif (Fraunces)</option>
-            </select>
-          </div>
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px dashed var(--border);">
-            <div>
-              <strong style="font-size: 0.92rem; display: block;">Two-Factor Authentication</strong>
-              <small style="color: var(--muted); font-size: 0.82rem;">Protect your account & practice logs</small>
-            </div>
-            <button type="button" class="btn btn-secondary btn-sm text-xs py-2 px-3" id="setup-security-btn" style="border-radius: 10px;">🛡️ Setup 2FA</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px dashed var(--border)">
+            <div><strong style="font-size:.92rem;display:block">Two-Factor Authentication</strong><small style="color:var(--muted);font-size:.82rem">Protect your account</small></div>
+            <button type="button" class="btn btn-secondary text-xs py-2 px-3" id="setup-security-btn" style="border-radius:10px">Setup 2FA</button>
           </div>
         </div>
-        <div class="mt-6">
-          <button type="button" class="btn btn-primary w-full" id="settings-close-btn">Save & Close</button>
-        </div>
+        <div class="mt-6"><button type="button" class="btn btn-primary w-full" id="settings-close-btn">Save &amp; Close</button></div>
       </div>
     </div>
-
-    <!-- Confirm / Alert Modal -->
-    <div class="modal-overlay hidden" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="modal-overlay hidden" id="confirm-modal" role="dialog" aria-modal="true">
       <div class="modal-box text-center">
-        <h3 id="confirm-title" class="text-xl font-bold mb-2">⚠️ Confirm Action</h3>
-        <p class="text-sm text-gray-600 mb-6" id="confirm-modal-desc">Are you sure you want to proceed?</p>
+        <h3 class="text-xl font-bold mb-2">Confirm Action</h3>
+        <p class="text-sm text-gray-600 mb-6" id="confirm-modal-desc">Are you sure?</p>
         <div class="flex gap-2">
           <button type="button" class="btn btn-secondary flex-1" id="confirm-cancel-btn">Cancel</button>
-          <button type="button" class="btn btn-primary flex-1" id="confirm-ok-btn" style="background-color: var(--error);">Confirm</button>
+          <button type="button" class="btn btn-primary flex-1" id="confirm-ok-btn" style="background:var(--error)">Confirm</button>
         </div>
       </div>
     </div>
-
-    <!-- TOTP Verify Modal -->
-    <div class="modal-overlay hidden" id="totp-modal" role="dialog" aria-modal="true" aria-labelledby="totp-title">
+    <div class="modal-overlay hidden" id="totp-modal" role="dialog" aria-modal="true">
       <div class="modal-box text-center">
-        <h3 id="totp-title" class="text-xl font-bold mb-2">🔐 Two-Factor Authentication</h3>
-        <p class="text-sm text-gray-600 mb-4" id="totp-modal-desc">Open your authenticator app and enter the 6-digit verification code.</p>
+        <h3 class="text-xl font-bold mb-2">Two-Factor Authentication</h3>
+        <p class="text-sm text-gray-600 mb-4">Enter the 6-digit code from your authenticator app.</p>
         <div class="totp-digits" id="totp-inputs">
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" />
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
@@ -631,15 +363,13 @@
         </div>
       </div>
     </div>
-
-    <!-- TOTP Setup Modal -->
-    <div class="modal-overlay hidden" id="totp-setup-modal" role="dialog" aria-modal="true" aria-labelledby="totp-setup-title">
+    <div class="modal-overlay hidden" id="totp-setup-modal" role="dialog" aria-modal="true">
       <div class="modal-box">
-        <h3 id="totp-setup-title" class="text-xl font-bold mb-2 text-center">Setup Authenticator (TOTP)</h3>
-        <p class="text-sm text-gray-600 mb-3 text-center">Scan this QR code with Google Authenticator, Authy, or Duo Security, or enter the secret key manually.</p>
+        <h3 class="text-xl font-bold mb-2 text-center">Setup Authenticator</h3>
+        <p class="text-sm text-gray-600 mb-3 text-center">Scan this QR code or enter the secret key manually.</p>
         <div class="qr-container" id="qr-code-box"></div>
         <div class="text-xs text-center font-mono font-bold text-gray-700 mb-3" id="totp-secret-display"></div>
-        <p class="text-xs text-gray-500 mb-4 text-center">Enter a code generated by your app to confirm setup:</p>
+        <p class="text-xs text-gray-500 mb-4 text-center">Enter a code to confirm setup:</p>
         <div class="totp-digits" id="totp-setup-inputs">
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
           <input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
@@ -655,19 +385,13 @@
         </div>
       </div>
     </div>
-
-    <!-- Leaderboard Modal -->
-    <div class="modal-overlay hidden" id="leaderboard-modal" role="dialog" aria-modal="true" aria-labelledby="leaderboard-title">
-      <div class="modal-box" style="max-width: 540px;">
-        <h3 id="leaderboard-title" class="text-xl font-bold mb-2 text-center">🏆 Leaderboard & Top Scores</h3>
-        <p class="text-sm text-gray-600 mb-3 text-center">High scores achieved in completed practice sessions.</p>
-        <div style="max-height: 280px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px;">
-          <table class="leaderboard-table">
-            <thead><tr><th>#</th><th>Player</th><th>Score</th><th>Difficulty</th><th>Date</th></tr></thead>
-            <tbody id="leaderboard-body">
-              <tr><td colspan="5" class="text-center py-4 text-gray-500">No high scores recorded yet. Complete a session!</td></tr>
-            </tbody>
-          </table>
+    <div class="modal-overlay hidden" id="leaderboard-modal" role="dialog" aria-modal="true">
+      <div class="modal-box" style="max-width:540px">
+        <h3 class="text-xl font-bold mb-2 text-center">Leaderboard</h3>
+        <p class="text-sm text-gray-600 mb-3 text-center">High scores from completed sessions.</p>
+        <div style="max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:10px">
+          <table class="leaderboard-table"><thead><tr><th>#</th><th>Player</th><th>Score</th><th>Difficulty</th><th>Date</th></tr></thead>
+          <tbody id="leaderboard-body"><tr><td colspan="5" class="text-center py-4 text-gray-500">No scores yet.</td></tr></tbody></table>
         </div>
         <div class="flex gap-2 mt-4">
           <button type="button" class="btn btn-secondary text-xs py-2 px-3" id="clear-scores-btn">Clear Scores</button>
@@ -675,759 +399,350 @@
         </div>
       </div>
     </div>
-
-    <!-- Printable Worksheet Generator Modal -->
-    <div class="modal-overlay hidden" id="worksheet-modal" role="dialog" aria-modal="true" aria-labelledby="worksheet-title">
-      <div class="modal-box" style="max-width: 580px;">
-        <h3 id="worksheet-title" class="text-xl font-bold mb-2 text-center">🖨️ Printable Worksheet Generator</h3>
-        <p class="text-sm text-gray-600 mb-4 text-center">Generate custom paper worksheets for offline division practice.</p>
+    <div class="modal-overlay hidden" id="worksheet-modal" role="dialog" aria-modal="true">
+      <div class="modal-box" style="max-width:580px">
+        <h3 class="text-xl font-bold mb-2 text-center">Worksheet Generator</h3>
+        <p class="text-sm text-gray-600 mb-4 text-center">Generate custom worksheets for offline practice.</p>
         <div class="grid grid-cols-2 gap-3 mb-4">
           <label class="field"><span class="field-label">Difficulty</span>
-            <select id="ws-difficulty-select"><option value="easy">Easy (Divisors 2-9)</option><option value="medium" selected>Medium (Divisors 2-12)</option><option value="hard">Hard (Divisors 5-15)</option></select>
+            <div class="cdd-wrap" id="ws-diff-wrap">
+              <button type="button" class="cdd-trigger" id="ws-diff-trigger" aria-expanded="false"><span id="ws-diff-label">Medium</span><span class="cdd-arrow"></span></button>
+              <div class="cdd-list" id="ws-diff-list" role="listbox">
+                <div class="cdd-opt" data-value="easy"><span>Easy (Divisors 2-9)</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt selected" data-value="medium"><span>Medium (Divisors 2-12)</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="hard"><span>Hard (Divisors 5-15)</span><span class="cdd-check">&#10003;</span></div>
+              </div>
+            </div>
           </label>
           <label class="field"><span class="field-label">Problem Count</span>
-            <select id="ws-count-select"><option value="6">6 Problems</option><option value="12" selected>12 Problems</option><option value="18">18 Problems</option></select>
+            <div class="cdd-wrap" id="ws-cnt-wrap">
+              <button type="button" class="cdd-trigger" id="ws-cnt-trigger" aria-expanded="false"><span id="ws-cnt-label">12 Problems</span><span class="cdd-arrow"></span></button>
+              <div class="cdd-list" id="ws-cnt-list" role="listbox">
+                <div class="cdd-opt" data-value="6"><span>6 Problems</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt selected" data-value="12"><span>12 Problems</span><span class="cdd-check">&#10003;</span></div>
+                <div class="cdd-opt" data-value="18"><span>18 Problems</span><span class="cdd-check">&#10003;</span></div>
+              </div>
+            </div>
           </label>
         </div>
-        <label class="flex items-center gap-2 mb-4 cursor-pointer text-sm font-semibold">
-          <input type="checkbox" id="ws-include-answers" class="w-4 h-4" />
-          <span>Include Answer Key at the end</span>
-        </label>
+        <label class="flex items-center gap-2 mb-4 cursor-pointer text-sm font-semibold"><input type="checkbox" id="ws-include-answers" class="w-4 h-4" /><span>Include Answer Key</span></label>
         <div class="flex flex-col sm:flex-row gap-2">
           <button type="button" class="btn btn-secondary flex-1" id="worksheet-close-btn">Cancel</button>
-          <button type="button" class="btn btn-secondary flex-1" id="worksheet-pdf-btn">Generate PDF 📄</button>
-          <button type="button" class="btn btn-primary flex-1" id="worksheet-print-btn">Print Worksheet 🖨️</button>
+          <button type="button" class="btn btn-secondary flex-1" id="worksheet-pdf-btn">Generate PDF</button>
+          <button type="button" class="btn btn-primary flex-1" id="worksheet-print-btn">Print Worksheet</button>
         </div>
       </div>
     </div>
-
-    <!-- Printable Container -->
     <div id="worksheet-print-area" class="hidden"></div>
 
     <script>
-      /* ========== Base32 / TOTP ========== */
-      const Base32 = {
-        alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",
-        decode(input) {
-          let cleaned = input.replace(/=+$/, "").toUpperCase();
-          let bits = "", bytes = [];
-          for (let i = 0; i < cleaned.length; i++) {
-            let val = this.alphabet.indexOf(cleaned[i]);
-            if (val === -1) continue;
-            bits += val.toString(2).padStart(5, "0");
-          }
-          for (let i = 0; i + 8 <= bits.length; i += 8) bytes.push(parseInt(bits.substr(i, 8), 2));
-          return new Uint8Array(bytes);
-        }
-      };
+    /* ====== BASE32 / TOTP ====== */
+    const B32={a:"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",decode(s){let c=s.replace(/=+$/,"").toUpperCase(),b="",r=[];for(let i=0;i<c.length;i++){let v=this.a.indexOf(c[i]);if(v>-1)b+=v.toString(2).padStart(5,"0")}for(let i=0;i+8<=b.length;i+=8)r.push(parseInt(b.substr(i,8),2));return new Uint8Array(r)}};
+    async function hmacSha1(k,m){const ck=await crypto.subtle.importKey("raw",k,{name:"HMAC",hash:{name:"SHA-1"}},false,["sign"]);return new Uint8Array(await crypto.subtle.sign("HMAC",ck,m))}
+    async function genTotp(secret,step=30,off=0){try{const kb=B32.decode(secret),cnt=Math.floor(Date.now()/1000/step)+off,buf=new ArrayBuffer(8);new DataView(buf).setUint32(4,cnt,false);const h=await hmacSha1(kb,buf),o=h[h.length-1]&0xf,bin=((h[o]&0x7f)<<24)|((h[o+1]&0xff)<<16)|((h[o+2]&0xff)<<8)|(h[o+3]&0xff);return(bin%1000000).toString().padStart(6,"0")}catch(e){return null}}
+    async function verifyTotp(secret,code){if(!code||code.length!==6)return false;for(let o=-1;o<=1;o++){if(await genTotp(secret,30,o)===code)return true}return false}
 
-      async function hmacSha1(keyBytes, messageBytes) {
-        const cryptoKey = await window.crypto.subtle.importKey("raw", keyBytes, { name: "HMAC", hash: { name: "SHA-1" } }, false, ["sign"]);
-        const signature = await window.crypto.subtle.sign("HMAC", cryptoKey, messageBytes);
-        return new Uint8Array(signature);
+    /* ====== ADMIN CONSTANTS (undeletable) ====== */
+    const ADMIN_EMAIL="ibraheem.muhammad.ai@gmail.com";
+    const ADMIN_PASS="Midea@222";
+    const ADMIN_SECRET="3W6PVGFORLAYR3L3";
+
+    /* ====== GENERIC CUSTOM DROPDOWN FACTORY ====== */
+    function makeCDD(wrapId,triggerId,listId,labelId,opts,onChange){
+      const trigger=document.getElementById(triggerId),list=document.getElementById(listId),label=document.getElementById(labelId);
+      const options=list.querySelectorAll(".cdd-opt");let selVal=opts.initial||options[0].dataset.value,open=false;
+      function close(){open=false;trigger.classList.remove("open");list.classList.remove("open");trigger.setAttribute("aria-expanded","false")}
+      function pick(v){
+        selVal=v;options.forEach(o=>o.classList.toggle("selected",o.dataset.value===v));
+        const lbl=opts.labelMap?opts.labelMap[v]:null;
+        if(lbl)label.textContent=lbl;
+        close();if(onChange)onChange(v);
+        /* Handle custom row visibility */
+        const cr=list.querySelector(".cdd-custom-row");
+        if(cr){if(v==="custom"){cr.classList.add("visible");const inp=cr.querySelector("input");if(inp)setTimeout(()=>inp.focus(),150)}else{cr.classList.remove("visible")}}
       }
+      trigger.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();open=!open;trigger.classList.toggle("open",open);list.classList.toggle("open",open);trigger.setAttribute("aria-expanded",open)});
+      options.forEach(o=>o.addEventListener("click",e=>{e.stopPropagation();pick(o.dataset.value)}));
+      list.addEventListener("click",e=>e.stopPropagation());
+      document.addEventListener("click",e=>{if(open&&!document.getElementById(wrapId).contains(e.target))close()});
+      document.addEventListener("keydown",e=>{if(e.key==="Escape"&&open){close();trigger.focus()}});
+      return{getValue:()=>selVal,pick,updateLabel:v=>{if(opts.labelMap&&opts.labelMap[v])label.textContent=opts.labelMap[v]}}
+    }
 
-      async function generateTotp(secret, timeStep = 30, windowOffset = 0) {
-        try {
-          const keyBytes = Base32.decode(secret);
-          const counter = Math.floor(Date.now() / 1000 / timeStep) + windowOffset;
-          const buffer = new ArrayBuffer(8);
-          new DataView(buffer).setUint32(4, counter, false);
-          const hmacResult = await hmacSha1(keyBytes, buffer);
-          const offset = hmacResult[hmacResult.length - 1] & 0x0f;
-          const binary = ((hmacResult[offset] & 0x7f) << 24) | ((hmacResult[offset + 1] & 0xff) << 16) | ((hmacResult[offset + 2] & 0xff) << 8) | (hmacResult[offset + 3] & 0xff);
-          return (binary % 1000000).toString().padStart(6, "0");
-        } catch (e) { console.error("TOTP error:", e); return null; }
+    /* ====== SESSION LENGTH DROPDOWN ====== */
+    const slCdd=makeCDD("sl-wrap","sl-trigger","sl-list","sl-label",{
+      initial:"20",
+      labelMap:{10:"10 problems",20:"20 problems",30:"30 problems",50:"50 problems",endless:"Endless",custom:"Custom -- enter a number"}
+    });
+    /* Live-update label when typing custom value */
+    document.getElementById("sl-custom-input").addEventListener("input",function(){
+      const v=parseInt(this.value,10);slCdd.updateLabel("custom");
+      if(v&&v>0)document.getElementById("sl-label").textContent=v+" problems (custom)";
+    });
+    window.getSessionLength=function(){
+      const v=slCdd.getValue();
+      if(v==="endless")return"endless";
+      if(v==="custom"){const n=parseInt(document.getElementById("sl-custom-input").value,10);return(n&&n>=1)?n:5}
+      return parseInt(v,10);
+    };
+
+    /* ====== FONT STYLE DROPDOWNS (setup + settings) ====== */
+    const fontLabelMap={handwriting:"Notebook Handwriting",sans:"Clean Modern",serif:"Classic Serif"};
+    let currentFont="handwriting";
+    function applyFont(f){document.body.className="font-"+f;currentFont=f}
+    const sfCdd=makeCDD("sf-wrap","sf-trigger","sf-list","sf-label",{initial:"handwriting",labelMap:fontLabelMap},applyFont);
+    const sf2Cdd=makeCDD("sf2-wrap","sf2-trigger","sf2-list","sf2-label",{initial:"handwriting",labelMap:fontLabelMap},applyFont);
+
+    /* ====== WORKSHEET DROPDOWNS ====== */
+    const wsDiffMap={easy:"Easy",medium:"Medium",hard:"Hard"};
+    const wsDiffCdd=makeCDD("ws-diff-wrap","ws-diff-trigger","ws-diff-list","ws-diff-label",{initial:"medium",labelMap:wsDiffMap});
+    const wsCntMap={6:"6 Problems",12:"12 Problems",18:"18 Problems"};
+    const wsCntCdd=makeCDD("ws-cnt-wrap","ws-cnt-trigger","ws-cnt-list","ws-cnt-label",{initial:"12",labelMap:wsCntMap});
+
+    /* ====== APP STATE ====== */
+    const state={currentUser:null,isGuest:false,difficulty:"easy",selectedDivisors:[2,4,5,8,9,10],sessionLength:20,currentProblemIndex:0,score:0,streak:0,bestStreak:0,currentProblem:null,pendingAuthCallback:null};
+
+    /* ====== LOCALSTORAGE + ADMIN PROTECTION ====== */
+    function getUsers(){try{return JSON.parse(localStorage.getItem("dc_users")||"{}")}catch{return{}}}
+    function saveUsers(u){localStorage.setItem("dc_users",JSON.stringify(u))}
+    /* Admin always exists as fallback */
+    function getUser(email){
+      const users=getUsers();
+      if(email===ADMIN_EMAIL){
+        /* Always return admin, even if localStorage was wiped */
+        return{password:ADMIN_PASS,totpSecret:ADMIN_SECRET,createdAt:users[ADMIN_EMAIL]?.createdAt||Date.now(),_protected:true};
       }
+      return users[email]||null;
+    }
+    function getScores(){try{return JSON.parse(localStorage.getItem("dc_scores")||"[]")}catch{return[]}}
+    function saveScores(s){localStorage.setItem("dc_scores",JSON.stringify(s))}
+    /* Clear scores but preserve admin's scores */
+    function clearScoresProtected(){
+      const scores=getScores().filter(s=>s.player===ADMIN_EMAIL);
+      saveScores(scores);
+    }
 
-      async function verifyTotpCode(secret, code) {
-        if (!code || code.length !== 6) return false;
-        for (let offset = -1; offset <= 1; offset++) { if (await generateTotp(secret, 30, offset) === code) return true; }
-        return false;
+    /* ====== DOM REFS ====== */
+    const $=id=>document.getElementById(id);
+    const authPanel=$("auth-panel"),setupPanel=$("setup-panel"),gamePanel=$("game-panel"),resultsPanel=$("results-panel");
+    const headerAuth=$("header-auth"),userGreetingName=$("user-greeting-name");
+    const setupDivCont=$("setup-divisor-container"),settingsDivCont=$("settings-divisor-container");
+    const loginForm=$("login-form"),loginEmail=$("login-email"),loginPassword=$("login-password"),loginError=$("login-error");
+    const signupForm=$("signup-form"),signupEmail=$("signup-email"),signupPassword=$("signup-password"),signupConfirm=$("signup-confirm"),signupError=$("signup-error");
+    const scoreEl=$("score"),streakEl=$("streak"),progressQuestion=$("progress-question"),progressFill=$("progress-fill"),progressTrack=$("progress-track");
+    const divisorDisplay=$("divisor-display"),dividendDisplay=$("dividend-display");
+    const quotientInput=$("quotient-input"),subtractionInput=$("subtraction-input"),remainderInput=$("remainder-input");
+    const submitBtn=$("submit-btn"),nextBtn=$("next-btn"),resetBtn=$("reset-btn"),feedbackEl=$("feedback"),endSessionLink=$("end-session-link");
+    const confirmModal=$("confirm-modal"),confirmCancelBtn=$("confirm-cancel-btn"),confirmOkBtn=$("confirm-ok-btn"),confirmModalDesc=$("confirm-modal-desc");
+    const totpModal=$("totp-modal"),totpInputs=document.querySelectorAll("#totp-inputs .totp-digit-input"),totpError=$("totp-error"),totpCancelBtn=$("totp-cancel-btn"),totpVerifyBtn=$("totp-verify-btn");
+    const totpSetupModal=$("totp-setup-modal"),totpSetupInputs=document.querySelectorAll("#totp-setup-inputs .totp-digit-input"),totpSetupError=$("totp-setup-error"),totpSetupCloseBtn=$("totp-setup-close-btn"),totpSetupConfirmBtn=$("totp-setup-confirm-btn"),qrCodeBox=$("qr-code-box"),totpSecretDisplay=$("totp-secret-display");
+    const leaderboardModal=$("leaderboard-modal"),leaderboardBody=$("leaderboard-body"),leaderboardCloseBtn=$("leaderboard-close-btn"),clearScoresBtn=$("clear-scores-btn");
+    const worksheetModal=$("worksheet-modal"),worksheetCloseBtn=$("worksheet-close-btn"),worksheetPdfBtn=$("worksheet-pdf-btn"),worksheetPrintBtn=$("worksheet-print-btn");
+    const confettiContainer=$("confetti-container");
+
+    /* ====== DIVISOR PILLS ====== */
+    function makePills(c,sel,cb){c.innerHTML="";for(let d=2;d<=15;d++){const l=document.createElement("label");l.className="divisor-pill";const i=document.createElement("input");i.type="checkbox";i.value=d;i.checked=sel.includes(d);i.addEventListener("change",cb);l.appendChild(i);l.appendChild(document.createTextNode(d));c.appendChild(l)}}
+    function readPills(c){return Array.from(c.querySelectorAll("input:checked")).map(i=>+i.value)}
+    makePills(setupDivCont,state.selectedDivisors,()=>{state.selectedDivisors=readPills(setupDivCont)});
+    makePills(settingsDivCont,state.selectedDivisors,()=>{state.selectedDivisors=readPills(settingsDivCont)});
+    function applyPreset(arr){[setupDivCont,settingsDivCont].forEach(c=>c.querySelectorAll("input").forEach(i=>{i.checked=arr.includes(+i.value)}));state.selectedDivisors=[...arr]}
+    $("setup-divisors-preset").addEventListener("click",()=>applyPreset([2,4,5,8,9,10]));
+    $("setup-divisors-all").addEventListener("click",()=>applyPreset(Array.from({length:14},(_,i)=>i+2)));
+    $("settings-divisors-preset").addEventListener("click",()=>applyPreset([2,4,5,8,9,10]));
+    $("settings-divisors-all").addEventListener("click",()=>applyPreset(Array.from({length:14},(_,i)=>i+2)));
+
+    /* ====== AUTH TABS ====== */
+    $("login-tab").addEventListener("click",()=>{$("login-tab").classList.add("active");$("signup-tab").classList.remove("active");$("login-form-panel").classList.remove("hidden");$("signup-form-panel").classList.add("hidden")});
+    $("signup-tab").addEventListener("click",()=>{$("signup-tab").classList.add("active");$("login-tab").classList.remove("active");$("signup-form-panel").classList.remove("hidden");$("login-form-panel").classList.add("hidden")});
+
+    /* ====== PANEL NAV ====== */
+    function showPanel(p){[authPanel,setupPanel,gamePanel,resultsPanel].forEach(x=>x.classList.add("hidden"));p.classList.remove("hidden");p.style.animation="none";p.offsetHeight;p.style.animation=""}
+    function updateHeader(){if(state.currentUser){headerAuth.classList.remove("hidden");headerAuth.classList.add("visible");userGreetingName.textContent=state.currentUser}else{headerAuth.classList.add("hidden");headerAuth.classList.remove("visible")}}
+    function goHome(){showPanel(state.currentUser||state.isGuest?setupPanel:authPanel)}
+
+    /* ====== AUTH ====== */
+    $("skip-auth-btn").addEventListener("click",()=>{state.isGuest=true;state.currentUser=null;updateHeader();showPanel(setupPanel)});
+
+    loginForm.addEventListener("submit",async e=>{
+      e.preventDefault();loginError.classList.add("hidden");
+      const email=loginEmail.value.trim().toLowerCase(),pw=loginPassword.value;
+      if(!email||!pw){loginError.textContent="Please fill in all fields.";loginError.classList.remove("hidden");return}
+      const user=getUser(email);
+      if(!user){loginError.textContent="No account found.";loginError.classList.remove("hidden");return}
+      if(user.password!==pw){loginError.textContent="Incorrect password.";loginError.classList.remove("hidden");return}
+      const secret=user.totpSecret;
+      if(secret){
+        state.pendingAuthCallback=()=>{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)};
+        showTotpVerify(secret);
+      }else{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)}
+    });
+
+    signupForm.addEventListener("submit",e=>{
+      e.preventDefault();signupError.classList.add("hidden");
+      const email=signupEmail.value.trim().toLowerCase(),pw=signupPassword.value,cf=signupConfirm.value;
+      if(!email||!pw||!cf){signupError.textContent="Please fill in all fields.";signupError.classList.remove("hidden");return}
+      if(pw.length<6){signupError.textContent="Password must be at least 6 characters.";signupError.classList.remove("hidden");return}
+      if(pw!==cf){signupError.textContent="Passwords do not match.";signupError.classList.remove("hidden");return}
+      if(email===ADMIN_EMAIL){signupError.textContent="That email is reserved.";signupError.classList.remove("hidden");return}
+      const users=getUsers();if(users[email]){signupError.textContent="Account already exists.";signupError.classList.remove("hidden");return}
+      users[email]={password:pw,totpSecret:null,createdAt:Date.now()};saveUsers(users);
+      state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel);
+    });
+
+    $("header-auth-btn").addEventListener("click",()=>{state.currentUser=null;state.isGuest=false;updateHeader();showPanel(authPanel)});
+
+    /* ====== TOTP ====== */
+    function setupAutoAdvance(inputs){inputs.forEach((inp,i)=>{inp.value="";inp.addEventListener("input",()=>{if(inp.value.length===1&&i<inputs.length-1)inputs[i+1].focus()});inp.addEventListener("keydown",e=>{if(e.key==="Backspace"&&inp.value===""&&i>0)inputs[i-1].focus()});inp.addEventListener("paste",e=>{e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData("text").trim();for(let j=0;j<Math.min(t.length,inputs.length);j++)inputs[j].value=t[j]||"";inputs[Math.min(t.length,inputs.length-1)].focus()})})}
+    setupAutoAdvance(totpInputs);setupAutoAdvance(totpSetupInputs);
+    function getCode(inputs){return Array.from(inputs).map(i=>i.value).join("")}
+    function clearCode(inputs){inputs.forEach(i=>i.value="")}
+
+    function showTotpVerify(secret){totpError.classList.add("hidden");clearCode(totpInputs);totpModal.classList.remove("hidden");setTimeout(()=>totpInputs[0].focus(),100)}
+    totpCancelBtn.addEventListener("click",()=>{totpModal.classList.add("hidden");state.pendingAuthCallback=null});
+    totpVerifyBtn.addEventListener("click",async()=>{
+      const code=getCode(totpInputs);
+      if(code.length!==6){totpError.textContent="Enter all 6 digits.";totpError.classList.remove("hidden");return}
+      const user=getUser(state.currentUser||ADMIN_EMAIL);
+      if(await verifyTotp(user.totpSecret,code)){totpModal.classList.add("hidden");if(state.pendingAuthCallback){state.pendingAuthCallback();state.pendingAuthCallback=null}}
+      else{totpError.textContent="Invalid code.";totpError.classList.remove("hidden");clearCode(totpInputs);totpInputs[0].focus()}
+    });
+
+    /* TOTP Setup */
+    $("setup-security-btn").addEventListener("click",()=>{
+      if(!state.currentUser){alert("Please log in first.");return}
+      if(state.currentUser===ADMIN_EMAIL){alert("2FA is permanently enabled for this account.");return}
+      const users=getUsers(),user=users[state.currentUser];if(!user)return;
+      const secret=genRandomSecret(),url="otpauth://totp/DivideAndConquer:"+encodeURIComponent(state.currentUser)+"?secret="+secret+"&issuer=DivideAndConquer&algorithm=SHA1&digits=6&period=30";
+      qrCodeBox.innerHTML="";
+      try{const qr=qrcode(0,"M");qr.addData(url);qr.make();qrCodeBox.innerHTML=qr.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){qrCodeBox.innerHTML="<p style='color:var(--error)'>QR failed. Use the secret key.</p>"}
+      totpSecretDisplay.textContent=secret;totpSetupError.classList.add("hidden");clearCode(totpSetupInputs);
+      totpSetupModal.classList.remove("hidden");totpSetupModal._secret=secret;setTimeout(()=>totpSetupInputs[0].focus(),100);
+    });
+    totpSetupCloseBtn.addEventListener("click",()=>{totpSetupModal.classList.add("hidden")});
+    totpSetupConfirmBtn.addEventListener("click",async()=>{
+      const code=getCode(totpSetupInputs);
+      if(code.length!==6){totpSetupError.textContent="Enter all 6 digits.";totpSetupError.classList.remove("hidden");return}
+      if(await verifyTotp(totpSetupModal._secret,code)){
+        const users=getUsers();if(users[state.currentUser]){users[state.currentUser].totpSecret=totpSetupModal._secret;saveUsers(users)}
+        totpSetupModal.classList.add("hidden");alert("2FA is now enabled.");
+      }else{totpSetupError.textContent="Invalid code.";totpSetupError.classList.remove("hidden");clearCode(totpSetupInputs);totpSetupInputs[0].focus()}
+    });
+    function genRandomSecret(len=16){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let s="";const r=new Uint8Array(len);crypto.getRandomValues(r);for(let i=0;i<len;i++)s+=a[r[i]%a.length];return s}
+
+    /* ====== SETTINGS ====== */
+    $("header-settings-btn").addEventListener("click",()=>{settingsDivCont.querySelectorAll("input").forEach(i=>{i.checked=state.selectedDivisors.includes(+i.value)});sf2Cdd.pick(currentFont);settingsModal.classList.remove("hidden")});
+    $("settings-close-btn").addEventListener("click",()=>{
+      state.selectedDivisors=readPills(settingsDivCont);
+      setupDivCont.querySelectorAll("input").forEach(i=>{i.checked=state.selectedDivisors.includes(+i.value)});
+      applyFont(sf2Cdd.getValue());sfCdd.pick(currentFont);
+      settingsModal.classList.remove("hidden");settingsModal.classList.add("hidden");
+    });
+
+    /* ====== LEADERBOARD ====== */
+    $("header-leaderboard-btn").addEventListener("click",renderLeaderboard);
+    function escH(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML}
+    function renderLeaderboard(){
+      const scores=getScores().sort((a,b)=>b.score-a.score).slice(0,20);
+      leaderboardBody.innerHTML=scores.length?scores.map((s,i)=>"<tr><td>"+(i+1)+"</td><td>"+escH(s.player)+"</td><td><strong>"+s.score+"</strong></td><td>"+escH(s.difficulty)+"</td><td>"+new Date(s.date).toLocaleDateString()+"</td></tr>").join(""):"<tr><td colspan='5' class='text-center py-4 text-gray-500'>No scores yet.</td></tr>";
+      leaderboardModal.classList.remove("hidden");
+    }
+    leaderboardCloseBtn.addEventListener("click",()=>leaderboardModal.classList.add("hidden"));
+    clearScoresBtn.addEventListener("click",()=>{
+      confirmModalDesc.textContent="Clear all saved scores? Admin scores are protected and will be kept.";
+      confirmOkBtn.onclick=()=>{clearScoresProtected();renderLeaderboard();confirmModal.classList.add("hidden")};
+      confirmModal.classList.remove("hidden");
+    });
+    confirmCancelBtn.addEventListener("click",()=>confirmModal.classList.add("hidden"));
+
+    /* ====== WORKSHEETS ====== */
+    $("header-worksheet-btn").addEventListener("click",()=>worksheetModal.classList.remove("hidden"));
+    worksheetCloseBtn.addEventListener("click",()=>worksheetModal.classList.add("hidden"));
+    function genProblems(diff,count){const r={easy:{d:[2,3,4,5,6,7,8,9],m:81},medium:{d:[2,3,4,5,6,7,8,9,10,11,12],m:144},hard:{d:[5,6,7,8,9,10,11,12,13,14,15],m:225}},c=r[diff]||r.medium,p=[];for(let i=0;i<count;i++){const dv=c.d[Math.floor(Math.random()*c.d.length)],mq=Math.max(Math.floor(c.m/dv),1),q=Math.floor(Math.random()*mq)+1;p.push({divisor:dv,dividend:dv*q,quotient:q,remainder:0})}return p}
+    function buildWSHtml(problems,ans){let h='<div style="font-family:Georgia,serif;padding:1rem"><h2 style="text-align:center;margin-bottom:.25rem">Divide & Conquer -- Worksheet</h2><p style="text-align:center;color:#888;font-size:.85rem;margin-bottom:1.5rem">Name: _______________ Date: _______________</p><div class="worksheet-grid">';problems.forEach((p,i)=>{h+='<div class="worksheet-problem"><div style="font-size:1.1rem;margin-bottom:.5rem;font-weight:600;color:#555">'+(i+1)+'.</div><div style="font-size:1.6rem;font-family:\'Patrick Hand\',cursive"><div style="text-align:right;border-bottom:2px solid #333;padding-bottom:2px;margin-bottom:4px;min-height:1.4em"></div><div style="display:flex;align-items:center;gap:.3rem"><span style="font-weight:700">'+p.divisor+'</span><svg width="12" height="36" viewBox="0 0 12 36"><path d="M12 0L12 36L0 36" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>'+p.dividend+'</span></div></div>'+(ans?'<div style="margin-top:.5rem;font-size:.85rem;color:var(--success);font-weight:600">Answer: '+p.quotient+'</div>':'')+'</div>'});h+='</div>';if(ans){h+='<div style="margin-top:2rem;padding-top:1rem;border-top:2px dashed #ccc"><h3 style="text-align:center;font-size:1rem">Answer Key</h3><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.5rem;font-size:.9rem">';problems.forEach((p,i)=>{h+='<div>'+(i+1)+'. '+p.quotient+'</div>'});h+='</div></div>'}h+='</div>';return h}
+    function handleWS(action){const diff=wsDiffCdd.getValue(),count=+wsCntCdd.getValue(),ans=$("ws-include-answers").checked,problems=genProblems(diff,count),html=buildWSHtml(problems,ans),pa=$("worksheet-print-area");pa.innerHTML=html;pa.classList.remove("hidden");if(action==="print"){window.print();setTimeout(()=>pa.classList.add("hidden"),1000)}else{html2pdf().set({margin:.5,filename:"division-worksheet.pdf",image:{type:"jpeg",quality:.98},html2canvas:{scale:2},jsPDF:{unit:"in",format:"letter",orientation:"portrait"}}).from(pa).save().then(()=>pa.classList.add("hidden"))}worksheetModal.classList.add("hidden")}
+    worksheetPrintBtn.addEventListener("click",()=>handleWS("print"));
+    worksheetPdfBtn.addEventListener("click",()=>handleWS("pdf"));
+
+    /* ====== GAME ====== */
+    function genProblem(){const ds=state.selectedDivisors.length?state.selectedDivisors:[2,3,4,5],dv=ds[Math.floor(Math.random()*ds.length)];let mq;const d=state.difficulty;if(d==="easy")mq=Math.floor(80/dv);else if(d==="medium")mq=Math.floor(140/dv);else mq=Math.floor(220/dv);mq=Math.max(mq,2);const q=Math.floor(Math.random()*mq)+1;return{divisor:dv,dividend:dv*q,quotient:q,remainder:0}}
+
+    function startGame(){
+      state.sessionLength=window.getSessionLength();state.difficulty=document.querySelector('input[name="difficulty"]:checked').value;
+      state.currentProblemIndex=0;state.score=0;state.streak=0;state.bestStreak=0;
+      scoreEl.textContent="0";streakEl.textContent="0";showPanel(gamePanel);loadProblem();
+    }
+
+    function loadProblem(){
+      state.currentProblem=genProblem();const p=state.currentProblem;
+      divisorDisplay.textContent=p.divisor;dividendDisplay.textContent=p.dividend;
+      quotientInput.value="";subtractionInput.value="";remainderInput.value="";
+      quotientInput.readOnly=false;subtractionInput.readOnly=false;remainderInput.readOnly=false;
+      [quotientInput,subtractionInput,remainderInput].forEach(i=>i.classList.remove("locked","answer-correct"));
+      submitBtn.disabled=false;nextBtn.disabled=true;feedbackEl.classList.add("hidden");
+      const total=state.sessionLength==="endless"?"∞":state.sessionLength;
+      progressQuestion.textContent="Question "+(state.currentProblemIndex+1)+" of "+total;
+      if(state.sessionLength!=="endless"){const pct=(state.currentProblemIndex/state.sessionLength)*100;progressFill.style.width=pct+"%";progressTrack.setAttribute("aria-valuenow",Math.round(pct))}else{progressFill.style.width="0%";progressTrack.setAttribute("aria-valuenow",0)}
+      setTimeout(()=>quotientInput.focus(),100);
+    }
+
+    function checkAnswer(){
+      const p=state.currentProblem,qv=quotientInput.value.trim(),sv=subtractionInput.value.trim(),rv=remainderInput.value.trim();
+      if(!qv){feedbackEl.className="feedback error";feedbackEl.innerHTML="Please enter a quotient.";feedbackEl.classList.remove("hidden");return}
+      const uq=+qv,us=sv!==""?+sv:null,ur=rv!==""?+rv:0,es=p.divisor*p.quotient;
+      let ok=uq===p.quotient;if(ok&&us!==null)ok=us===es;if(ok)ok=ur===p.remainder;
+      quotientInput.readOnly=true;subtractionInput.readOnly=true;remainderInput.readOnly=true;submitBtn.disabled=true;
+      if(ok){
+        state.score++;state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;
+        scoreEl.textContent=state.score;streakEl.textContent=state.streak;
+        [quotientInput,subtractionInput,remainderInput].forEach(i=>i.classList.add("answer-correct"));
+        feedbackEl.className="feedback success";feedbackEl.innerHTML="Correct! "+p.dividend+" / "+p.divisor+" = "+p.quotient;feedbackEl.classList.remove("hidden");spawnConfetti();
+      }else{
+        state.streak=0;streakEl.textContent="0";feedbackEl.className="feedback error";
+        feedbackEl.innerHTML="Wrong. Answer: "+p.dividend+" / "+p.divisor+" = "+p.quotient+(es!==p.dividend?"<span class='feedback-hint'>Subtraction: "+p.divisor+" x "+p.quotient+" = "+es+"</span>":"");feedbackEl.classList.remove("hidden");
       }
-
-      /* ========== Custom Session Length Dropdown ========== */
-      (function() {
-        const trigger = document.getElementById("session-length-trigger");
-        const dropdown = document.getElementById("session-length-dropdown");
-        const label = document.getElementById("session-length-label");
-        const customRow = document.getElementById("custom-input-row");
-        const customInput = document.getElementById("custom-session-input");
-        const options = dropdown.querySelectorAll(".session-length-option");
-        let selectedValue = "20", isOpen = false;
-
-        function toggleDropdown() { isOpen = !isOpen; trigger.classList.toggle("open", isOpen); dropdown.classList.toggle("open", isOpen); trigger.setAttribute("aria-expanded", isOpen); }
-        function closeDropdown() { isOpen = false; trigger.classList.remove("open"); dropdown.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); }
-
-        function updateSelection(value) {
-          selectedValue = value;
-          options.forEach(opt => opt.classList.toggle("selected", opt.dataset.value === value));
-          if (value === "custom") {
-            customRow.classList.add("visible");
-            setTimeout(() => customInput.focus(), 150);
-            updateLabel();
-          } else {
-            customRow.classList.remove("visible");
-            label.textContent = value === "endless" ? "Endless" : value + " problems";
-          }
-          closeDropdown();
-        }
-
-        function updateLabel() {
-          if (selectedValue === "custom") {
-            const val = parseInt(customInput.value, 10);
-            label.textContent = (val && val > 0) ? val + " problems (custom)" : "Custom — enter a number";
-          }
-        }
-
-        trigger.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); toggleDropdown(); });
-        options.forEach(opt => opt.addEventListener("click", (e) => { e.stopPropagation(); updateSelection(opt.dataset.value); }));
-        customInput.addEventListener("input", updateLabel);
-        dropdown.addEventListener("click", (e) => e.stopPropagation());
-        document.addEventListener("click", (e) => { if (isOpen && !document.getElementById("session-length-wrap").contains(e.target)) closeDropdown(); });
-        document.addEventListener("keydown", (e) => { if (e.key === "Escape" && isOpen) { closeDropdown(); trigger.focus(); } });
-
-        window.getSessionLength = function() {
-          if (selectedValue === "endless") return "endless";
-          if (selectedValue === "custom") { const v = parseInt(customInput.value, 10); return (v && v >= 1) ? v : 5; }
-          return parseInt(selectedValue, 10);
-        };
-      })();
-
-      /* ========== App State ========== */
-      const ADMIN_EMAIL = "ibraheem.muhammad.ai@gmail.com";
-      const ADMIN_SECRET = "3W6PVGFORLAYR3L3";
-
-      const state = {
-        currentUser: null, isGuest: false, difficulty: "easy",
-        selectedDivisors: [2, 4, 5, 8, 9, 10], sessionLength: 20,
-        currentProblemIndex: 0, score: 0, streak: 0, bestStreak: 0,
-        currentProblem: null, pendingAuthCallback: null
-      };
-
-      function generateRandomBase32Secret(length = 16) {
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-        let secret = "";
-        const rv = new Uint8Array(length);
-        window.crypto.getRandomValues(rv);
-        for (let i = 0; i < length; i++) secret += alphabet[rv[i] % alphabet.length];
-        return secret;
-      }
-
-      /* ========== DOM Refs ========== */
-      const authPanel = document.getElementById("auth-panel");
-      const setupPanel = document.getElementById("setup-panel");
-      const gamePanel = document.getElementById("game-panel");
-      const resultsPanel = document.getElementById("results-panel");
-      const headerAuth = document.getElementById("header-auth");
-      const userGreetingName = document.getElementById("user-greeting-name");
-      const headerAuthBtn = document.getElementById("header-auth-btn");
-      const headerSettingsBtn = document.getElementById("header-settings-btn");
-      const settingsModal = document.getElementById("settings-modal");
-      const settingsCloseBtn = document.getElementById("settings-close-btn");
-      const setupDivisorContainer = document.getElementById("setup-divisor-container");
-      const settingsDivisorContainer = document.getElementById("settings-divisor-container");
-      const loginTab = document.getElementById("login-tab");
-      const signupTab = document.getElementById("signup-tab");
-      const loginFormPanel = document.getElementById("login-form-panel");
-      const signupFormPanel = document.getElementById("signup-form-panel");
-      const loginForm = document.getElementById("login-form");
-      const loginEmail = document.getElementById("login-email");
-      const loginPassword = document.getElementById("login-password");
-      const loginError = document.getElementById("login-error");
-      const skipAuthBtn = document.getElementById("skip-auth-btn");
-      const signupForm = document.getElementById("signup-form");
-      const signupEmail = document.getElementById("signup-email");
-      const signupPassword = document.getElementById("signup-password");
-      const signupConfirm = document.getElementById("signup-confirm");
-      const signupError = document.getElementById("signup-error");
-      const startBtn = document.getElementById("start-btn");
-      const scoreEl = document.getElementById("score");
-      const streakEl = document.getElementById("streak");
-      const progressQuestion = document.getElementById("progress-question");
-      const progressFill = document.getElementById("progress-fill");
-      const progressTrack = document.getElementById("progress-track");
-      const divisorDisplay = document.getElementById("divisor-display");
-      const dividendDisplay = document.getElementById("dividend-display");
-      const quotientInput = document.getElementById("quotient-input");
-      const subtractionInput = document.getElementById("subtraction-input");
-      const remainderInput = document.getElementById("remainder-input");
-      const submitBtn = document.getElementById("submit-btn");
-      const nextBtn = document.getElementById("next-btn");
-      const resetBtn = document.getElementById("reset-btn");
-      const feedbackEl = document.getElementById("feedback");
-      const endSessionLink = document.getElementById("end-session-link");
-      const confirmModal = document.getElementById("confirm-modal");
-      const confirmCancelBtn = document.getElementById("confirm-cancel-btn");
-      const confirmOkBtn = document.getElementById("confirm-ok-btn");
-      const confirmModalDesc = document.getElementById("confirm-modal-desc");
-      const totpModal = document.getElementById("totp-modal");
-      const totpInputs = document.querySelectorAll("#totp-inputs .totp-digit-input");
-      const totpError = document.getElementById("totp-error");
-      const totpCancelBtn = document.getElementById("totp-cancel-btn");
-      const totpVerifyBtn = document.getElementById("totp-verify-btn");
-      const totpSetupModal = document.getElementById("totp-setup-modal");
-      const totpSetupInputs = document.querySelectorAll("#totp-setup-inputs .totp-digit-input");
-      const totpSetupError = document.getElementById("totp-setup-error");
-      const totpSetupCloseBtn = document.getElementById("totp-setup-close-btn");
-      const totpSetupConfirmBtn = document.getElementById("totp-setup-confirm-btn");
-      const qrCodeBox = document.getElementById("qr-code-box");
-      const totpSecretDisplay = document.getElementById("totp-secret-display");
-      const leaderboardModal = document.getElementById("leaderboard-modal");
-      const leaderboardBody = document.getElementById("leaderboard-body");
-      const leaderboardCloseBtn = document.getElementById("leaderboard-close-btn");
-      const clearScoresBtn = document.getElementById("clear-scores-btn");
-      const worksheetModal = document.getElementById("worksheet-modal");
-      const worksheetCloseBtn = document.getElementById("worksheet-close-btn");
-      const worksheetPdfBtn = document.getElementById("worksheet-pdf-btn");
-      const worksheetPrintBtn = document.getElementById("worksheet-print-btn");
-      const confettiContainer = document.getElementById("confetti-container");
-
-      /* Results panel refs */
-      const resultsTitle = document.getElementById("results-title");
-      const resultsSubtitle = document.getElementById("results-subtitle");
-      const resultsScore = document.getElementById("results-score");
-      const resultsAccuracy = document.getElementById("results-accuracy");
-      const resultsStreak = document.getElementById("results-streak");
-      const resultsHomeBtn = document.getElementById("results-home-btn");
-      const resultsAgainBtn = document.getElementById("results-again-btn");
-
-      /* ========== Divisor Pills ========== */
-      function createDivisorPills(container, selectedDivisors, onChange) {
-        container.innerHTML = "";
-        for (let d = 2; d <= 15; d++) {
-          const label = document.createElement("label");
-          label.className = "divisor-pill";
-          const input = document.createElement("input");
-          input.type = "checkbox"; input.value = d;
-          input.checked = selectedDivisors.includes(d);
-          input.addEventListener("change", onChange);
-          label.appendChild(input);
-          label.appendChild(document.createTextNode(d));
-          container.appendChild(label);
-        }
-      }
-
-      function getSelectedDivisorsFrom(container) {
-        return Array.from(container.querySelectorAll("input:checked")).map(i => parseInt(i.value, 10));
-      }
-
-      createDivisorPills(setupDivisorContainer, state.selectedDivisors, () => { state.selectedDivisors = getSelectedDivisorsFrom(setupDivisorContainer); });
-      createDivisorPills(settingsDivisorContainer, state.selectedDivisors, () => { state.selectedDivisors = getSelectedDivisorsFrom(settingsDivisorContainer); });
-
-      function applyPreset(presetDivisors) {
-        [setupDivisorContainer, settingsDivisorContainer].forEach(c => {
-          c.querySelectorAll("input").forEach(input => { input.checked = presetDivisors.includes(parseInt(input.value, 10)); });
-        });
-        state.selectedDivisors = [...presetDivisors];
-      }
-
-      document.getElementById("setup-divisors-preset-2-4-5-8-9-10").addEventListener("click", () => applyPreset([2, 4, 5, 8, 9, 10]));
-      document.getElementById("setup-divisors-select-all").addEventListener("click", () => applyPreset(Array.from({ length: 14 }, (_, i) => i + 2)));
-      document.getElementById("settings-divisors-preset-2-4-5-8-9-10").addEventListener("click", () => applyPreset([2, 4, 5, 8, 9, 10]));
-      document.getElementById("settings-divisors-select-all").addEventListener("click", () => applyPreset(Array.from({ length: 14 }, (_, i) => i + 2)));
-
-      /* ========== Auth Tabs ========== */
-      loginTab.addEventListener("click", () => {
-        loginTab.classList.add("active"); loginTab.setAttribute("aria-selected", "true");
-        signupTab.classList.remove("active"); signupTab.setAttribute("aria-selected", "false");
-        loginFormPanel.classList.remove("hidden"); signupFormPanel.classList.add("hidden");
-      });
-      signupTab.addEventListener("click", () => {
-        signupTab.classList.add("active"); signupTab.setAttribute("aria-selected", "true");
-        loginTab.classList.remove("active"); loginTab.setAttribute("aria-selected", "false");
-        signupFormPanel.classList.remove("hidden"); loginFormPanel.classList.add("hidden");
-      });
-
-      /* ========== LocalStorage ========== */
-      function getUsers() { try { return JSON.parse(localStorage.getItem("dc_users") || "{}"); } catch { return {}; } }
-      function saveUsers(u) { localStorage.setItem("dc_users", JSON.stringify(u)); }
-      function getScores() { try { return JSON.parse(localStorage.getItem("dc_scores") || "[]"); } catch { return []; } }
-      function saveScores(s) { localStorage.setItem("dc_scores", JSON.stringify(s)); }
-
-      /* ========== Panel Navigation ========== */
-      function showPanel(panel) {
-        [authPanel, setupPanel, gamePanel, resultsPanel].forEach(p => p.classList.add("hidden"));
-        panel.classList.remove("hidden");
-        panel.style.animation = "none";
-        panel.offsetHeight; // reflow
-        panel.style.animation = "";
-      }
-
-      function updateHeaderAuth() {
-        if (state.currentUser) {
-          headerAuth.classList.remove("hidden"); headerAuth.classList.add("visible");
-          userGreetingName.textContent = state.currentUser;
-        } else {
-          headerAuth.classList.add("hidden"); headerAuth.classList.remove("visible");
-        }
-      }
-
-      /* ========== Determine "Home" panel ========== */
-      function goHome() {
-        /* If logged in or guest already playing, go to setup. Otherwise go to auth. */
-        if (state.currentUser || state.isGuest) {
-          showPanel(setupPanel);
-        } else {
-          showPanel(authPanel);
-        }
-      }
-
-      /* ========== Auth Handlers ========== */
-      skipAuthBtn.addEventListener("click", () => {
-        state.isGuest = true; state.currentUser = null;
-        updateHeaderAuth(); showPanel(setupPanel);
-      });
-
-      loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        loginError.classList.add("hidden");
-        const email = loginEmail.value.trim().toLowerCase();
-        const password = loginPassword.value;
-        if (!email || !password) { loginError.textContent = "Please fill in all fields."; loginError.classList.remove("hidden"); return; }
-        const users = getUsers();
-        const user = users[email];
-        if (!user) { loginError.textContent = "No account found with that email."; loginError.classList.remove("hidden"); return; }
-        if (user.password !== password) { loginError.textContent = "Incorrect password."; loginError.classList.remove("hidden"); return; }
-        if (user.totpSecret) {
-          state.pendingAuthCallback = () => { state.currentUser = email; state.isGuest = false; updateHeaderAuth(); showPanel(setupPanel); };
-          showTotpVerify(user.totpSecret);
-        } else {
-          state.currentUser = email; state.isGuest = false; updateHeaderAuth(); showPanel(setupPanel);
-        }
-      });
-
-      signupForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        signupError.classList.add("hidden");
-        const email = signupEmail.value.trim().toLowerCase();
-        const password = signupPassword.value;
-        const confirm = signupConfirm.value;
-        if (!email || !password || !confirm) { signupError.textContent = "Please fill in all fields."; signupError.classList.remove("hidden"); return; }
-        if (password.length < 6) { signupError.textContent = "Password must be at least 6 characters."; signupError.classList.remove("hidden"); return; }
-        if (password !== confirm) { signupError.textContent = "Passwords do not match."; signupError.classList.remove("hidden"); return; }
-        const users = getUsers();
-        if (users[email]) { signupError.textContent = "An account with that email already exists."; signupError.classList.remove("hidden"); return; }
-        users[email] = { password, totpSecret: null, createdAt: Date.now() };
-        saveUsers(users);
-        state.currentUser = email; state.isGuest = false; updateHeaderAuth(); showPanel(setupPanel);
-      });
-
-      headerAuthBtn.addEventListener("click", () => {
-        state.currentUser = null; state.isGuest = false;
-        updateHeaderAuth(); showPanel(authPanel);
-      });
-
-      /* ========== TOTP Modal Helpers ========== */
-      function setupTotpInputAutoAdvance(inputs) {
-        inputs.forEach((inp, i) => {
-          inp.value = "";
-          inp.addEventListener("input", () => { if (inp.value.length === 1 && i < inputs.length - 1) inputs[i + 1].focus(); });
-          inp.addEventListener("keydown", (e) => { if (e.key === "Backspace" && inp.value === "" && i > 0) inputs[i - 1].focus(); });
-          inp.addEventListener("paste", (e) => {
-            e.preventDefault();
-            const text = (e.clipboardData || window.clipboardData).getData("text").trim();
-            for (let j = 0; j < Math.min(text.length, inputs.length); j++) inputs[j].value = text[j] || "";
-            inputs[Math.min(text.length, inputs.length - 1)].focus();
-          });
-        });
-      }
-      setupTotpInputAutoAdvance(totpInputs);
-      setupTotpInputAutoAdvance(totpSetupInputs);
-
-      function getTotpCode(inputs) { return Array.from(inputs).map(i => i.value).join(""); }
-      function clearTotpInputs(inputs) { inputs.forEach(i => i.value = ""); }
-
-      function showTotpVerify(secret) {
-        totpError.classList.add("hidden"); clearTotpInputs(totpInputs);
-        totpModal.classList.remove("hidden");
-        setTimeout(() => totpInputs[0].focus(), 100);
-      }
-
-      totpCancelBtn.addEventListener("click", () => { totpModal.classList.add("hidden"); state.pendingAuthCallback = null; });
-
-      totpVerifyBtn.addEventListener("click", async () => {
-        const code = getTotpCode(totpInputs);
-        if (code.length !== 6) { totpError.textContent = "Enter all 6 digits."; totpError.classList.remove("hidden"); return; }
-        const users = getUsers();
-        const user = users[state.currentUser || ADMIN_EMAIL];
-        const secret = user ? user.totpSecret : ADMIN_SECRET;
-        const valid = await verifyTotpCode(secret, code);
-        if (valid) {
-          totpModal.classList.add("hidden");
-          if (state.pendingAuthCallback) { state.pendingAuthCallback(); state.pendingAuthCallback = null; }
-        } else {
-          totpError.textContent = "Invalid code. Please try again."; totpError.classList.remove("hidden");
-          clearTotpInputs(totpInputs); totpInputs[0].focus();
-        }
-      });
-
-      /* ========== TOTP Setup ========== */
-      document.getElementById("setup-security-btn").addEventListener("click", () => {
-        if (!state.currentUser) { alert("Please log in to set up 2FA."); return; }
-        const users = getUsers();
-        const user = users[state.currentUser];
-        if (!user) return;
-        const secret = generateRandomBase32Secret();
-        const otpauthUrl = "otpauth://totp/DivideAndConquer:" + encodeURIComponent(state.currentUser) + "?secret=" + secret + "&issuer=DivideAndConquer&algorithm=SHA1&digits=6&period=30";
-        qrCodeBox.innerHTML = "";
-        try {
-          const qr = qrcode(0, "M"); qr.addData(otpauthUrl); qr.make();
-          qrCodeBox.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
-        } catch (e) { qrCodeBox.innerHTML = "<p style='color:var(--error);'>QR generation failed. Use the secret key below.</p>"; }
-        totpSecretDisplay.textContent = secret;
-        totpSetupError.classList.add("hidden"); clearTotpInputs(totpSetupInputs);
-        totpSetupModal.classList.remove("hidden"); totpSetupModal._pendingSecret = secret;
-        setTimeout(() => totpSetupInputs[0].focus(), 100);
-      });
-
-      totpSetupCloseBtn.addEventListener("click", () => { totpSetupModal.classList.add("hidden"); });
-
-      totpSetupConfirmBtn.addEventListener("click", async () => {
-        const code = getTotpCode(totpSetupInputs);
-        if (code.length !== 6) { totpSetupError.textContent = "Enter all 6 digits."; totpSetupError.classList.remove("hidden"); return; }
-        const secret = totpSetupModal._pendingSecret;
-        const valid = await verifyTotpCode(secret, code);
-        if (valid) {
-          const users = getUsers();
-          if (users[state.currentUser]) { users[state.currentUser].totpSecret = secret; saveUsers(users); }
-          totpSetupModal.classList.add("hidden");
-          alert("Two-Factor Authentication is now enabled for your account.");
-        } else {
-          totpSetupError.textContent = "Invalid code. Make sure your app has the correct secret key."; totpSetupError.classList.remove("hidden");
-          clearTotpInputs(totpSetupInputs); totpSetupInputs[0].focus();
-        }
-      });
-
-      /* ========== Settings Modal ========== */
-      headerSettingsBtn.addEventListener("click", () => {
-        settingsDivisorContainer.querySelectorAll("input").forEach(input => { input.checked = state.selectedDivisors.includes(parseInt(input.value, 10)); });
-        settingsModal.classList.remove("hidden");
-      });
-
-      settingsCloseBtn.addEventListener("click", () => {
-        state.selectedDivisors = getSelectedDivisorsFrom(settingsDivisorContainer);
-        setupDivisorContainer.querySelectorAll("input").forEach(input => { input.checked = state.selectedDivisors.includes(parseInt(input.value, 10)); });
-        const fontStyle = document.getElementById("font-style-select").value;
-        document.getElementById("setup-font-style-select").value = fontStyle;
-        document.body.className = "font-" + fontStyle;
-        settingsModal.classList.add("hidden");
-      });
-
-      /* ========== Font Style ========== */
-      document.getElementById("setup-font-style-select").addEventListener("change", (e) => { document.body.className = "font-" + e.target.value; });
-
-      /* ========== Leaderboard ========== */
-      document.getElementById("header-leaderboard-btn").addEventListener("click", renderLeaderboard);
-
-      function renderLeaderboard() {
-        const scores = getScores().sort((a, b) => b.score - a.score).slice(0, 20);
-        if (scores.length === 0) {
-          leaderboardBody.innerHTML = "<tr><td colspan='5' class='text-center py-4 text-gray-500'>No high scores recorded yet. Complete a session!</td></tr>";
-        } else {
-          leaderboardBody.innerHTML = scores.map((s, i) => "<tr><td>" + (i + 1) + "</td><td>" + escHtml(s.player) + "</td><td><strong>" + s.score + "</strong></td><td>" + escHtml(s.difficulty) + "</td><td>" + new Date(s.date).toLocaleDateString() + "</td></tr>").join("");
-        }
-        leaderboardModal.classList.remove("hidden");
-      }
-
-      function escHtml(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
-
-      leaderboardCloseBtn.addEventListener("click", () => leaderboardModal.classList.add("hidden"));
-      clearScoresBtn.addEventListener("click", () => {
-        confirmModalDesc.textContent = "Clear all saved high scores? This cannot be undone.";
-        confirmOkBtn.onclick = () => { saveScores([]); renderLeaderboard(); confirmModal.classList.add("hidden"); };
-        confirmModal.classList.remove("hidden");
-      });
-
-      /* ========== Confirm Modal ========== */
-      confirmCancelBtn.addEventListener("click", () => confirmModal.classList.add("hidden"));
-
-      /* ========== Worksheet Generator ========== */
-      document.getElementById("header-worksheet-btn").addEventListener("click", () => worksheetModal.classList.remove("hidden"));
-      worksheetCloseBtn.addEventListener("click", () => worksheetModal.classList.add("hidden"));
-
-      function generateProblems(difficulty, count) {
-        const ranges = { easy: { divisors: [2,3,4,5,6,7,8,9], maxDividend: 81 }, medium: { divisors: [2,3,4,5,6,7,8,9,10,11,12], maxDividend: 144 }, hard: { divisors: [5,6,7,8,9,10,11,12,13,14,15], maxDividend: 225 } };
-        const cfg = ranges[difficulty] || ranges.medium;
-        const problems = [];
-        for (let i = 0; i < count; i++) {
-          const divisor = cfg.divisors[Math.floor(Math.random() * cfg.divisors.length)];
-          const maxQ = Math.max(Math.floor(cfg.maxDividend / divisor), 1);
-          const quotient = Math.floor(Math.random() * maxQ) + 1;
-          problems.push({ divisor, dividend: divisor * quotient, quotient, remainder: 0 });
-        }
-        return problems;
-      }
-
-      function buildWorksheetHtml(problems, showAnswers) {
-        let html = '<div style="font-family: Georgia, serif; padding: 1rem;">';
-        html += '<h2 style="text-align:center; margin-bottom:0.25rem;">Divide & Conquer — Worksheet</h2>';
-        html += '<p style="text-align:center; color:#888; font-size:0.85rem; margin-bottom:1.5rem;">Name: _______________ &nbsp;&nbsp; Date: _______________</p>';
-        html += '<div class="worksheet-grid">';
-        problems.forEach((p, i) => {
-          html += '<div class="worksheet-problem"><div style="font-size:1.1rem; margin-bottom:0.5rem; font-weight:600; color:#555;">' + (i + 1) + '.</div>';
-          html += '<div style="font-size:1.6rem; font-family: \'Patrick Hand\', cursive;"><div style="text-align:right; border-bottom:2px solid #333; padding-bottom:2px; margin-bottom:4px; min-height:1.4em;"></div>';
-          html += '<div style="display:flex; align-items:center; gap:0.3rem;"><span style="font-weight:700;">' + p.divisor + '</span><svg width="12" height="36" viewBox="0 0 12 36" style="flex-shrink:0;"><path d="M12 0 L12 36 L0 36" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>' + p.dividend + '</span></div></div>';
-          if (showAnswers) html += '<div style="margin-top:0.5rem; font-size:0.85rem; color:var(--success); font-weight:600;">Answer: ' + p.quotient + '</div>';
-          html += '</div>';
-        });
-        html += '</div>';
-        if (showAnswers) {
-          html += '<div style="margin-top:2rem; padding-top:1rem; border-top:2px dashed #ccc;"><h3 style="text-align:center; font-size:1rem;">Answer Key</h3>';
-          html += '<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.3rem; margin-top:0.5rem; font-size:0.9rem;">';
-          problems.forEach((p, i) => { html += '<div>' + (i + 1) + '. ' + p.quotient + '</div>'; });
-          html += '</div></div>';
-        }
-        html += '</div>';
-        return html;
-      }
-
-      function handleWorksheet(action) {
-        const difficulty = document.getElementById("ws-difficulty-select").value;
-        const count = parseInt(document.getElementById("ws-count-select").value, 10);
-        const includeAnswers = document.getElementById("ws-include-answers").checked;
-        const problems = generateProblems(difficulty, count);
-        const html = buildWorksheetHtml(problems, includeAnswers);
-        const printArea = document.getElementById("worksheet-print-area");
-        printArea.innerHTML = html; printArea.classList.remove("hidden");
-        if (action === "print") {
-          window.print();
-          setTimeout(() => printArea.classList.add("hidden"), 1000);
-        } else {
-          html2pdf().set({ margin: 0.5, filename: "division-worksheet.pdf", image: { type: "jpeg", quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: "in", format: "letter", orientation: "portrait" } }).from(printArea).save().then(() => printArea.classList.add("hidden"));
-        }
-        worksheetModal.classList.add("hidden");
-      }
-
-      worksheetPrintBtn.addEventListener("click", () => handleWorksheet("print"));
-      worksheetPdfBtn.addEventListener("click", () => handleWorksheet("pdf"));
-
-      /* ========== Problem Generation ========== */
-      function generateProblem() {
-        const divisors = state.selectedDivisors.length > 0 ? state.selectedDivisors : [2, 3, 4, 5];
-        const divisor = divisors[Math.floor(Math.random() * divisors.length)];
-        let maxQ;
-        if (state.difficulty === "easy") maxQ = Math.floor(80 / divisor);
-        else if (state.difficulty === "medium") maxQ = Math.floor(140 / divisor);
-        else maxQ = Math.floor(220 / divisor);
-        maxQ = Math.max(maxQ, 2);
-        const quotient = Math.floor(Math.random() * maxQ) + 1;
-        return { divisor, dividend: divisor * quotient, quotient, remainder: 0 };
-      }
-
-      /* ========== Game Logic ========== */
-      function startGame() {
-        state.sessionLength = window.getSessionLength();
-        state.difficulty = document.querySelector('input[name="difficulty"]:checked').value;
-        state.currentProblemIndex = 0;
-        state.score = 0;
-        state.streak = 0;
-        state.bestStreak = 0;
-        scoreEl.textContent = "0";
-        streakEl.textContent = "0";
-        showPanel(gamePanel);
-        loadProblem();
-      }
-
-      function loadProblem() {
-        state.currentProblem = generateProblem();
-        const p = state.currentProblem;
-        divisorDisplay.textContent = p.divisor;
-        dividendDisplay.textContent = p.dividend;
-        quotientInput.value = ""; subtractionInput.value = ""; remainderInput.value = "";
-        quotientInput.readOnly = false; subtractionInput.readOnly = false; remainderInput.readOnly = false;
-        quotientInput.classList.remove("locked", "answer-correct");
-        subtractionInput.classList.remove("locked", "answer-correct");
-        remainderInput.classList.remove("locked", "answer-correct");
-        submitBtn.disabled = false; nextBtn.disabled = true;
-        feedbackEl.classList.add("hidden");
-
-        const total = state.sessionLength === "endless" ? "∞" : state.sessionLength;
-        progressQuestion.textContent = "Question " + (state.currentProblemIndex + 1) + " of " + total;
-        if (state.sessionLength !== "endless") {
-          const pct = (state.currentProblemIndex / state.sessionLength) * 100;
-          progressFill.style.width = pct + "%";
-          progressTrack.setAttribute("aria-valuenow", Math.round(pct));
-        } else {
-          progressFill.style.width = "0%";
-          progressTrack.setAttribute("aria-valuenow", 0);
-        }
-        setTimeout(() => quotientInput.focus(), 100);
-      }
-
-      function checkAnswer() {
-        const p = state.currentProblem;
-        const qVal = quotientInput.value.trim();
-        const sVal = subtractionInput.value.trim();
-        const rVal = remainderInput.value.trim();
-
-        if (qVal === "") {
-          feedbackEl.className = "feedback error";
-          feedbackEl.innerHTML = "Please enter a quotient.";
-          feedbackEl.classList.remove("hidden");
-          return;
-        }
-
-        const userQ = parseInt(qVal, 10);
-        const userS = sVal !== "" ? parseInt(sVal, 10) : null;
-        const userR = rVal !== "" ? parseInt(rVal, 10) : 0;
-        const expectedSub = p.divisor * p.quotient;
-        let correct = userQ === p.quotient;
-        if (correct && userS !== null) correct = userS === expectedSub;
-        if (correct) correct = userR === p.remainder;
-
-        quotientInput.readOnly = true; subtractionInput.readOnly = true; remainderInput.readOnly = true;
-        submitBtn.disabled = true;
-
-        if (correct) {
-          state.score++;
-          state.streak++;
-          if (state.streak > state.bestStreak) state.bestStreak = state.streak;
-          scoreEl.textContent = state.score;
-          streakEl.textContent = state.streak;
-          quotientInput.classList.add("answer-correct");
-          subtractionInput.classList.add("answer-correct");
-          remainderInput.classList.add("answer-correct");
-          feedbackEl.className = "feedback success";
-          feedbackEl.innerHTML = "Correct! " + p.dividend + " ÷ " + p.divisor + " = " + p.quotient + (p.remainder ? " remainder " + p.remainder : "");
-          feedbackEl.classList.remove("hidden");
-          spawnConfetti();
-        } else {
-          state.streak = 0;
-          streakEl.textContent = "0";
-          feedbackEl.className = "feedback error";
-          let hint = "The correct answer is: " + p.dividend + " ÷ " + p.divisor + " = " + p.quotient;
-          if (expectedSub !== p.dividend) hint += "<span class='feedback-hint'>Subtraction step: " + p.divisor + " × " + p.quotient + " = " + expectedSub + "</span>";
-          if (p.remainder) hint += " remainder " + p.remainder;
-          feedbackEl.innerHTML = hint;
-          feedbackEl.classList.remove("hidden");
-        }
-
-        nextBtn.disabled = false;
-        nextBtn.focus();
-      }
-
-      function nextProblem() {
-        state.currentProblemIndex++;
-        if (state.sessionLength !== "endless" && state.currentProblemIndex >= state.sessionLength) {
-          /* All questions done — show the results panel */
-          showResults();
-        } else {
-          loadProblem();
-        }
-      }
-
-      /* ========== Results ========== */
-      function showResults() {
-        /* Save score to leaderboard */
-        const playerName = state.currentUser || (state.isGuest ? "Guest" : "Unknown");
-        const scores = getScores();
-        scores.push({
-          player: playerName,
-          score: state.score,
-          total: state.currentProblemIndex,
-          difficulty: state.difficulty,
-          date: Date.now()
-        });
-        saveScores(scores);
-
-        /* Populate the results panel */
-        const total = state.currentProblemIndex;
-        const pct = total > 0 ? Math.round((state.score / total) * 100) : 0;
-        resultsScore.textContent = state.score;
-        resultsAccuracy.textContent = pct + "%";
-        resultsStreak.textContent = state.bestStreak;
-        resultsSubtitle.textContent = "You answered " + state.score + " out of " + total + " correctly (" + pct + "%)";
-
-        if (pct === 100) {
-          resultsTitle.textContent = "Perfect Score!";
-        } else if (pct >= 80) {
-          resultsTitle.textContent = "Great Job!";
-        } else if (pct >= 50) {
-          resultsTitle.textContent = "Session Complete";
-        } else {
-          resultsTitle.textContent = "Keep Practicing!";
-        }
-
-        /* Show the dedicated results panel */
-        showPanel(resultsPanel);
-
-        /* Big confetti burst for good scores */
-        if (pct >= 80) {
-          for (let wave = 0; wave < 3; wave++) {
-            setTimeout(spawnConfetti, wave * 200);
-          }
-        }
-      }
-
-      /* Results panel button handlers */
-      resultsHomeBtn.addEventListener("click", goHome);
-      resultsAgainBtn.addEventListener("click", startGame);
-
-      /* ========== End Session (early) ========== */
-      endSessionLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        confirmModalDesc.textContent = "End this session early? Your progress so far will be saved.";
-        confirmOkBtn.onclick = () => {
-          confirmModal.classList.add("hidden");
-          /* Save what we have, then go straight home — no results screen */
-          if (state.currentProblemIndex > 0) {
-            const playerName = state.currentUser || (state.isGuest ? "Guest" : "Unknown");
-            const scores = getScores();
-            scores.push({
-              player: playerName,
-              score: state.score,
-              total: state.currentProblemIndex,
-              difficulty: state.difficulty,
-              date: Date.now()
-            });
-            saveScores(scores);
-          }
-          goHome();
-        };
-        confirmModal.classList.remove("hidden");
-      });
-
-      /* ========== Button Wiring ========== */
-      startBtn.addEventListener("click", startGame);
-      submitBtn.addEventListener("click", checkAnswer);
-      nextBtn.addEventListener("click", nextProblem);
-      resetBtn.addEventListener("click", () => {
-        quotientInput.value = ""; subtractionInput.value = ""; remainderInput.value = "";
-        feedbackEl.classList.add("hidden");
-        quotientInput.focus();
-      });
-
-      /* Enter key in inputs */
-      [quotientInput, subtractionInput, remainderInput].forEach(inp => {
-        inp.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            if (!submitBtn.disabled) checkAnswer();
-            else if (!nextBtn.disabled) nextProblem();
-          }
-        });
-      });
-
-      /* ========== Confetti ========== */
-      function spawnConfetti() {
-        const rect = document.getElementById("paper-sheet").getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const colors = ["#b07d10", "#2d6a4f", "#9b2226", "#457b9d", "#e9c46a", "#f4a261"];
-        for (let i = 0; i < 18; i++) {
-          const dot = document.createElement("div");
-          dot.className = "confetti-dot";
-          const angle = (Math.PI * 2 * i) / 18 + (Math.random() - 0.5) * 0.5;
-          const dist = 60 + Math.random() * 100;
-          dot.style.cssText = "left:" + cx + "px;top:" + cy + "px;width:" + (6 + Math.random() * 6) + "px;height:" + (6 + Math.random() * 6) + "px;background:" + colors[i % colors.length] + ";--cx:" + (Math.cos(angle) * dist) + "px;--cy:" + (Math.sin(angle) * dist - 40) + "px;";
-          confettiContainer.appendChild(dot);
-          setTimeout(() => dot.remove(), 900);
-        }
-      }
-
-      /* ========== Init ========== */
-      updateHeaderAuth();
+      nextBtn.disabled=false;nextBtn.focus();
+    }
+
+    function nextProblem(){
+      state.currentProblemIndex++;
+      if(state.sessionLength!=="endless"&&state.currentProblemIndex>=state.sessionLength)showResults();else loadProblem();
+    }
+
+    /* ====== RESULTS ====== */
+    function showResults(){
+      const name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();
+      scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores);
+      const total=state.currentProblemIndex,pct=total?Math.round(state.score/total*100):0;
+      $("results-score").textContent=state.score;$("results-accuracy").textContent=pct+"%";$("results-streak").textContent=state.bestStreak;
+      $("results-subtitle").textContent="You answered "+state.score+" out of "+total+" correctly ("+pct+"%)";
+      $("results-title").textContent=pct===100?"Perfect Score!":pct>=80?"Great Job!":pct>=50?"Session Complete":"Keep Practicing!";
+      showPanel(resultsPanel);if(pct>=80)for(let w=0;w<3;w++)setTimeout(spawnConfetti,w*200);
+    }
+    $("results-home-btn").addEventListener("click",goHome);
+    $("results-again-btn").addEventListener("click",startGame);
+
+    /* End session early -> confirm -> go home (no results) */
+    endSessionLink.addEventListener("click",e=>{
+      e.preventDefault();confirmModalDesc.textContent="End this session early? Progress will be saved.";
+      confirmOkBtn.onclick=()=>{
+        confirmModal.classList.add("hidden");
+        if(state.currentProblemIndex>0){const name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores)}
+        goHome();
+      };confirmModal.classList.remove("hidden");
+    });
+
+    /* ====== BUTTONS ====== */
+    $("start-btn").addEventListener("click",startGame);
+    submitBtn.addEventListener("click",checkAnswer);
+    nextBtn.addEventListener("click",nextProblem);
+    resetBtn.addEventListener("click",()=>{quotientInput.value="";subtractionInput.value="";remainderInput.value="";feedbackEl.classList.add("hidden");quotientInput.focus()});
+    [quotientInput,subtractionInput,remainderInput].forEach(inp=>{inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(!submitBtn.disabled)checkAnswer();else if(!nextBtn.disabled)nextProblem()}})});
+
+    /* ====== CONFETTI ====== */
+    function spawnConfetti(){const r=document.getElementById("paper-sheet").getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cols=["#b07d10","#2d6a4f","#9b2226","#457b9d","#e9c46a","#f4a261"];for(let i=0;i<18;i++){const d=document.createElement("div");d.className="confetti-dot";const a=Math.PI*2*i/18+(Math.random()-.5)*.5,dist=60+Math.random()*100;d.style.cssText="left:"+cx+"px;top:"+cy+"px;width:"+(6+Math.random()*6)+"px;height:"+(6+Math.random()*6)+"px;background:"+cols[i%cols.length]+";--cx:"+(Math.cos(a)*dist)+"px;--cy:"+(Math.sin(a)*dist-40)+"px;";confettiContainer.appendChild(d);setTimeout(()=>d.remove(),900)}}
+
+    /* ====== INIT ====== */
+    updateHeader();
     </script>
   </body>
 </html>
