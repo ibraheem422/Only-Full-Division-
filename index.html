@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Divide & Conquer</title>
+<title>Divide & Conquer -- Practice division</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23d46a32%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%239a4518%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M14%2010%20L14%2022%20L10%2022%22%20fill%3D%22none%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cline%20x1%3D%2214%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%228%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2224%22%20r%3D%221.4%22%20fill%3D%22%23fffef9%22%2F%3E%3Cline%20x1%3D%2219%22%20y1%3D%2216%22%20x2%3D%2225%22%20y2%3D%2216%22%20stroke%3D%22%23fffef9%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E" type="image/svg+xml"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -85,6 +85,10 @@ body.font-handwriting .division-house,body.font-handwriting .house-input{font-fa
 .worksheet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem 1.5rem;margin-top:1.5rem}.worksheet-problem{border:1px dashed #ccc;padding:1rem;border-radius:8px;page-break-inside:avoid}
 .results-hero{text-align:center;padding:1.5rem 0 .5rem}.results-hero h2{font-family:var(--font-display);font-size:1.9rem;margin:0 0 .4rem}.results-hero p{color:var(--muted);font-size:1rem;margin:0}
 .results-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;max-width:420px;margin:1.5rem auto}.results-actions{display:flex;gap:.75rem;max-width:360px;margin:1rem auto 0}
+.msg-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.4rem;flex-shrink:0}
+.msg-icon.error{background:rgba(155,34,38,.1);color:var(--error)}
+.msg-icon.success{background:rgba(45,106,79,.1);color:var(--success)}
+.msg-icon.info{background:rgba(176,125,16,.1);color:var(--accent)}
 </style>
 </head>
 <body>
@@ -93,7 +97,7 @@ body.font-handwriting .division-house,body.font-handwriting .house-input{font-fa
 <div class="page">
 <header class="header">
 <div class="header-brand">
-<a class="logo-link" href="#" aria-label="Home"><svg class="logo" width="44" height="44" viewBox="0 0 64 64"><defs><linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b07d10"/><stop offset="100%" stop-color="#8c600b"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#lbg)"/><path d="M30 24L30 44L24 44" fill="none" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="30" y1="28" x2="44" y2="28" stroke="#fffef9" stroke-width="2" stroke-linecap="round"/><circle cx="44" cy="20" r="2.2" fill="#fffef9"/><circle cx="44" cy="48" r="2.2" fill="#fffef9"/><line x1="40" y1="34" x2="48" y2="34" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round"/></svg></a>
+<a class="logo-link" href="#Home" aria-label="Home"><svg class="logo" width="44" height="44" viewBox="0 0 64 64"><defs><linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b07d10"/><stop offset="100%" stop-color="#8c600b"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#lbg)"/><path d="M30 24L30 44L24 44" fill="none" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="30" y1="28" x2="44" y2="28" stroke="#fffef9" stroke-width="2" stroke-linecap="round"/><circle cx="44" cy="20" r="2.2" fill="#fffef9"/><circle cx="44" cy="48" r="2.2" fill="#fffef9"/><line x1="40" y1="34" x2="48" y2="34" stroke="#fffef9" stroke-width="2.2" stroke-linecap="round"/></svg></a>
 <div><h1>Divide &amp; Conquer</h1><p class="tagline">Practice long division the way you write it on paper.</p></div>
 </div>
 <div class="flex flex-wrap items-center gap-2">
@@ -142,8 +146,8 @@ body.font-handwriting .division-house,body.font-handwriting .house-input{font-fa
 </div></div></div>
 <div class="action-row"><button type="button" class="btn btn-secondary" id="reset-btn">Reset</button><button type="button" class="btn btn-primary" id="submit-btn">Submit answer</button><button type="button" class="btn btn-secondary" id="next-btn" disabled>Next</button></div>
 <p class="feedback hidden" id="feedback" role="alert"></p>
-<div class="instructions-legend"><div><strong>Quotient</strong> -- on top, above the line</div><div><strong>Subtraction</strong> -- write the number you subtract (divisor x quotient)</div><div><strong>Remainder</strong> -- what is left at the bottom</div></div>
-<div class="mt-4"><a href="#" id="end-session-link" class="text-xs text-gray-500 hover:underline">End session</a></div>
+<div class="instructions-legend"><div><strong>Quotient</strong> -- on top, above the line</div><div><strong>Subtraction</strong> -- write the number you subtract (divisor &times; quotient)</div><div><strong>Remainder</strong> -- what is left at the bottom</div></div>
+<div class="mt-4"><a href="#End-session" id="end-session-link" class="text-xs text-gray-500 hover:underline">End session</a></div>
 </div></section>
 <section class="panel results hidden" id="results-panel">
 <div class="results-hero"><h2 id="results-title">Session Complete</h2><p id="results-subtitle"></p></div>
@@ -173,6 +177,14 @@ body.font-handwriting .division-house,body.font-handwriting .house-input{font-fa
 <div class="flex gap-2"><button type="button" class="btn btn-secondary flex-1" id="confirm-cancel-btn">Cancel</button><button type="button" class="btn btn-primary flex-1" id="confirm-ok-btn" style="background:var(--error)">Confirm</button></div>
 </div></div>
 
+<!-- Message Modal (replaces all native alerts) -->
+<div class="modal-overlay hidden" id="message-modal" role="dialog" aria-modal="true"><div class="modal-box text-center">
+<div class="msg-icon" id="msg-modal-icon"></div>
+<h3 class="text-xl font-bold mb-2" id="msg-modal-title">Notice</h3>
+<p class="text-sm text-gray-600 mb-6" id="msg-modal-desc"></p>
+<button type="button" class="btn btn-primary w-full" id="msg-modal-ok-btn">OK</button>
+</div></div>
+
 <!-- TOTP Verify Modal -->
 <div class="modal-overlay hidden" id="totp-modal" role="dialog" aria-modal="true"><div class="modal-box text-center">
 <h3 class="text-xl font-bold mb-2">Two-Factor Authentication</h3><p class="text-sm text-gray-600 mb-4">Enter the 6-digit code from your authenticator app.</p>
@@ -184,7 +196,8 @@ body.font-handwriting .division-house,body.font-handwriting .house-input{font-fa
 <!-- TOTP Setup Modal -->
 <div class="modal-overlay hidden" id="totp-setup-modal" role="dialog" aria-modal="true"><div class="modal-box">
 <h3 class="text-xl font-bold mb-2 text-center">Setup Authenticator</h3><p class="text-sm text-gray-600 mb-3 text-center">Scan this QR code or enter the secret key manually.</p>
-<div class="qr-container" id="qr-code-box"></div><div class="text-xs text-center font-mono font-bold text-gray-700 mb-3" id="totp-secret-display"></div>
+<div class="qr-container" id="qr-code-box"></div>
+<div class="text-xs text-center font-mono font-bold text-gray-700 mb-3" id="totp-secret-display"></div>
 <p class="text-xs text-gray-500 mb-4 text-center">Enter a code to confirm setup:</p>
 <div class="totp-digits" id="totp-setup-inputs"><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/><input type="text" class="totp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*"/></div>
 <p class="auth-error hidden mb-3" id="totp-setup-error" role="alert"></p>
@@ -215,13 +228,13 @@ body.font-handwriting .division-house,body.font-handwriting .house-input{font-fa
 <div id="worksheet-print-area" class="hidden"></div>
 
 <script>
-/* === TOTP === */
+/* === TOTP Utilities === */
 const B32={a:"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",decode(s){let c=s.replace(/=+$/,"").toUpperCase(),b="",r=[];for(let i=0;i<c.length;i++){let v=this.a.indexOf(c[i]);if(v>-1)b+=v.toString(2).padStart(5,"0")}for(let i=0;i+8<=b.length;i+=8)r.push(parseInt(b.substr(i,8),2));return new Uint8Array(r)}};
 async function hmacSha1(k,m){const ck=await crypto.subtle.importKey("raw",k,{name:"HMAC",hash:{name:"SHA-1"}},false,["sign"]);return new Uint8Array(await crypto.subtle.sign("HMAC",ck,m))}
 async function genTotp(secret,step,off){step=step||30;off=off||0;try{const kb=B32.decode(secret),cnt=Math.floor(Date.now()/1000/step)+off,buf=new ArrayBuffer(8);new DataView(buf).setUint32(4,cnt,false);const h=await hmacSha1(kb,buf),o=h[h.length-1]&0xf,bin=((h[o]&0x7f)<<24)|((h[o+1]&0xff)<<16)|((h[o+2]&0xff)<<8)|(h[o+3]&0xff);return(bin%1000000).toString().padStart(6,"0")}catch(e){return null}}
 async function verifyTotp(secret,code){if(!code||code.length!==6)return false;for(let o=-1;o<=1;o++){if(await genTotp(secret,30,o)===code)return true}return false}
 
-/* === ADMIN (undeletable) === */
+/* === Admin (undeletable) === */
 const ADMIN_EMAIL="ibraheem.muhammad.ai@gmail.com",ADMIN_PASS="Midea@222",ADMIN_SECRET="3W6PVGFORLAYR3L3";
 
 /* === Custom Dropdown Factory === */
@@ -238,24 +251,24 @@ function makeCDD(wrapId,triggerId,listId,labelId,opts,onChange){
   return{getValue:()=>selVal,pick:p=>pick(p),setLabel:t=>{if(opts.labelMap&&opts.labelMap[t])label.textContent=opts.labelMap[t]}}
 }
 
-/* Session Length */
+/* Session Length Dropdown */
 const slCdd=makeCDD("sl-wrap","sl-trigger","sl-list","sl-label",{initial:"20",labelMap:{10:"10 problems",20:"20 problems",30:"30 problems",50:"50 problems",endless:"Endless",custom:"Custom -- enter a number"}});
 document.getElementById("sl-custom-input").addEventListener("input",function(){const v=parseInt(this.value,10);if(v&&v>0)document.getElementById("sl-label").textContent=v+" problems (custom)";else slCdd.setLabel("custom")});
 window.getSessionLength=function(){const v=slCdd.getValue();if(v==="endless")return"endless";if(v==="custom"){const n=parseInt(document.getElementById("sl-custom-input").value,10);return(n&&n>=1)?n:5}return parseInt(v,10)};
 
-/* Font dropdowns */
+/* Font Dropdowns */
 const fontMap={handwriting:"Notebook Handwriting",sans:"Clean Modern",serif:"Classic Serif"};
 let currentFont="handwriting";
 function applyFont(f){document.body.className="font-"+f;currentFont=f}
 const sfCdd=makeCDD("sf-wrap","sf-trigger","sf-list","sf-label",{initial:"handwriting",labelMap:fontMap},applyFont);
 const sf2Cdd=makeCDD("sf2-wrap","sf2-trigger","sf2-list","sf2-label",{initial:"handwriting",labelMap:fontMap},applyFont);
 
-/* Worksheet dropdowns */
+/* Worksheet Dropdowns */
 const wsDiffCdd=makeCDD("ws-diff-wrap","ws-diff-trigger","ws-diff-list","ws-diff-label",{initial:"medium",labelMap:{easy:"Easy",medium:"Medium",hard:"Hard"}});
 const wsCntCdd=makeCDD("ws-cnt-wrap","ws-cnt-trigger","ws-cnt-list","ws-cnt-label",{initial:"12",labelMap:{6:"6 Problems",12:"12 Problems",18:"18 Problems"}});
 
-/* === State === */
-const state={currentUser:null,isGuest:false,difficulty:"easy",selectedDivisors:[2,4,5,8,9,10],sessionLength:20,currentProblemIndex:0,score:0,streak:0,bestStreak:0,currentProblem:null,pendingAuthCallback:null};
+/* === Application State === */
+const state={currentUser:null,isGuest:false,difficulty:"easy",selectedDivisors:[2,4,5,8,9,10],sessionLength:20,currentProblemIndex:0,score:0,streak:0,bestStreak:0,currentProblem:null,pendingAuthCallback:null,submitted:false};
 
 /* === Storage + Admin Protection === */
 function getUsers(){try{return JSON.parse(localStorage.getItem("dc_users")||"{}")}catch{return{}}}
@@ -265,14 +278,18 @@ function getScores(){try{return JSON.parse(localStorage.getItem("dc_scores")||"[
 function saveScores(s){localStorage.setItem("dc_scores",JSON.stringify(s))}
 function clearScoresProtected(){saveScores(getScores().filter(s=>s.player===ADMIN_EMAIL))}
 
-/* === DOM === */
+/* === DOM References === */
 const $=id=>document.getElementById(id);
-const authPanel=$("auth-panel"),setupPanel=$("setup-panel"),gamePanel=$("game-panel"),resultsPanel=$("results-panel"),settingsModal=$("settings-modal"),confirmModal=$("confirm-modal"),totpModal=$("totp-modal"),totpSetupModal=$("totp-setup-modal"),leaderboardModal=$("leaderboard-modal"),worksheetModal=$("worksheet-modal");
-const headerAuth=$("header-auth"),userGreetingName=$("user-greeting-name"),setupDivCont=$("setup-divisor-container"),settingsDivCont=$("settings-divisor-container");
+const authPanel=$("auth-panel"),setupPanel=$("setup-panel"),gamePanel=$("game-panel"),resultsPanel=$("results-panel");
+const settingsModal=$("settings-modal"),confirmModal=$("confirm-modal"),messageModal=$("message-modal"),totpModal=$("totp-modal"),totpSetupModal=$("totp-setup-modal"),leaderboardModal=$("leaderboard-modal"),worksheetModal=$("worksheet-modal");
+const headerAuth=$("header-auth"),userGreetingName=$("user-greeting-name");
+const setupDivCont=$("setup-divisor-container"),settingsDivCont=$("settings-divisor-container");
 const scoreEl=$("score"),streakEl=$("streak"),progressQuestion=$("progress-question"),progressFill=$("progress-fill"),progressTrack=$("progress-track");
-const divisorDisplay=$("divisor-display"),dividendDisplay=$("dividend-display"),quotientInput=$("quotient-input"),subtractionInput=$("subtraction-input"),remainderInput=$("remainder-input");
+const divisorDisplay=$("divisor-display"),dividendDisplay=$("dividend-display");
+const quotientInput=$("quotient-input"),subtractionInput=$("subtraction-input"),remainderInput=$("remainder-input");
 const submitBtn=$("submit-btn"),nextBtn=$("next-btn"),resetBtn=$("reset-btn"),feedbackEl=$("feedback");
-const totpInputs=document.querySelectorAll("#totp-inputs .totp-digit-input"),totpSetupInputs=document.querySelectorAll("#totp-setup-inputs .totp-digit-input");
+const totpInputs=document.querySelectorAll("#totp-inputs .totp-digit-input");
+const totpSetupInputs=document.querySelectorAll("#totp-setup-inputs .totp-digit-input");
 
 /* === Divisor Pills === */
 function makePills(c,sel,cb){c.innerHTML="";for(let d=2;d<=15;d++){const l=document.createElement("label");l.className="divisor-pill";const i=document.createElement("input");i.type="checkbox";i.value=d;i.checked=sel.includes(d);i.addEventListener("change",cb);l.appendChild(i);l.appendChild(document.createTextNode(d));c.appendChild(l)}}
@@ -289,13 +306,42 @@ function applyPreset(a){[setupDivCont,settingsDivCont].forEach(c=>c.querySelecto
  $("login-tab").addEventListener("click",()=>{$("login-tab").classList.add("active");$("signup-tab").classList.remove("active");$("login-form-panel").classList.remove("hidden");$("signup-form-panel").classList.add("hidden")});
  $("signup-tab").addEventListener("click",()=>{$("signup-tab").classList.add("active");$("login-tab").classList.remove("active");$("signup-form-panel").classList.remove("hidden");$("login-form-panel").classList.add("hidden")});
 
-/* === Panel Nav === */
+/* === Panel Navigation === */
 function showPanel(p){[authPanel,setupPanel,gamePanel,resultsPanel].forEach(x=>x.classList.add("hidden"));p.classList.remove("hidden");p.style.animation="none";p.offsetHeight;p.style.animation=""}
 function updateHeader(){if(state.currentUser){headerAuth.classList.remove("hidden");headerAuth.classList.add("visible");userGreetingName.textContent=state.currentUser}else{headerAuth.classList.add("hidden");headerAuth.classList.remove("visible")}}
 function goHome(){showPanel(state.currentUser||state.isGuest?setupPanel:authPanel)}
 
-/* === Auth === */
+/* === Modal Helpers === */
+function openModal(el){el.classList.remove("hidden");document.body.style.overflow="hidden"}
+function closeModal(el){el.classList.add("hidden");document.body.style.overflow=""}
+
+/* === Message Modal (replaces all native alert/confirm) === */
+const msgIcons={error:"&#10007;",success:"&#10003;",info:"&#8505;"};
+let msgCallback=null;
+function showMessage(type,title,desc,cb){
+  const icon=$("msg-modal-icon");
+  icon.className="msg-icon "+type;
+  icon.innerHTML=msgIcons[type]||msgIcons.info;
+  $("msg-modal-title").textContent=title;
+  $("msg-modal-desc").textContent=desc;
+  msgCallback=cb||null;
+  openModal(messageModal);
+}
+ $("msg-modal-ok-btn").addEventListener("click",()=>{closeModal(messageModal);if(msgCallback)msgCallback();msgCallback=null});
+
+/* === Confirm Modal === */
+let confirmCallback=null;
+function showConfirm(desc,cb){
+  $("confirm-modal-desc").textContent=desc;
+  confirmCallback=cb;
+  openModal(confirmModal);
+}
+ $("confirm-cancel-btn").addEventListener("click",()=>{closeModal(confirmModal);confirmCallback=null});
+ $("confirm-ok-btn").addEventListener("click",()=>{closeModal(confirmModal);if(confirmCallback)confirmCallback();confirmCallback=null});
+
+/* === Auth Flows === */
  $("skip-auth-btn").addEventListener("click",()=>{state.isGuest=true;state.currentUser=null;updateHeader();showPanel(setupPanel)});
+
  $("login-form").addEventListener("submit",async e=>{
   e.preventDefault();const le=$("login-error");le.classList.add("hidden");
   const email=$("login-email").value.trim().toLowerCase(),pw=$("login-password").value;
@@ -303,9 +349,12 @@ function goHome(){showPanel(state.currentUser||state.isGuest?setupPanel:authPane
   const user=getUser(email);
   if(!user){le.textContent="No account found.";le.classList.remove("hidden");return}
   if(user.password!==pw){le.textContent="Incorrect password.";le.classList.remove("hidden");return}
-  if(user.totpSecret){state.pendingAuthCallback=()=>{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)};showTotpVerify(user.totpSecret)}
-  else{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)}
+  if(user.totpSecret){
+    state.pendingAuthCallback=()=>{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)};
+    showTotpVerify(user.totpSecret);
+  }else{state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)}
 });
+
  $("signup-form").addEventListener("submit",e=>{
   e.preventDefault();const se=$("signup-error");se.classList.add("hidden");
   const email=$("signup-email").value.trim().toLowerCase(),pw=$("signup-password").value,cf=$("signup-confirm").value;
@@ -314,100 +363,375 @@ function goHome(){showPanel(state.currentUser||state.isGuest?setupPanel:authPane
   if(pw!==cf){se.textContent="Passwords do not match.";se.classList.remove("hidden");return}
   if(email===ADMIN_EMAIL){se.textContent="That email is reserved.";se.classList.remove("hidden");return}
   const users=getUsers();if(users[email]){se.textContent="Account already exists.";se.classList.remove("hidden");return}
-  users[email]={password:pw,totpSecret:null,createdAt:Date.now()};saveUsers(users);state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel)
+  users[email]={password:pw,totpSecret:null,createdAt:Date.now()};saveUsers(users);
+  state.currentUser=email;state.isGuest=false;updateHeader();showPanel(setupPanel);
 });
+
  $("header-auth-btn").addEventListener("click",()=>{state.currentUser=null;state.isGuest=false;updateHeader();showPanel(authPanel)});
 
-/* === TOTP Helpers === */
-function setupAutoAdvance(inputs){inputs.forEach((inp,i)=>{inp.value="";inp.addEventListener("input",()=>{if(inp.value.length===1&&i<inputs.length-1)inputs[i+1].focus()});inp.addEventListener("keydown",e=>{if(e.key==="Backspace"&&!inp.value&&i>0)inputs[i-1].focus()});inp.addEventListener("paste",e=>{e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData("text").trim();for(let j=0;j<Math.min(t.length,inputs.length);j++)inputs[j].value=t[j]||"";inputs[Math.min(t.length,inputs.length-1)].focus()})})}
-setupAutoAdvance(totpInputs);setupAutoAdvance(totpSetupInputs);
-function getCode(inp){return Array.from(inp).map(i=>i.value).join("")}
-function clearCode(inp){inp.forEach(i=>i.value="")}
-function showTotpVerify(secret){$("totp-error").classList.add("hidden");clearCode(totpInputs);totpModal.classList.remove("hidden");setTimeout(()=>totpInputs[0].focus(),100)}
- $("totp-cancel-btn").addEventListener("click",()=>{totpModal.classList.add("hidden");state.pendingAuthCallback=null});
- $("totp-verify-btn").addEventListener("click",async()=>{
-  const code=getCode(totpInputs);if(code.length!==6){$("totp-error").textContent="Enter all 6 digits.";$("totp-error").classList.remove("hidden");return}
-  const user=getUser(state.currentUser||ADMIN_EMAIL);
-  if(await verifyTotp(user.totpSecret,code)){totpModal.classList.add("hidden");if(state.pendingAuthCallback){state.pendingAuthCallback();state.pendingAuthCallback=null}}
-  else{$("totp-error").textContent="Invalid code.";$("totp-error").classList.remove("hidden");clearCode(totpInputs);totpInputs[0].focus()}
-});
+/* === TOTP Input Auto-Advance === */
+function setupAutoAdvance(inputs){
+  inputs.forEach((inp,i)=>{
+    inp.value="";
+    inp.addEventListener("input",()=>{if(inp.value.length===1&&i<inputs.length-1)inputs[i+1].focus()});
+    inp.addEventListener("keydown",e=>{if(e.key==="Backspace"&&!inp.value&&i>0)inputs[i-1].focus()});
+    inp.addEventListener("paste",e=>{
+      e.preventDefault();
+      const t=(e.clipboardData||window.clipboardData).getData("text").trim();
+      for(let j=0;j<Math.min(t.length,inputs.length);j++)inputs[j].value=t[j]||"";
+      inputs[Math.min(t.length,inputs.length-1)].focus();
+    });
+  });
+}
+setupAutoAdvance(totpInputs);
+setupAutoAdvance(totpSetupInputs);
+
+/* === TOTP Verify Modal === */
+function showTotpVerify(secret){
+  let currentSecret=secret;
+  openModal(totpModal);
+  totpInputs.forEach(i=>i.value="");
+  totpInputs[0].focus();
+  $("totp-error").classList.add("hidden");
+
+  $("totp-verify-btn").onclick=async()=>{
+    const code=Array.from(totpInputs).map(i=>i.value).join("");
+    if(code.length!==6){$("totp-error").textContent="Enter all 6 digits.";$("totp-error").classList.remove("hidden");return}
+    if(await verifyTotp(currentSecret,code)){
+      closeModal(totpModal);
+      if(state.pendingAuthCallback)state.pendingAuthCallback();
+      state.pendingAuthCallback=null;
+    }else{
+      $("totp-error").textContent="Invalid code. Try again.";$("totp-error").classList.remove("hidden");
+      totpInputs.forEach(i=>i.value="");totpInputs[0].focus();
+    }
+  };
+  $("totp-cancel-btn").onclick=()=>{closeModal(totpModal);state.pendingAuthCallback=null};
+}
+
+/* === TOTP Setup Modal === */
  $("setup-security-btn").addEventListener("click",()=>{
-  if(!state.currentUser){alert("Please log in first.");return}
-  if(state.currentUser===ADMIN_EMAIL){alert("2FA is permanently enabled for this account.");return}
-  const users=getUsers(),user=users[state.currentUser];if(!user)return;
-  const secret=function(l){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let s="";const r=new Uint8Array(l);crypto.getRandomValues(r);for(let i=0;i<l;i++)s+=a[r[i]%a.length];return s}(),url="otpauth://totp/DivideAndConquer:"+encodeURIComponent(state.currentUser)+"?secret="+secret+"&issuer=DivideAndConquer&algorithm=SHA1&digits=6&period=30";
-  const qr=$("qr-code-box");qr.innerHTML="";
-  try{const q=qrcode(0,"M");q.addData(url);q.make();qr.innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){qr.innerHTML="<p style='color:var(--error)'>QR failed. Use the secret key.</p>"}
-  $("totp-secret-display").textContent=secret;$("totp-setup-error").classList.add("hidden");clearCode(totpSetupInputs);
-  totpSetupModal.classList.remove("hidden");totpSetupModal._secret=secret;setTimeout(()=>totpSetupInputs[0].focus(),100);
-});
- $("totp-setup-close-btn").addEventListener("click",()=>{totpSetupModal.classList.add("hidden")});
- $("totp-setup-confirm-btn").addEventListener("click",async()=>{
-  const code=getCode(totpSetupInputs);if(code.length!==6){$("totp-setup-error").textContent="Enter all 6 digits.";$("totp-setup-error").classList.remove("hidden");return}
-  if(await verifyTotp(totpSetupModal._secret,code)){const users=getUsers();if(users[state.currentUser]){users[state.currentUser].totpSecret=totpSetupModal._secret;saveUsers(users)}totpSetupModal.classList.add("hidden");alert("2FA is now enabled.")}
-  else{$("totp-setup-error").textContent="Invalid code.";$("totp-setup-error").classList.remove("hidden");clearCode(totpSetupInputs);totpSetupInputs[0].focus()}
+  if(!state.currentUser){
+    showMessage("error","Not Logged In","Please log in to manage two-factor authentication.");
+    return;
+  }
+  if(state.currentUser===ADMIN_EMAIL){
+    showMessage("info","Restricted","The admin account's 2FA settings cannot be changed.");
+    return;
+  }
+  const users=getUsers();const user=users[state.currentUser];
+  if(!user){
+    showMessage("error","User Not Found","Your account data could not be loaded. Please try logging in again.");
+    return;
+  }
+  if(user.totpSecret){
+    showConfirm("2FA is already enabled. Disable it?",()=>{
+      user.totpSecret=null;saveUsers(users);
+      showMessage("success","2FA Disabled","Two-factor authentication has been turned off for your account.");
+    });
+    return;
+  }
+  const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+  const secret=Array.from({length:16},()=>chars[Math.floor(Math.random()*32)]).join("");
+  openModal(totpSetupModal);
+  $("totp-secret-display").textContent=secret;
+  const qrBox=$("qr-code-box");qrBox.innerHTML="";
+  try{
+    const qr=qrcode(0,"M");
+    qr.addData("otpauth://totp/DivideAndConquer:"+encodeURIComponent(state.currentUser)+"?secret="+secret+"&issuer=DivideAndConquer");
+    qr.make();
+    qrBox.innerHTML=qr.createSvgTag({cellSize:4,margin:2});
+  }catch(e){qrBox.innerHTML="<p style='color:var(--error)'>QR generation failed.</p>"}
+  totpSetupInputs.forEach(i=>i.value="");totpSetupInputs[0].focus();
+  $("totp-setup-error").classList.add("hidden");
+
+  $("totp-setup-confirm-btn").onclick=async()=>{
+    const code=Array.from(totpSetupInputs).map(i=>i.value).join("");
+    if(code.length!==6){$("totp-setup-error").textContent="Enter all 6 digits.";$("totp-setup-error").classList.remove("hidden");return}
+    if(await verifyTotp(secret,code)){
+      user.totpSecret=secret;saveUsers(users);
+      closeModal(totpSetupModal);
+      showMessage("success","2FA Enabled","Two-factor authentication is now active on your account.");
+    }else{
+      $("totp-setup-error").textContent="Invalid code. Try again.";$("totp-setup-error").classList.remove("hidden");
+      totpSetupInputs.forEach(i=>i.value="");totpSetupInputs[0].focus();
+    }
+  };
+  $("totp-setup-close-btn").onclick=()=>closeModal(totpSetupModal);
 });
 
-/* === Settings (FIXED: single classList.add to close) === */
- $("header-settings-btn").addEventListener("click",()=>{
-  settingsDivCont.querySelectorAll("input").forEach(i=>{i.checked=state.selectedDivisors.includes(+i.value)});
-  sf2Cdd.pick(currentFont);
-  settingsModal.classList.remove("hidden");
-});
+/* === Header Buttons === */
+ $("header-leaderboard-btn").addEventListener("click",()=>{renderLeaderboard();openModal(leaderboardModal)});
+ $("header-worksheet-btn").addEventListener("click",()=>openModal(worksheetModal));
+ $("header-settings-btn").addEventListener("click",()=>openModal(settingsModal));
+
+/* === Settings Modal === */
  $("settings-close-btn").addEventListener("click",()=>{
-  /* Sync divisors from settings to setup */
   state.selectedDivisors=readPills(settingsDivCont);
   setupDivCont.querySelectorAll("input").forEach(i=>{i.checked=state.selectedDivisors.includes(+i.value)});
-  /* Sync font from settings to setup */
-  const chosenFont=sf2Cdd.getValue();
-  applyFont(chosenFont);
-  sfCdd.pick(chosenFont);
-  /* Close the modal */
-  settingsModal.classList.add("hidden");
+  applyFont(currentFont);
+  closeModal(settingsModal);
 });
 
-/* === Leaderboard === */
-function escH(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML}
-function renderLeaderboard(){const scores=getScores().sort((a,b)=>b.score-a.score).slice(0,20);$("leaderboard-body").innerHTML=scores.length?scores.map((s,i)=>"<tr><td>"+(i+1)+"</td><td>"+escH(s.player)+"</td><td><strong>"+s.score+"</strong></td><td>"+escH(s.difficulty)+"</td><td>"+new Date(s.date).toLocaleDateString()+"</td></tr>").join(""):"<tr><td colspan='5' class='text-center py-4 text-gray-500'>No scores yet.</td></tr>";leaderboardModal.classList.remove("hidden")}
- $("header-leaderboard-btn").addEventListener("click",renderLeaderboard);
- $("leaderboard-close-btn").addEventListener("click",()=>leaderboardModal.classList.add("hidden"));
- $("clear-scores-btn").addEventListener("click",()=>{$("confirm-modal-desc").textContent="Clear all saved scores? Admin scores are protected and will be kept.";$("confirm-ok-btn").onclick=()=>{clearScoresProtected();renderLeaderboard();confirmModal.classList.add("hidden")};confirmModal.classList.remove("hidden")});
- $("confirm-cancel-btn").addEventListener("click",()=>confirmModal.classList.add("hidden"));
+/* === Difficulty Radios === */
+const diffPresets={easy:[2,3,4,5,6,7,8,9],medium:[2,3,4,5,6,7,8,9,10,11,12],hard:[5,6,7,8,9,10,11,12,13,14,15]};
+document.querySelectorAll('input[name="difficulty"]').forEach(r=>r.addEventListener("change",()=>{
+  state.difficulty=r.value;
+  applyPreset(diffPresets[r.value]||diffPresets.easy);
+}));
 
-/* === Worksheets === */
- $("header-worksheet-btn").addEventListener("click",()=>worksheetModal.classList.remove("hidden"));
- $("worksheet-close-btn").addEventListener("click",()=>worksheetModal.classList.add("hidden"));
-function genProblems(d,n){const r={easy:{d:[2,3,4,5,6,7,8,9],m:81},medium:{d:[2,3,4,5,6,7,8,9,10,11,12],m:144},hard:{d:[5,6,7,8,9,10,11,12,13,14,15],m:225}},c=r[d]||r.medium,p=[];for(let i=0;i<n;i++){const dv=c.d[Math.floor(Math.random()*c.d.length)],mq=Math.max(Math.floor(c.m/dv),1),q=Math.floor(Math.random()*mq)+1;p.push({divisor:dv,dividend:dv*q,quotient:q,remainder:0})}return p}
-function buildWSHtml(problems,ans){let h='<div style="font-family:Georgia,serif;padding:1rem"><h2 style="text-align:center;margin-bottom:.25rem">Divide and Conquer -- Worksheet</h2><p style="text-align:center;color:#888;font-size:.85rem;margin-bottom:1.5rem">Name: _______________ Date: _______________</p><div class="worksheet-grid">';problems.forEach((p,i)=>{h+='<div class="worksheet-problem"><div style="font-size:1.1rem;margin-bottom:.5rem;font-weight:600;color:#555">'+(i+1)+'</div><div style="font-size:1.6rem;font-family:Patrick Hand,cursive"><div style="text-align:right;border-bottom:2px solid #333;padding-bottom:2px;margin-bottom:4px;min-height:1.4em"></div><div style="display:flex;align-items:center;gap:.3rem"><span style="font-weight:700">'+p.divisor+'</span><svg width="12" height="36" viewBox="0 0 12 36"><path d="M12 0L12 36L0 36" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>'+p.dividend+'</span></div></div>'+(ans?'<div style="margin-top:.5rem;font-size:.85rem;color:var(--success);font-weight:600">Answer: '+p.quotient+'</div>':'')+'</div>'});h+='</div>';if(ans){h+='<div style="margin-top:2rem;padding-top:1rem;border-top:2px dashed #ccc"><h3 style="text-align:center;font-size:1rem">Answer Key</h3><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.5rem;font-size:.9rem">';problems.forEach((p,i)=>{h+='<div>'+(i+1)+'. '+p.quotient+'</div>'});h+='</div></div>'}h+='</div>';return h}
-function handleWS(action){const diff=wsDiffCdd.getValue(),count=+wsCntCdd.getValue(),ans=$("ws-include-answers").checked,problems=genProblems(diff,count),html=buildWSHtml(problems,ans),pa=$("worksheet-print-area");pa.innerHTML=html;pa.classList.remove("hidden");if(action==="print"){window.print();setTimeout(()=>pa.classList.add("hidden"),1000)}else{html2pdf().set({margin:.5,filename:"division-worksheet.pdf",image:{type:"jpeg",quality:.98},html2canvas:{scale:2},jsPDF:{unit:"in",format:"letter",orientation:"portrait"}}).from(pa).save().then(()=>pa.classList.add("hidden"))}worksheetModal.classList.add("hidden")}
- $("worksheet-print-btn").addEventListener("click",()=>handleWS("print"));
- $("worksheet-pdf-btn").addEventListener("click",()=>handleWS("pdf"));
+/* === Problem Generation === */
+function generateProblem(){
+  const divs=state.selectedDivisors.length>0?state.selectedDivisors:[2,3,4,5,6,7,8,9];
+  const divisor=divs[Math.floor(Math.random()*divs.length)];
+  let maxQ;
+  switch(state.difficulty){
+    case"easy":maxQ=99;break;case"medium":maxQ=999;break;case"hard":maxQ=9999;break;default:maxQ=99;
+  }
+  const quotient=Math.floor(Math.random()*maxQ)+1;
+  const remainder=Math.floor(Math.random()*divisor);
+  const dividend=divisor*quotient+remainder;
+  return{divisor,dividend,quotient,remainder};
+}
 
-/* === Game === */
-function genProblem(){const ds=state.selectedDivisors.length?state.selectedDivisors:[2,3,4,5],dv=ds[Math.floor(Math.random()*ds.length)];let mq;if(state.difficulty==="easy")mq=Math.floor(80/dv);else if(state.difficulty==="medium")mq=Math.floor(140/dv);else mq=Math.floor(220/dv);mq=Math.max(mq,2);const q=Math.floor(Math.random()*mq)+1;return{divisor:dv,dividend:dv*q,quotient:q,remainder:0}}
-function startGame(){state.sessionLength=window.getSessionLength();state.difficulty=document.querySelector('input[name="difficulty"]:checked').value;state.currentProblemIndex=0;state.score=0;state.streak=0;state.bestStreak=0;scoreEl.textContent="0";streakEl.textContent="0";showPanel(gamePanel);loadProblem()}
-function loadProblem(){state.currentProblem=genProblem();const p=state.currentProblem;divisorDisplay.textContent=p.divisor;dividendDisplay.textContent=p.dividend;quotientInput.value="";subtractionInput.value="";remainderInput.value="";quotientInput.readOnly=false;subtractionInput.readOnly=false;remainderInput.readOnly=false;[quotientInput,subtractionInput,remainderInput].forEach(i=>i.classList.remove("locked","answer-correct"));submitBtn.disabled=false;nextBtn.disabled=true;feedbackEl.classList.add("hidden");const total=state.sessionLength==="endless"?"infinity":state.sessionLength;progressQuestion.textContent="Question "+(state.currentProblemIndex+1)+" of "+total;if(state.sessionLength!=="endless"){const pct=(state.currentProblemIndex/state.sessionLength)*100;progressFill.style.width=pct+"%";progressTrack.setAttribute("aria-valuenow",Math.round(pct))}else{progressFill.style.width="0%";progressTrack.setAttribute("aria-valuenow",0)}setTimeout(()=>quotientInput.focus(),100)}
-function checkAnswer(){const p=state.currentProblem,qv=quotientInput.value.trim(),sv=subtractionInput.value.trim(),rv=remainderInput.value.trim();if(!qv){feedbackEl.className="feedback error";feedbackEl.innerHTML="Please enter a quotient.";feedbackEl.classList.remove("hidden");return}const uq=+qv,us=sv!==""?+sv:null,ur=rv!==""?+rv:0,es=p.divisor*p.quotient;let ok=uq===p.quotient;if(ok&&us!==null)ok=us===es;if(ok)ok=ur===p.remainder;quotientInput.readOnly=true;subtractionInput.readOnly=true;remainderInput.readOnly=true;submitBtn.disabled=true;if(ok){state.score++;state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;scoreEl.textContent=state.score;streakEl.textContent=state.streak;[quotientInput,subtractionInput,remainderInput].forEach(i=>i.classList.add("answer-correct"));feedbackEl.className="feedback success";feedbackEl.innerHTML="Correct! "+p.dividend+" / "+p.divisor+" = "+p.quotient;feedbackEl.classList.remove("hidden");spawnConfetti()}else{state.streak=0;streakEl.textContent="0";feedbackEl.className="feedback error";feedbackEl.innerHTML="Wrong. Answer: "+p.dividend+" / "+p.divisor+" = "+p.quotient+(es!==p.dividend?"<span class='feedback-hint'>Subtraction: "+p.divisor+" x "+p.quotient+" = "+es+"</span>":"");feedbackEl.classList.remove("hidden")}nextBtn.disabled=false;nextBtn.focus()}
-function nextProblem(){state.currentProblemIndex++;if(state.sessionLength!=="endless"&&state.currentProblemIndex>=state.sessionLength)showResults();else loadProblem()}
+/* === Game Flow === */
+function startSession(){
+  state.sessionLength=getSessionLength();
+  state.currentProblemIndex=0;
+  state.score=0;state.streak=0;state.bestStreak=0;
+  const diffRadio=document.querySelector('input[name="difficulty"]:checked');
+  state.difficulty=diffRadio?diffRadio.value:"easy";
+  state.selectedDivisors=readPills(setupDivCont);
+  if(state.selectedDivisors.length===0){
+    showMessage("error","No Divisors Selected","Please select at least one divisor number before starting.");
+    return;
+  }
+  scoreEl.textContent="0";streakEl.textContent="0";
+  showPanel(gamePanel);
+  loadProblem();
+}
 
-/* === Results === */
-function showResults(){const name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores);const total=state.currentProblemIndex,pct=total?Math.round(state.score/total*100):0;$("results-score").textContent=state.score;$("results-accuracy").textContent=pct+"%";$("results-streak").textContent=state.bestStreak;$("results-subtitle").textContent="You answered "+state.score+" out of "+total+" correctly ("+pct+"%)";$("results-title").textContent=pct===100?"Perfect Score!":pct>=80?"Great Job!":pct>=50?"Session Complete":"Keep Practicing!";showPanel(resultsPanel);if(pct>=80)for(let w=0;w<3;w++)setTimeout(spawnConfetti,w*200)}
- $("results-home-btn").addEventListener("click",goHome);
- $("results-again-btn").addEventListener("click",startGame);
- $("end-session-link").addEventListener("click",e=>{e.preventDefault();$("confirm-modal-desc").textContent="End this session early? Progress will be saved.";$("confirm-ok-btn").onclick=()=>{confirmModal.classList.add("hidden");if(state.currentProblemIndex>0){const name=state.currentUser||(state.isGuest?"Guest":"Unknown"),scores=getScores();scores.push({player:name,score:state.score,total:state.currentProblemIndex,difficulty:state.difficulty,date:Date.now()});saveScores(scores)}goHome()};confirmModal.classList.remove("hidden")});
+function loadProblem(){
+  state.currentProblem=generateProblem();
+  state.submitted=false;
+  const{divisor,dividend}=state.currentProblem;
+  divisorDisplay.textContent=divisor;
+  dividendDisplay.textContent=dividend;
+  quotientInput.value="";subtractionInput.value="";remainderInput.value="";
+  [quotientInput,subtractionInput,remainderInput].forEach(inp=>{
+    inp.classList.remove("answer-correct","locked");inp.readOnly=false;
+  });
+  submitBtn.disabled=false;
+  resetBtn.disabled=false;
+  nextBtn.disabled=true;
+  feedbackEl.classList.add("hidden");
+  updateProgress();
+  quotientInput.focus();
+}
 
-/* === Buttons === */
- $("start-btn").addEventListener("click",startGame);
-submitBtn.addEventListener("click",checkAnswer);
+function submitAnswer(){
+  if(state.submitted)return;
+  state.submitted=true;
+
+  const q=parseInt(quotientInput.value,10);
+  const sub=parseInt(subtractionInput.value,10);
+  const rem=parseInt(remainderInput.value,10)||0;
+  const{divisor,dividend,quotient,remainder}=state.currentProblem;
+  const correctSub=divisor*quotient;
+
+  if(isNaN(q)){state.submitted=false;showFeedback("error","Please enter a quotient.");return}
+  if(isNaN(sub)){state.submitted=false;showFeedback("error","Please enter the subtraction step.");return}
+
+  const qOk=q===quotient,subOk=sub===correctSub,remOk=rem===remainder;
+
+  [quotientInput,subtractionInput,remainderInput].forEach(inp=>{
+    inp.readOnly=true;inp.classList.add("locked");
+  });
+  submitBtn.disabled=true;
+  resetBtn.disabled=true;
+  nextBtn.disabled=false;
+
+  if(qOk&&subOk&&remOk){
+    state.score++;state.streak++;
+    if(state.streak>state.bestStreak)state.bestStreak=state.streak;
+    scoreEl.textContent=state.score;streakEl.textContent=state.streak;
+    [quotientInput,subtractionInput,remainderInput].forEach(inp=>inp.classList.add("answer-correct"));
+    showFeedback("success","Correct! Great work.");
+    spawnConfetti();
+  }else{
+    state.streak=0;streakEl.textContent="0";
+    let hints=[];
+    if(!qOk)hints.push("Quotient should be "+quotient+".");
+    if(!subOk)hints.push("Subtraction should be "+divisor+" \u00d7 "+quotient+" = "+correctSub+".");
+    if(!remOk)hints.push("Remainder should be "+remainder+".");
+    showFeedback("error","Not quite right.",hints.join(" "));
+  }
+}
+
+function nextProblem(){
+  state.currentProblemIndex++;
+  if(state.sessionLength!=="endless"&&state.currentProblemIndex>=state.sessionLength){endSession();return}
+  loadProblem();
+}
+
+function resetProblem(){
+  if(state.submitted)return;
+  quotientInput.value="";subtractionInput.value="";remainderInput.value="";
+  quotientInput.classList.remove("answer-correct","locked");
+  subtractionInput.classList.remove("answer-correct","locked");
+  remainderInput.classList.remove("answer-correct","locked");
+  quotientInput.readOnly=false;subtractionInput.readOnly=false;remainderInput.readOnly=false;
+  submitBtn.disabled=false;nextBtn.disabled=true;
+  feedbackEl.classList.add("hidden");
+  quotientInput.focus();
+}
+
+function endSession(){
+  const total=state.currentProblemIndex;
+  const accuracy=total>0?Math.round(state.score/total*100):0;
+  showPanel(resultsPanel);
+  $("results-score").textContent=state.score;
+  $("results-accuracy").textContent=accuracy+"%";
+  $("results-streak").textContent=state.bestStreak;
+  if(accuracy>=90)$("results-title").textContent="Outstanding!";
+  else if(accuracy>=70)$("results-title").textContent="Well Done!";
+  else if(accuracy>=50)$("results-title").textContent="Good Effort!";
+  else $("results-title").textContent="Keep Practicing!";
+  $("results-subtitle").textContent="You got "+state.score+" out of "+total+" correct.";
+  const name=state.currentUser||"Guest";
+  saveScores([...getScores(),{player:name,score:state.score,total:total,accuracy:accuracy,difficulty:state.difficulty,date:new Date().toLocaleDateString()}]);
+}
+
+function updateProgress(){
+  const total=state.sessionLength==="endless"?"\u221E":state.sessionLength;
+  progressQuestion.textContent="Question "+(state.currentProblemIndex+1)+" of "+total;
+  if(state.sessionLength!=="endless"){
+    const pct=(state.currentProblemIndex/state.sessionLength)*100;
+    progressFill.style.width=pct+"%";progressTrack.setAttribute("aria-valuenow",Math.round(pct));
+  }else{progressFill.style.width="0%"}
+}
+
+function showFeedback(type,msg,hint){
+  feedbackEl.className="feedback "+type;
+  feedbackEl.innerHTML=msg+(hint?"<span class=\"feedback-hint\">"+hint+"</span>":"");
+  feedbackEl.classList.remove("hidden");
+}
+
+/* === Game Button Handlers === */
+ $("start-btn").addEventListener("click",startSession);
+submitBtn.addEventListener("click",submitAnswer);
 nextBtn.addEventListener("click",nextProblem);
-resetBtn.addEventListener("click",()=>{quotientInput.value="";subtractionInput.value="";remainderInput.value="";feedbackEl.classList.add("hidden");quotientInput.focus()});
-[quotientInput,subtractionInput,remainderInput].forEach(inp=>{inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(!submitBtn.disabled)checkAnswer();else if(!nextBtn.disabled)nextProblem()}})});
+resetBtn.addEventListener("click",resetProblem);
+ $("end-session-link").addEventListener("click",e=>{e.preventDefault();endSession()});
+
+/* Enter key navigation in game inputs */
+[quotientInput,subtractionInput,remainderInput].forEach((inp,i,all)=>{
+  inp.addEventListener("keydown",e=>{
+    if(e.key==="Enter"){
+      e.preventDefault();
+      if(state.submitted){nextProblem();return}
+      if(!nextBtn.disabled)nextProblem();
+      else if(!submitBtn.disabled)submitAnswer();
+      else if(i<all.length-1)all[i+1].focus();
+    }
+  });
+});
+
+/* === Results Buttons === */
+ $("results-home-btn").addEventListener("click",goHome);
+ $("results-again-btn").addEventListener("click",startSession);
 
 /* === Confetti === */
-function spawnConfetti(){const r=$("paper-sheet").getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cols=["#b07d10","#2d6a4f","#9b2226","#457b9d","#e9c46a","#f4a261"];for(let i=0;i<18;i++){const d=document.createElement("div");d.className="confetti-dot";const a=Math.PI*2*i/18+(Math.random()-.5)*.5,dist=60+Math.random()*100;d.style.cssText="left:"+cx+"px;top:"+cy+"px;width:"+(6+Math.random()*6)+"px;height:"+(6+Math.random()*6)+"px;background:"+cols[i%cols.length]+";--cx:"+(Math.cos(a)*dist)+"px;--cy:"+(Math.sin(a)*dist-40)+"px;";confettiContainer.appendChild(d);setTimeout(()=>d.remove(),900)}}
+function spawnConfetti(){
+  const container=$("confetti-container");
+  const colors=["#b07d10","#8c600b","#2d6a4f","#d46a32","#9a4518","#e8a0a0"];
+  for(let i=0;i<24;i++){
+    const dot=document.createElement("div");dot.className="confetti-dot";
+    const angle=(Math.PI*2/24)*i;
+    const dist=60+Math.random()*100;
+    const size=6+Math.random()*6;
+    dot.style.cssText="left:50%;top:50%;width:"+size+"px;height:"+size+"px;background:"+colors[i%colors.length]+";--cx:"+Math.cos(angle)*dist+"px;--cy:"+Math.sin(angle)*dist+"px";
+    container.appendChild(dot);
+    setTimeout(()=>dot.remove(),900);
+  }
+}
 
-/* === Init === */
-updateHeader();
+/* === Leaderboard === */
+function renderLeaderboard(){
+  const scores=getScores().sort((a,b)=>b.score-a.score||b.accuracy-a.accuracy).slice(0,20);
+  const body=$("leaderboard-body");
+  if(scores.length===0){body.innerHTML='<tr><td colspan="5" class="text-center py-4 text-gray-500">No scores yet.</td></tr>';return}
+  body.innerHTML=scores.map((s,i)=>"<tr><td>"+(i+1)+"</td><td>"+s.player+"</td><td>"+s.score+"/"+(s.total||"?")+"</td><td>"+(s.difficulty||"-")+"</td><td>"+(s.date||"-")+"</td></tr>").join("");
+}
+ $("leaderboard-close-btn").addEventListener("click",()=>closeModal(leaderboardModal));
+ $("clear-scores-btn").addEventListener("click",()=>{
+  showConfirm("Clear all scores? This cannot be undone.",()=>{
+    if(state.currentUser===ADMIN_EMAIL)clearScoresProtected();else saveScores([]);
+    renderLeaderboard();
+    showMessage("success","Scores Cleared","All score history has been removed.");
+  });
+});
+
+/* === Worksheet Generator === */
+function generateWorksheetProblems(count,difficulty){
+  const ranges={easy:[2,9],medium:[2,12],hard:[5,15]};
+  const[minD,maxD]=ranges[difficulty]||ranges.medium;
+  const problems=[];
+  for(let i=0;i<count;i++){
+    const divisor=minD+Math.floor(Math.random()*(maxD-minD+1));
+    const maxQ=difficulty==="easy"?99:difficulty==="hard"?9999:999;
+    const quotient=1+Math.floor(Math.random()*maxQ);
+    const remainder=Math.floor(Math.random()*divisor);
+    const dividend=divisor*quotient+remainder;
+    problems.push({divisor,dividend,quotient,remainder});
+  }
+  return problems;
+}
+
+function renderWorksheet(problems,withAnswers){
+  let html='<div style="font-family:var(--font-hand);font-size:1.1rem">';
+  if(withAnswers)html+='<h3 style="text-align:center;margin-bottom:1rem">Answer Key</h3>';
+  html+='<div class="worksheet-grid">';
+  problems.forEach(p=>{
+    html+='<div class="worksheet-problem"><div>'+p.dividend+' \u00f7 '+p.divisor+' =</div>';
+    if(withAnswers)html+='<div style="color:var(--success);font-weight:700;margin-top:.25rem">Quotient: '+p.quotient+', Remainder: '+p.remainder+'</div>';
+    else html+='<div style="margin-top:.5rem;border-bottom:1px dashed #ccc;height:1.5rem"></div>';
+    html+='</div>';
+  });
+  html+='</div></div>';
+  return html;
+}
+
+ $("worksheet-close-btn").addEventListener("click",()=>closeModal(worksheetModal));
+ $("worksheet-pdf-btn").addEventListener("click",()=>{
+  const diff=wsDiffCdd.getValue(),cnt=parseInt(wsCntCdd.getValue(),10),withAns=$("ws-include-answers").checked;
+  const problems=generateWorksheetProblems(cnt,diff);
+  const el=document.createElement("div");
+  el.innerHTML='<h2 style="text-align:center;font-family:var(--font-display);margin-bottom:1rem">Division Worksheet ('+diff+')</h2>'+renderWorksheet(problems,withAns);
+  html2pdf().from(el).set({margin:10,filename:"division-worksheet-"+diff+".pdf"}).save();
+  showMessage("success","PDF Downloaded","Your worksheet has been generated and saved.");
+});
+ $("worksheet-print-btn").addEventListener("click",()=>{
+  const diff=wsDiffCdd.getValue(),cnt=parseInt(wsCntCdd.getValue(),10),withAns=$("ws-include-answers").checked;
+  const problems=generateWorksheetProblems(cnt,diff);
+  const printArea=$("worksheet-print-area");
+  printArea.innerHTML='<h2 style="text-align:center;font-family:var(--font-display);margin-bottom:1rem">Division Worksheet ('+diff+')</h2>'+renderWorksheet(problems,withAns);
+  printArea.classList.remove("hidden");
+  window.print();
+  setTimeout(()=>printArea.classList.add("hidden"),500);
+});
+
+/* === Close Modals on Overlay Click === */
+[settingsModal,confirmModal,messageModal,totpModal,totpSetupModal,leaderboardModal,worksheetModal].forEach(m=>{
+  m.addEventListener("click",e=>{if(e.target===m)closeModal(m)});
+});
+
+/* === Logo link goes home === */
+document.querySelector(".logo-link").addEventListener("click",e=>{
+  e.preventDefault();
+  if(!authPanel.classList.contains("hidden")||!setupPanel.classList.contains("hidden"))return;
+  goHome();
+});
 </script>
 </body>
 </html>
